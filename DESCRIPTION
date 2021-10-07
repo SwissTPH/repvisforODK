@@ -1,0 +1,15 @@
+Package: ODKlyse
+Title: Analyse data from ODK Central
+Version: 1.0.0.0
+Authors@R: 
+    person(given = "Lucas",
+           family = "Silbernagel",
+           role = c("aut", "cre"),
+           email = "lucas.silbernagel@swisstph.ch")
+Description: Generic functions to export, manipulate, and visualize data retrieved from ODK Central.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
