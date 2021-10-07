@@ -7,9 +7,11 @@ Authors@R:
            role = c("aut", "cre"),
            email = "lucas.silbernagel@swisstph.ch")
 Description: Generic functions to export, manipulate, and visualize data retrieved from ODK Central.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
