@@ -2,11 +2,11 @@
 #'
 #' Find all instance ID's of an ODK form which are already stored on ODK Central but not loaded in your current data.
 #'
-#' @param id_col character, specifies the exact name of the instance ID in the df/csv.
-#' @param csv character, specifies the path to the csv file that is to be read.
-#' @param df data frame, specifies the data frame that is to be read.
+#' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
+#' @param csv Character that specifies the path to the csv file that is to be read.
+#' @param df Data fram that, specifies the data frame that is to be read.
 #'
-#' @return character vector
+#' @return Character vector
 #' @export
 #'
 #' @examples
@@ -35,12 +35,12 @@ find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
 #' Find and download all instances of an ODK form which are already stored on ODK Central but not loaded in your current data
 #' and optionally append them to the data that was passed.
 #'
-#' @param id_col character, specifies the exact name of the instance ID in the df/csv.
-#' @param csv character, specifies the path to the csv file that is to be read.
-#' @param df data frame, specifies the data frame that is to be read.
-#' @param merge_data logical, specifies whether the new data shall be merged with the one that was given or not.
+#' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
+#' @param csv Character that specifies the path to the csv file that is to be read.
+#' @param df Data frame that specifies the data frame that is to be read.
+#' @param merge_data Boolean that specifies whether the new data shall be merged with the one that was given or not.
 #'
-#' @return data frame
+#' @return Data frame
 #' @export
 #'
 #' @examples
