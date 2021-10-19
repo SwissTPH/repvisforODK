@@ -3,13 +3,13 @@
 #' Establishes connection with ODK Cnetral servers by passing log in credentials, timezone and svc to the
 #' ruODK::ru_setup() function. By default it tries to retrieve this information from local system variables.
 #'
-#' @param svc character
-#' @param un optional, character
-#' @param pw optional, character
-#' @param tz optional, character
-#' @param verbose optional, logical
+#' @param svc Character
+#' @param un Optional, character
+#' @param pw Optional, character
+#' @param tz Optional, character
+#' @param verbose Optional, logical
 #'
-#' @return none
+#' @return None
 #' @export
 #'
 #' @examples

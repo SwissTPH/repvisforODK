@@ -7,16 +7,16 @@
 get_new_instances(id_col, csv = NULL, df = NULL, merge_data = TRUE)
 }
 \arguments{
-\item{id_col}{character, specifies the exact name of the instance ID in the df/csv.}
+\item{id_col}{Character that specifies the exact name of the instance ID in the df/csv.}
 
-\item{csv}{character, specifies the path to the csv file that is to be read.}
+\item{csv}{Character that specifies the path to the csv file that is to be read.}
 
-\item{df}{data frame, specifies the data frame that is to be read.}
+\item{df}{Data frame that specifies the data frame that is to be read.}
 
-\item{merge_data}{logical, specifies whether the new data shall be merged with the one that was given or not.}
+\item{merge_data}{Boolean that specifies whether the new data shall be merged with the one that was given or not.}
 }
 \value{
-data frame
+Data frame
 }
 \description{
 Find and download all instances of an ODK form which are already stored on ODK Central but not loaded in your current data

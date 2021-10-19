@@ -1,16 +1,18 @@
 #' Find all missing instances
 #'
-#' Find all instance ID's of an ODK form which are already stored on ODK Central but not loaded in your current data.
+#' This function finds all instance ID's of submissions of an ODK form which are already stored on ODK Central but not loaded in your current data.
+#' It does so by downloading the most recent submission list from ODK Central for the respective form and compares the instance IDs with the ones
+#' that are contained in the given data.
 #'
 #' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
 #' @param csv Character that specifies the path to the csv file that is to be read.
-#' @param df Data fram that, specifies the data frame that is to be read.
+#' @param df Data frame that, specifies the data frame that is to be read.
 #'
-#' @return Character vector
+#' @return List
 #' @export
 #'
 #' @examples
-#' find_missing_instanceIDs('https://research.odk.path.org/v1/projects/4/forms/02-TIMCI-SPA-cgei.svc', 'meta-instanceID', df=df_test)
+#' find_missing_instanceIDs('meta-instanceID', df=df_test)
 find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
   if (ru_settings()[[2]]=='') stop('Please run the function ODKlyse::setup_ruODK() with your credentials and svc of the from you want to look at.')
 
@@ -30,10 +32,11 @@ find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
 }
 
 
-#' Download all missing instances
+#' Download all missing submissions
 #'
-#' Find and download all instances of an ODK form which are already stored on ODK Central but not loaded in your current data
-#' and optionally append them to the data that was passed.
+#' This function uses the find_missing_instanceIDs() function to find all of an ODK form which are already stored on ODK Central but not loaded in your current data submissions and then downloads them.
+#' The new submissions can either be appended to the old data or be returned separately. To do so, the function makes use of ruODK's submission_get() function which
+#' sends GET requests to ODK Centrals REST-API to retrieve data.
 #'
 #' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
 #' @param csv Character that specifies the path to the csv file that is to be read.
@@ -44,8 +47,8 @@ find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
 #' @export
 #'
 #' @examples
-#' get_new_instances('meta-instanceID', df=df_senegal)
-get_new_instances <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
+#' get_new_submissions('meta-instanceID', df=df_senegal)
+get_new_submissions <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
 
   help_list = ODKlyse::find_missing_instanceIDs(id_col, csv, df)
   df_gni = help_list[[1]]
@@ -54,16 +57,21 @@ get_new_instances <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
   new_data_json = ruODK::submission_get(missing_instances)
 
   enframed_df = tibble::enframe(unlist(new_data_json))
-  enframed_df$clean_name = sapply(enframed_df$name, function(x) gsub('.', '-', x, fixed = T), USE.NAMES = F)
+  enframed_df$clean_name = sapply(enframed_df$name,
+                                  function(x) gsub('.', '-', x, fixed = T),
+                                  USE.NAMES = F)
 
   enframed_df$clean_name[enframed_df$clean_name=='meta-instanceID'] = id_col
 
-  final_df = data.frame(matrix(ncol=length(colnames(df_gni)), nrow=sum(enframed_df$clean_name=='meta-instanceID')))
-  colnames(final_df) = colnames(df_gni)
+  new_data_df = data.frame(matrix(ncol=length(colnames(df_gni)),
+                               nrow=sum(enframed_df$clean_name=='meta-instanceID')))
+  colnames(new_data_df) = colnames(df_gni)
 
   for (col in unique(enframed_df$clean_name)){
     if (col %ni% colnames(df_gni)){
-      stop(paste0('The column -', col, '- must exist in the data. Please consider renaming using -names(my_data)[names(my_data) == xy] <- xy-'))
+      stop(paste0('The column -',
+                  col,
+                  '- must exist in the data. Please consider renaming using -names(my_data)[names(my_data) == xy] <- xy-'))
     }
   }
 
@@ -71,16 +79,24 @@ get_new_instances <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
   for (row in 1:nrow(enframed_df)){
     if (enframed_df$clean_name[row]=='today') c = c+1
 
-    final_df[c, enframed_df$clean_name[row]] = enframed_df$value[row]
+    new_data_df[c, enframed_df$clean_name[row]] = enframed_df$value[row]
   }
 
-  final_df$start = sapply(final_df$start, function(x) strsplit(gsub('T', ' ', x), split = '.', fixed = T)[[1]][1], USE.NAMES = F)
-  final_df$start = as.POSIXct(final_df$start, format='%Y-%m-%d %H:%M:%S')
+  new_data_df$start = sapply(new_data_df$start,
+                          function(x) strsplit(gsub('T', ' ', x), split = '.', fixed = T)[[1]][1],
+                          USE.NAMES = F)
+  new_data_df$start = as.POSIXct(new_data_df$start,
+                              format='%Y-%m-%d %H:%M:%S')
 
-  final_df$end = sapply(final_df$end, function(x) strsplit(gsub('T', ' ', x), split = '.', fixed = T)[[1]][1], USE.NAMES = F)
-  final_df$end = as.POSIXct(final_df$end, format='%Y-%m-%d %H:%M:%S')
+  new_data_df$end = sapply(new_data_df$end,
+                        function(x) strsplit(gsub('T', ' ', x), split = '.', fixed = T)[[1]][1],
+                        USE.NAMES = F)
+  new_data_df$end = as.POSIXct(new_data_df$end,
+                            format='%Y-%m-%d %H:%M:%S')
 
-  ifelse(merge_data, return(rbind(df_gni, final_df)), return(final_df))
+  ifelse(merge_data,
+         return(rbind(df_gni, new_data_df)),
+         return(new_data_df))
 }
 
 

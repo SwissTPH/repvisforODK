@@ -2,4 +2,5 @@
 
 export(find_missing_instanceIDs)
 export(get_new_instances)
+export(get_new_instances_odata)
 export(setup_ruODK)

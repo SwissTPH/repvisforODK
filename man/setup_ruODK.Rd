@@ -13,18 +13,18 @@ setup_ruODK(
 )
 }
 \arguments{
-\item{svc}{character}
+\item{svc}{Character}
 
-\item{un}{optional, character}
+\item{un}{Optional, character}
 
-\item{pw}{optional, character}
+\item{pw}{Optional, character}
 
-\item{tz}{optional, character}
+\item{tz}{Optional, character}
 
-\item{verbose}{optional, logical}
+\item{verbose}{Optional, logical}
 }
 \value{
-none
+None
 }
 \description{
 Establishes connection with ODK Cnetral servers by passing log in credentials, timezone and svc to the

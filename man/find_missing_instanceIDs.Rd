@@ -7,14 +7,14 @@
 find_missing_instanceIDs(id_col, csv = NULL, df = NULL)
 }
 \arguments{
-\item{id_col}{character, specifies the exact name of the instance ID in the df/csv.}
+\item{id_col}{Character that specifies the exact name of the instance ID in the df/csv.}
 
-\item{csv}{character, specifies the path to the csv file that is to be read.}
+\item{csv}{Character that specifies the path to the csv file that is to be read.}
 
-\item{df}{data frame, specifies the data frame that is to be read.}
+\item{df}{Data frame that, specifies the data frame that is to be read.}
 }
 \value{
-character vector
+Character vector
 }
 \description{
 Find all instance ID's of an ODK form which are already stored on ODK Central but not loaded in your current data.
