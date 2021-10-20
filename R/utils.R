@@ -1,7 +1,7 @@
 #' Sets up ruODK
 #'
 #' Establishes connection with ODK Cnetral servers by passing log in credentials, timezone and svc to the
-#' ruODK::ru_setup() function. By default it tries to retrieve this information from local system variables.
+#' \code{\link[ruODK]{ru_setup()}} function. By default it tries to retrieve this information from local system variables.
 #'
 #' @param svc Character
 #' @param un Optional, character

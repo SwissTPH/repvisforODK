@@ -34,8 +34,8 @@ find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
 
 #' Download all missing submissions
 #'
-#' This function uses the find_missing_instanceIDs() function to find all of an ODK form which are already stored on ODK Central but not loaded in your current data submissions and then downloads them.
-#' The new submissions can either be appended to the old data or be returned separately. To do so, the function makes use of ruODK's submission_get() function which
+#' This function uses the \code{\link{find_missing_instanceIDs}} function to find all submissions of an ODK form which are already stored on ODK Central but not loaded in your current data submissions and then downloads them.
+#' The new submissions can either be appended to the old data or be returned separately. To do so, the function makes use of ruODK's \code{\link[ruODK]{submission_get}} function which
 #' sends GET requests to ODK Centrals REST-API to retrieve data.
 #'
 #' @param id_col Character that specifies the exact name of the instance ID in the df/csv.

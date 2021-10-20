@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ODKlyse
+# repvisforODK
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -9,23 +9,23 @@
 **This package is currently under active development and has no MVP
 yet.**
 
-The goal of ODKlyse is to enable its users to export, manipulate, and
+The goal of repvisforODK is to enable its users to export, manipulate, and
 visualize data retrieved from ODK Central.
 
 ## Installation
 
-You can install the released version of ODKlyse from
+You can install the released version of repvisforODK from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("ODKlyse")
+install.packages("repvisforODK")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("lucidviews/ODKlyse")
+devtools::install_github("lucidviews/repvisforODK")
 ```
 
 ## Example
@@ -33,6 +33,6 @@ devtools::install_github("lucidviews/ODKlyse")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(ODKlyse)
+library(repvisforODK)
 ## basic example code
 ```
