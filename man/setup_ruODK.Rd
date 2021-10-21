@@ -28,8 +28,5 @@ None
 }
 \description{
 Establishes connection with ODK Cnetral servers by passing log in credentials, timezone and svc to the
-ruODK::ru_setup() function. By default it tries to retrieve this information from local system variables.
-}
-\examples{
-setup_ruODK('https://research.odk.path.org/v1/projects/4/forms/test.svc')
+\code{\link[ruODK]{ru_setup}} function. By default it tries to retrieve this information from local system variables.
 }

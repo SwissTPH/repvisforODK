@@ -9,7 +9,6 @@
 #' @export
 #'
 #' @examples
-#' placeholder
 collection_period <- function(df){
   submission_date_col = colnames(df)[grepl('submission.*date', colnames(df), ignore.case = T)|grepl('date.*submission', colnames(df), ignore.case = T)]
   earliest_submission = as.Date(min(df[[submission_date_col]]))

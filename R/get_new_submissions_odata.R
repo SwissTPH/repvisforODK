@@ -1,7 +1,7 @@
 #' Download all missing instances through ODATA
 #'
-#' Just like the get_new_instances() function, the get_new_instances_odata() function finds and downloads all submissions
-#' which are already stored on ODK Central but not contained in the passed data. In contrast to its sister function, get_new_instances_odata()
+#' Just like the \code{\link{get_new_submissions}} function, this function finds and downloads all submissions
+#' which are already stored on ODK Central but not contained in the passed data. In contrast to its sister function, \code{\link{get_new_submissions_odata}}
 #' does not create a delta of instance ID's between old and new data to find the missing instances but it identifies the latest
 #' submission date in the  old data and uses it to create ODATA query that filters for submissions that were either submitted or updated or both
 #' after this date. The new submissions can be returned by themselves or merged with the old data.
@@ -18,8 +18,9 @@
 #' @return Data frame
 #' @export
 #'
-#' @examples *Placeholder*
-get_new_instances_odata <- function(id_col, submission_date_col, csv=NULL, df=NULL, merge_data=TRUE, force_timezone=TRUE){
+#' @examples
+#'
+get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=NULL, merge_data=TRUE, force_timezone=TRUE){
 
   if (ruODK::ru_settings()[[2]]=='') stop('Please run the function ODKlyse::setup_ruODK() with your credentials and svc of the from you want to look at.')
 
@@ -80,7 +81,7 @@ get_new_instances_odata <- function(id_col, submission_date_col, csv=NULL, df=NU
   new_data_df['today'] = as.Date(new_data_df[['today']])
 
   df_levi_dist = as.data.frame(sapply(colnames(new_data_df),
-                                      function(x) adist(x, colnames(df_gnio))),
+                                      function(x) utils::adist(x, colnames(df_gnio))),
                                row.names = colnames(df_gnio))
 
   matching_list = lapply(colnames(df_levi_dist),

@@ -1,4 +1,4 @@
-#' Find all missing instances
+#' Find all missing submissions
 #'
 #' This function finds all instance ID's of submissions of an ODK form which are already stored on ODK Central but not loaded in your current data.
 #' It does so by downloading the most recent submission list from ODK Central for the respective form and compares the instance IDs with the ones
@@ -12,9 +12,8 @@
 #' @export
 #'
 #' @examples
-#' find_missing_instanceIDs('meta-instanceID', df=df_test)
 find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
-  if (ru_settings()[[2]]=='') stop('Please run the function ODKlyse::setup_ruODK() with your credentials and svc of the from you want to look at.')
+  if (ruODK::ru_settings()[[2]]=='') stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the from you want to look at.')
 
   if (is.null(csv) & is.null(df)){
     stop('Please pass either a csv path or a data frame as an argument.')
@@ -47,10 +46,9 @@ find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
 #' @export
 #'
 #' @examples
-#' get_new_submissions('meta-instanceID', df=df_senegal)
 get_new_submissions <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
 
-  help_list = ODKlyse::find_missing_instanceIDs(id_col, csv, df)
+  help_list = repvisforODK::find_missing_instanceIDs(id_col, csv, df)
   df_gni = help_list[[1]]
   missing_instances = help_list[[2]]
 
