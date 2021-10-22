@@ -36,3 +36,6 @@ does not create a delta of instance ID's between old and new data to find the mi
 submission date in the  old data and uses it to create ODATA query that filters for submissions that were either submitted or updated or both
 after this date. The new submissions can be returned by themselves or merged with the old data.
 }
+\examples{
+
+}

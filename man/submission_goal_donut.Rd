@@ -2,7 +2,7 @@
 % Please edit documentation in R/submission_goal_donut.R
 \name{submission_goal_donut}
 \alias{submission_goal_donut}
-\title{Plots a pie plot with a whole (donut) that visualizes the relation between actually received and targeted number of submissions.}
+\title{Generates a pie plot (donut) that visualizes the relation between actually received and targeted number of submissions.}
 \usage{
 submission_goal_donut(df, daily_submission_goal)
 }

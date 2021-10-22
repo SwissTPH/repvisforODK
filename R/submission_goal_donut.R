@@ -13,8 +13,8 @@
 #'
 #' @examples
 submission_goal_donut <- function(df, daily_submission_goal){
-  date_list = repvisforODK::collection_period(df)
-  date_diff = date_list[[2]]-date_list[[1]]
+  date_limits = repvisforODK::collection_period(df)
+  date_diff = date_limits[[2]] - date_limits[[1]]
 
   submission_goal_total = as.numeric(date_diff)*daily_submission_goal
   submissions_total = nrow(df)

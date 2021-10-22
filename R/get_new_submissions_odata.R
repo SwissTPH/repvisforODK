@@ -47,9 +47,7 @@ get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=
 
   for (col in c('start', 'end', 'system_submission_date')){
     new_data_df[col] = sapply(new_data_df[[col]],
-                              function(x) strsplit(gsub('T',
-                                                        ' ',
-                                                        x),
+                              function(x) strsplit(gsub('T', ' ', x),
                                                    split = '.',
                                                    fixed = T)[[1]][1],
                               USE.NAMES = F)
