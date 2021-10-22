@@ -4,10 +4,12 @@
 \alias{collection_period}
 \title{Get the earliest and latest of your data}
 \usage{
-collection_period(df)
+collection_period(df, date_col)
 }
 \arguments{
 \item{df}{Data frame containing the ODK data that is to be used.}
+
+\item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 }
 \value{
 list

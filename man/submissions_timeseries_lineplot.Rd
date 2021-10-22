@@ -6,6 +6,7 @@
 \usage{
 submissions_timeseries_lineplot(
   df,
+  date_col,
   with_goal = FALSE,
   daily_submission_goal = 0,
   exclude_weekend = TRUE,
@@ -15,13 +16,15 @@ submissions_timeseries_lineplot(
 \arguments{
 \item{df}{Data frame that contains the data which is to be examined.}
 
+\item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
+
 \item{with_goal}{Logical that determines whether a vertical line representing the number of daily submissions goal is plotted. Optional, defaults to FALSE.}
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal.}
 
 \item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
 
-\item{cumulated}{Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.}
+\item{cumulative}{Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.}
 }
 \value{
 Plotly html-widget

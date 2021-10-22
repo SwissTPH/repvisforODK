@@ -9,16 +9,17 @@
 #' In order to determine the collection period the function \code{\link{collection_period}} is used.
 #'
 #' @param df Data frame that contains the data which is to be examined.
+#' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #' @param with_goal Logical that determines whether a vertical line representing the number of daily submissions goal is plotted. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
 #' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
-#' @param cumulated Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
+#' @param cumulative Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
 #'
 #' @return Plotly html-widget
 #' @export
 #'
 #' @examples
-submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
+submissions_timeseries_lineplot <- function(df, date_col, with_goal = FALSE, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
 
   if (with_goal && daily_submission_goal <= 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float which is not null it with_goal is set to TRUE.")
@@ -26,18 +27,17 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
     stop('The argument with_goal is set to FALSE but there is a postive integer or float defined for daily_submission_goal.')
   }
 
-  submission_date_col = colnames(df)[grepl('submission.*date', colnames(df), ignore.case = T)| grepl('date.*submission', colnames(df), ignore.case = T)]
-  names(df)[names(df) == submission_date_col] <- 'submission_date'
+  names(df)[names(df) == date_col] <- 'date'
 
   date_limits <- repvisforODK::collection_period(df)
   all_dates_in_period = seq.Date(date_limits[[1]], date_limits[[2]], 'days')
-  df_count = df %>% mutate(submission_date = as.Date(submission_date)) %>% count(submission_date)
+  df_count = df %>% dplyr::mutate(date = as.Date(date)) %>% dplyr::count(date)
 
   df_count_full <- data.frame(all_dates_in_period)
   df_count_full$n <- sapply(df_count_full$all_dates_in_period,
-                              function(x) ifelse(x %in% df_count$submission_date, df_count$n[df_count$submission_date == x], 0),
+                              function(x) ifelse(x %in% df_count$date, df_count$n[df_count$date == x], 0),
                               USE.NAMES = F)
-  if (cumulative) df_count_full <- df_count_full %>% mutate(n = cumsum(n))
+  if (cumulative) df_count_full <- df_count_full %>% dplyr::mutate(n = cumsum(n))
 
   if (exclude_weekend) {
     df_count_full$wday <- lubridate::wday(df_count_full$all_dates_in_period, abbr = T)
@@ -45,14 +45,14 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
     df_count_full <- df_count_full[!df_count_full$wday %in% c(1, 7), ]
   }
 
-  fig <- plot_ly(df_count_full, type = 'scatter', mode = 'lines', width = 900) %>%
-    add_trace(
+  fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', width = 900) %>%
+    plotly::add_trace(
       x = ~all_dates_in_period,
       y = ~n,
       name = 'Submissions',
       showlegend = TRUE
       ) %>%
-    layout(
+    plotly::layout(
            title = 'Number of Submissions per Day Over Time',
            showlegend = TRUE,
            xaxis = list(rangeslider = list(visible = T),
@@ -105,7 +105,7 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
     }
 
     fig <- fig %>%
-      add_trace(
+      plotly::add_trace(
         x = c(date_limits[[1]], date_limits[[2]]),
         y = y,
         name = 'Daily Submission Goal',
@@ -114,7 +114,7 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
                     width = 2,
                     dash = 'dash')
       ) %>%
-      layout(showlegend = TRUE)
+      plotly::layout(showlegend = TRUE)
   }
   return(fig)
 }

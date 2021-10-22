@@ -24,4 +24,5 @@ Imports:
     ruODK,
     tibble,
     dplyr,
-    utils
+    utils,
+    ggplot2
