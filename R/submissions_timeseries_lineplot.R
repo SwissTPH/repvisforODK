@@ -9,15 +9,16 @@
 #' In order to determine the collection period the function \code{\link{collection_period}} is used.
 #'
 #' @param df Data frame that contains the data which is to be examined.
-#' @param with_goal Logical that determines whether a vertical line representing the number of daily submissions goal is plotted.
+#' @param with_goal Logical that determines whether a vertical line representing the number of daily submissions goal is plotted. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
-#' @param exclude_weekend Logical that determines whether weekends are excluded in the plot.
+#' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
+#' @param cumulated Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
 #'
 #' @return Plotly html-widget
 #' @export
 #'
 #' @examples
-submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submission_goal = 0, exclude_weekend=TRUE) {
+submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
 
   if (with_goal && daily_submission_goal <= 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float which is not null it with_goal is set to TRUE.")
@@ -31,10 +32,12 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
   date_limits <- repvisforODK::collection_period(df)
   all_dates_in_period = seq.Date(date_limits[[1]], date_limits[[2]], 'days')
   df_count = df %>% mutate(submission_date = as.Date(submission_date)) %>% count(submission_date)
+
   df_count_full <- data.frame(all_dates_in_period)
   df_count_full$n <- sapply(df_count_full$all_dates_in_period,
-                            function(x) ifelse(x %in% df_count$submission_date, df_count$n[df_count$submission_date == x], 0),
-                            USE.NAMES = F)
+                              function(x) ifelse(x %in% df_count$submission_date, df_count$n[df_count$submission_date == x], 0),
+                              USE.NAMES = F)
+  if (cumulative) df_count_full <- df_count_full %>% mutate(n = cumsum(n))
 
   if (exclude_weekend) {
     df_count_full$wday <- lubridate::wday(df_count_full$all_dates_in_period, abbr = T)
@@ -95,18 +98,23 @@ submissions_timeseries_lineplot <- function(df, with_goal = FALSE, daily_submiss
       )
 
   if (with_goal) {
+    if (cumulative) {
+      y = c(daily_submission_goal, daily_submission_goal * nrow(df_count_full))
+    } else {
+      y = c(daily_submission_goal, daily_submission_goal)
+    }
+
     fig <- fig %>%
       add_trace(
         x = c(date_limits[[1]], date_limits[[2]]),
-        y = c(daily_submission_goal, daily_submission_goal),
+        y = y,
         name = 'Daily Submission Goal',
         showlegend = TRUE,
-        line = list(color = green,
+        line = list(color = 'green',
                     width = 2,
                     dash = 'dash')
       ) %>%
       layout(showlegend = TRUE)
   }
-
   return(fig)
 }
