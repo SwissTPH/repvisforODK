@@ -9,6 +9,8 @@
 #' @param df Data frame that, specifies the data frame that is to be read.
 #'
 #' @return List
+#'
+#' @import ruODK
 #' @export
 #'
 #' @examples

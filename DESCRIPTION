@@ -25,4 +25,5 @@ Imports:
     tibble,
     dplyr,
     utils,
-    ggplot2
+    ggplot2,
+    scales

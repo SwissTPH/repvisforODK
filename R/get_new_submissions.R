@@ -10,6 +10,8 @@
 #' @param merge_data Boolean that specifies whether the new data shall be merged with the one that was given or not.
 #'
 #' @return Data frame
+#'
+#' @import ruODK tibble
 #' @export
 #'
 #' @examples
@@ -33,7 +35,7 @@ get_new_submissions <- function(id_col, csv=NULL, df=NULL, merge_data=TRUE){
   colnames(new_data_df) = colnames(df_gni)
 
   for (col in unique(enframed_df$clean_name)){
-    if (col %ni% colnames(df_gni)){
+    if (!col %in% colnames(df_gni)){
       stop(paste0('The column -',
                   col,
                   '- must exist in the data. Please consider renaming using -names(my_data)[names(my_data) == xy] <- xy-'))

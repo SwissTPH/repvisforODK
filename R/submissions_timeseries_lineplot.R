@@ -16,6 +16,8 @@
 #' @param cumulative Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
 #'
 #' @return Plotly html-widget
+#'
+#' @import dplyr plotly lubridate
 #' @export
 #'
 #' @examples

@@ -10,7 +10,9 @@
 #' @param verbose Optional, logical
 #'
 #' @return None
+#'
 #' @export
+#' @import ruODK
 #'
 #' @examples
 setup_ruODK <- function(svc, un=Sys.getenv('ODKC_UN'), pw=Sys.getenv('ODKC_PW'), tz=Sys.getenv('ODKC_TZ'), verbose=TRUE){

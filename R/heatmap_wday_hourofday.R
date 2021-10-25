@@ -7,6 +7,8 @@
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #'
 #' @return Plotly html-widget
+#'
+#' @import ggplot2 dplyr lubridate plotly
 #' @export
 #'
 #' @examples

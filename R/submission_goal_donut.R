@@ -9,6 +9,8 @@
 #' @param daily_submission_goal Integer or float that reflects the targeted number of daily submissions.
 #'
 #' @return Plotly html-widget
+#'
+#' @import plotly
 #' @export
 #'
 #' @examples

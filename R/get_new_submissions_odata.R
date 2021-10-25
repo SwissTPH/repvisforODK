@@ -16,6 +16,8 @@
 #'
 #'
 #' @return Data frame
+#'
+#' @import ruODK glue plyr lubridate readr
 #' @export
 #'
 #' @examples

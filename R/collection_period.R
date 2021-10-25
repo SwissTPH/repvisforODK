@@ -7,6 +7,7 @@
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #'
 #' @return list
+#'
 #' @export
 #'
 #' @examples
