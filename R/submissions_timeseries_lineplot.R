@@ -10,7 +10,6 @@
 #'
 #' @param df Data frame that contains the data which is to be examined.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
-#' @param with_goal Logical that determines whether a vertical line representing the number of daily submissions goal is plotted. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
 #' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
 #' @param cumulative Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
@@ -21,12 +20,10 @@
 #' @export
 #'
 #' @examples
-submissions_timeseries_lineplot <- function(df, date_col, with_goal = FALSE, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
+submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
 
-  if (with_goal && daily_submission_goal <= 0) {
-    stop("The argument daily_submission_goal has to be defined as a positive integer or float which is not null it with_goal is set to TRUE.")
-  } else if (with_goal == F && daily_submission_goal > 0) {
-    stop('The argument with_goal is set to FALSE but there is a postive integer or float defined for daily_submission_goal.')
+  if (daily_submission_goal < 0) {
+    stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
 
   names(df)[names(df) == date_col] <- 'date'
@@ -99,7 +96,7 @@ submissions_timeseries_lineplot <- function(df, date_col, with_goal = FALSE, dai
            plot_bgcolor='#e5ecf6', margin = 0.1
       )
 
-  if (with_goal) {
+  if (daily_submission_goal > 0) {
     if (cumulative) {
       y = c(daily_submission_goal, daily_submission_goal * nrow(df_count_full))
     } else {

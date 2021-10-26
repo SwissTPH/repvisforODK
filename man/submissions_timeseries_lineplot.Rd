@@ -7,7 +7,6 @@
 submissions_timeseries_lineplot(
   df,
   date_col,
-  with_goal = FALSE,
   daily_submission_goal = 0,
   exclude_weekend = TRUE,
   cumulative = TRUE
@@ -17,8 +16,6 @@ submissions_timeseries_lineplot(
 \item{df}{Data frame that contains the data which is to be examined.}
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
-
-\item{with_goal}{Logical that determines whether a vertical line representing the number of daily submissions goal is plotted. Optional, defaults to FALSE.}
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal.}
 
