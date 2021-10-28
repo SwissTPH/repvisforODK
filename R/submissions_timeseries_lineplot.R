@@ -26,9 +26,9 @@ submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal 
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
 
+  date_limits = repvisforODK::collection_period(df, date_col)
   names(df)[names(df) == date_col] <- 'date'
 
-  date_limits <- repvisforODK::collection_period(df)
   all_dates_in_period = seq.Date(date_limits[[1]], date_limits[[2]], 'days')
   df_count = df %>% dplyr::mutate(date = as.Date(date)) %>% dplyr::count(date)
 

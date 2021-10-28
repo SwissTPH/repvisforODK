@@ -1,0 +1,65 @@
+---
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    number_section: TRUE
+    df_print: kable
+params:
+  csv: NULL
+  daily_submission_goal: NULL
+  date_col: NULL
+  exclude_weekend: NULL
+  title: NULL
+  author: NULL
+title: "`r params$set_title`"
+author: "Lucas Silbernagel"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+library(repvisforODK)
+library(readr)
+library(knitr)
+```
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+# general
+df = readr::read_csv(params$csv)
+date_col = params$date_col
+daily_submission_goal = as.numeric(params$daily_submission_goal)
+
+# only for submissions_timeseries_lineplot
+exclude_weekend = as.logical(params$exclude_weekend)
+```
+
+# Number of Submissions: Received vs. Missing to Target
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
+fig
+```
+
+# Received Submissions Over Time: Cumulative
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
+fig
+```
+
+# Received Submissions Over Time: Non-Cumulative
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
+fig
+```
+
+# Submission Activitiy by Weekday and Day of the Week 
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
+fig
+```
+
+# Submission Activity by Day 
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
+fig
+```
+

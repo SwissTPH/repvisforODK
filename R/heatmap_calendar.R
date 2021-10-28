@@ -31,7 +31,7 @@ heatmap_calendar <- function(df, date_col, daily_submission_goal = 0){
   df2$n[(df2$ndate >= sdate) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
 
   df2 <- df2 %>%
-    dplyr::mutate(weekday = lubridate::wday(ndate, label = FALSE, abbr = FALSE, week_start = 7),
+    dplyr::mutate(weekday = lubridate::wday(ndate, label = TRUE, abbr = TRUE, week_start = 7, locale = 'English'),
                   month = lubridate::month(ndate, label = TRUE),
                   date = lubridate::yday(ndate),
                   week = lubridate::epiweek(ndate))
@@ -42,10 +42,10 @@ heatmap_calendar <- function(df, date_col, daily_submission_goal = 0){
     dplyr::rename('Number of Submissions' = n)
 
   ggp <- df2 %>%
-    ggplot(aes(weekday,-week, fill = `Number of Submissions`)) +
-    geom_tile(colour = "white")  +
-    ylab(ifelse(daily_submission_goal > 0, '* = Daily Submission Goal reached', '')) +
-    theme(legend.position = "top",
+    ggplot2::ggplot(aes(weekday,-week, fill = `Number of Submissions`)) +
+    ggplot2::geom_tile(colour = "white")  +
+    ggplot2::ylab(ifelse(daily_submission_goal > 0, '* = Daily Submission Goal reached', '')) +
+    ggplot2::theme(
           legend.key.width = unit(3, "cm"),
           axis.title.x = element_blank(),
           axis.title.y = element_text(size = 8, face = 'italic'),
@@ -57,21 +57,24 @@ heatmap_calendar <- function(df, date_col, daily_submission_goal = 0){
           strip.background = element_blank(),
           strip.text = element_text(face = "bold", size = 15),
           panel.border = element_rect(colour = "grey", fill=NA, size=1),
+          panel.spacing = unit(3, 'lines'),
           plot.title = element_text(hjust = 0.5, size = 21, face = "bold",
                                     margin = margin(0,0,0.5,0, unit = "cm"))) +
-    scale_fill_gradientn(colours = c("red", "yellow", "green"),
+    ggplot2::scale_fill_gradientn(colours = c("#FF3232", "#FFF44A", "#22FF00"),
                          name = "Number of submissions",
-                         guide = guide_colorbar(title.position = "top",
-                                                direction = "horizontal")) +
-    facet_wrap(~month, nrow = 4, ncol = 3, scales = "free")
+                         guide = 'colourbar') +
+    ggplot2::facet_wrap(~month, nrow = 4, ncol = 3, scales = "free")
 
   if (daily_submission_goal > 0) {
-    ggp <- ggp + geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black")
+    ggp <- ggp + ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black")
   } else {
-    ggp <- ggp + geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black")
+    ggp <- ggp + ggplot2::geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black")
   }
 
   ggp <- plotly::ggplotly(ggp, tooltip = c('fill'))
+
+  ggp <- ggp %>%
+    layout(legend = list(orientation = 'h'))
 
   return(ggp)
 }

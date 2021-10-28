@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-submission_goal_donut <- function(df, daily_submission_goal){
-  date_limits = repvisforODK::collection_period(df)
+submission_goal_donut <- function(df, daily_submission_goal, date_col){
+  date_limits = repvisforODK::collection_period(df, date_col)
   date_diff = date_limits[[2]] - date_limits[[1]]
 
   submission_goal_total = as.numeric(date_diff)*daily_submission_goal
@@ -26,25 +26,25 @@ submission_goal_donut <- function(df, daily_submission_goal){
 
   if (submission_goal_deviation>0){
     fig <- plotly::plot_ly(type='pie',
-                           labels=c('Submisions received', 'Submissions missing'),
+                           labels=c('Received', 'Missing'),
                            values=c(submissions_total, submission_goal_deviation),
                            textinfo='label+percent',
                            marker=list(colors=c('green', 'red')),
                            hole=0.4)
 
-    fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Target (', date_list[[2]], ')'),
+    fig <- fig %>% plotly::layout(title = paste0('Total Number of Submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
                                   xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     return(fig)
   } else{
     fig <- plotly::plot_ly(type='pie',
-                           labels=c('Submisions received'),
+                           labels=c('Received'),
                            values=c(submissions_total),
                            textinfo='label+percent',
                            marker=list(colors=c('green', 'red')),
                            hole=0.4)
 
-    fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Target (', date_list[[2]], ')'),
+    fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
                                   xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                   annotations=list(x=0.8, y=0.92,
