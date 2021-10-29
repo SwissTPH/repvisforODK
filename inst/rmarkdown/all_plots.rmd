@@ -13,7 +13,7 @@ params:
   title: NULL
   author: NULL
 title: "`r params$title`"
-author: "Lucas Silbernagel"
+author: "`r params$author`"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 ---
 
