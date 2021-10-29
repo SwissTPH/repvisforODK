@@ -29,7 +29,7 @@ submission_goal_donut <- function(df, daily_submission_goal, date_col){
                            labels=c('Received', 'Missing'),
                            values=c(submissions_total, submission_goal_deviation),
                            textinfo='label+percent',
-                           marker=list(colors=c('green', 'red')),
+                           marker=list(colors=c("#22FF00", "#FF3232")),
                            hole=0.4)
 
     fig <- fig %>% plotly::layout(title = paste0('Total Number of Submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
@@ -41,7 +41,7 @@ submission_goal_donut <- function(df, daily_submission_goal, date_col){
                            labels=c('Received'),
                            values=c(submissions_total),
                            textinfo='label+percent',
-                           marker=list(colors=c('green', 'red')),
+                           marker=list(colors=c("#22FF00", "#FF3232")),
                            hole=0.4)
 
     fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),

@@ -1,0 +1,7 @@
+name: All plots
+description: >
+   This markdown template contians all plots of the repvisforODK package.
+   It can either be rendered directly by calling the repvisforODK::render_all_plots() function with 
+   function with appropriate arguments or downloaded as an .rmd file using 
+   rmarkdown::draft('all_plots.rmd', template = 'all_plots', package = 'repvisforODK').
+create_dir: FALSE

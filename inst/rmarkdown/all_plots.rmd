@@ -12,7 +12,7 @@ params:
   exclude_weekend: NULL
   title: NULL
   author: NULL
-title: "`r params$set_title`"
+title: "`r params$title`"
 author: "Lucas Silbernagel"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 ---
