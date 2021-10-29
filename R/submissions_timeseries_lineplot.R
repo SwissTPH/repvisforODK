@@ -5,7 +5,7 @@
 #' Optionally, a vertical line can be added that represents the daily number of submissions goal.
 #' Further, weekends can be excluded since often there is no data collection happening and would therefore make the plot less concise and comprehensive.
 #' Below the plot, there is a range slider which can be used to define the range of time that the plot shows. Depending on the overall time span of the
-#' data, there are several buttons (1w = 1 week, 1m = 1 month, 6m = ..., 1y = ..., or all) that can be used to predefine a time window that is applied to the range slider.
+#' data, there are several buttons (1w = 1 week, 1m = 1 month, 6m = ..., 1y = ..., or all) that can be used to pre-define a time window that is applied to the range slider.
 #' In order to determine the collection period the function \code{\link{collection_period}} is used.
 #'
 #' @param df Data frame that contains the data which is to be examined.

@@ -4,12 +4,14 @@
 \alias{submission_goal_donut}
 \title{Generates a pie plot (donut) that visualizes the relation between actually received and targeted number of submissions.}
 \usage{
-submission_goal_donut(df, daily_submission_goal)
+submission_goal_donut(df, daily_submission_goal, date_col)
 }
 \arguments{
 \item{df}{Data frame that contains the data which is to be examined.}
 
 \item{daily_submission_goal}{Integer or float that reflects the targeted number of daily submissions.}
+
+\item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 }
 \value{
 Plotly html-widget

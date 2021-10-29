@@ -7,6 +7,7 @@
 #'
 #' @param df Data frame that contains the data which is to be examined.
 #' @param daily_submission_goal Integer or float that reflects the targeted number of daily submissions.
+#' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #'
 #' @return Plotly html-widget
 #'
@@ -15,6 +16,15 @@
 #'
 #' @examples
 submission_goal_donut <- function(df, daily_submission_goal, date_col){
+
+  if (daily_submission_goal < 0) {
+    stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
+  }
+
+  if (daily_submission_goal == 0) {
+    warning("The argument daily_submission_goal is set to 0.")
+  }
+
   date_limits = repvisforODK::collection_period(df, date_col)
   date_diff = date_limits[[2]] - date_limits[[1]]
 
@@ -47,15 +57,15 @@ submission_goal_donut <- function(df, daily_submission_goal, date_col){
     fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
                                   xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-                                  annotations=list(x=0.8, y=0.92,
+                                  annotations=list(x=0.66, y=0.5,
                                                    xanchor='right',
                                                    showarrow=F,
                                                    font=list(color='orange'),
-                                                   text=paste0('The target is currently exceeded by ',
-                                                               abs(submission_goal_deviation),
+                                                   text=paste0('Target exceeded by: <br>',
+                                                               round(abs(submission_goal_deviation), 0),
                                                                ' submissions (',
                                                                round(abs(submission_goal_deviation)/submission_goal_total*100, 1),
-                                                               ' %).')))
+                                                               ' %)')))
     return(fig)
   }
 }

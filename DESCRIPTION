@@ -26,4 +26,5 @@ Imports:
     dplyr,
     utils,
     ggplot2,
-    scales
+    scales,
+    rmarkdown

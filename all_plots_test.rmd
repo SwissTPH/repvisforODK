@@ -1,0 +1,67 @@
+---
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    number_section: TRUE
+title: "INSERT TITLE"
+author: "INSERT YOUR NAME"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+library(repvisforODK)
+library(readr)
+library(knitr)
+```
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+# READ ME!
+# Please specify the parameters below as well as the indicated paramteres in the YAML header above
+
+# The csv path to your ODK data as string
+df = readr::read_csv("INSERT_CSV_PATH")
+
+# The column name of the date variable you want to examine as string
+date_col = "INSERT_DATE_COLUMN"
+
+# The targeted number of submissions perd day as integer or float
+daily_submission_goal = INSERT_DAILY_SUBMISSION_GOAL
+
+# only for submissions_timeseries_lineplot
+# Whether or not weekends shall be excluded as logical
+exclude_weekend = INSERT_BOOLEAN
+
+# If all the above parameters are specified, you should be able to go ahead and knit the table
+```
+
+# Number of Submissions: Received vs. Missing to Target
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
+fig
+```
+
+# Received Submissions Over Time: Cumulative
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
+fig
+```
+
+# Received Submissions Over Time: Non-Cumulative
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
+fig
+```
+
+# Submission Activitiy by Weekday and Day of the Week 
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
+fig
+```
+
+# Submission Activity by Day 
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
+fig
+```
+ 
