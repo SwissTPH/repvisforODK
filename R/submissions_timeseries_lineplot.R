@@ -54,7 +54,8 @@ submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal 
     plotly::layout(
            title = 'Number of Submissions per Day Over Time',
            showlegend = TRUE,
-           xaxis = list(rangeslider = list(visible = T),
+           xaxis = list(title = 'Date',
+                        rangeslider = list(visible = T),
                         rangeselector=list(
                           buttons=
                             if (nrow(df_count) < 63) {
