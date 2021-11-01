@@ -4,12 +4,16 @@
 \alias{collection_period}
 \title{Get the earliest and latest of your data}
 \usage{
-collection_period(df, date_col)
+collection_period(date_col, df = NULL, csv = NULL, svc = FALSE)
 }
 \arguments{
-\item{df}{Data frame containing the ODK data that is to be used.}
-
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
+
+\item{df}{Data frame containing the ODK data that is to be used. Optional, defaults to NULL.}
+
+\item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
+
+\item{svc}{Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.}
 }
 \value{
 list
@@ -17,4 +21,5 @@ list
 \description{
 The function finds the earliest and the latest submission dates in a data frame. It accounts for different spellings of the submission date column
 by applying a case-insensitive RegEx formula that matches every combination of the words 'submission' and 'date'.
+Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 }

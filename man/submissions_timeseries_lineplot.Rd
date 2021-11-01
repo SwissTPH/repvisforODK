@@ -5,7 +5,9 @@
 \title{Generating a line plot that shows the number of submissions over time}
 \usage{
 submissions_timeseries_lineplot(
-  df,
+  df = NULL,
+  csv = NULL,
+  svc = FALSE,
   date_col,
   daily_submission_goal = 0,
   exclude_weekend = TRUE,
@@ -13,7 +15,11 @@ submissions_timeseries_lineplot(
 )
 }
 \arguments{
-\item{df}{Data frame that contains the data which is to be examined.}
+\item{df}{Data frame containing the ODK data that is to be used. Optional, defaults to NULL.}
+
+\item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
+
+\item{svc}{Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.}
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 
@@ -34,4 +40,5 @@ Further, weekends can be excluded since often there is no data collection happen
 Below the plot, there is a range slider which can be used to define the range of time that the plot shows. Depending on the overall time span of the
 data, there are several buttons (1w = 1 week, 1m = 1 month, 6m = ..., 1y = ..., or all) that can be used to pre-define a time window that is applied to the range slider.
 In order to determine the collection period the function \code{\link{collection_period}} is used.
+Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 }

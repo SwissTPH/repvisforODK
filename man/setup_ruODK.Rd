@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{setup_ruODK}
 \alias{setup_ruODK}
-\title{Sets up ruODK}
+\title{Connects to an ODK form.}
 \usage{
 setup_ruODK(
   svc,
@@ -27,6 +27,6 @@ setup_ruODK(
 None
 }
 \description{
-Establishes connection with ODK Cnetral servers by passing log in credentials, timezone and svc to the
+Establishes connection with ODK Central servers by passing log in credentials, timezone and svc to the
 \code{\link[ruODK]{ru_setup}} function. By default it tries to retrieve this information from local system variables.
 }

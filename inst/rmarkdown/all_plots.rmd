@@ -29,7 +29,7 @@ df = readr::read_csv(params$csv)
 date_col = params$date_col
 daily_submission_goal = as.numeric(params$daily_submission_goal)
 
-# only for submissions_timeseries_lineplot
+# only for submissions_time series_lineplot
 exclude_weekend = as.logical(params$exclude_weekend)
 ```
 

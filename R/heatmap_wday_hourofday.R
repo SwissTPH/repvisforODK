@@ -1,9 +1,11 @@
 #' Generates a heat map of the number of submissions per weekday and hour.
 #'
 #' Takes any timestamp column in the data and aggregates by weekday and hour of the day. The generated plot then shows for each combination
-#' the frequency.
+#' the frequency. Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 #'
-#' @param df Data frame that contains the data which is to be examined.
+#' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
+#' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #'
 #' @return Plotly html-widget
@@ -12,7 +14,9 @@
 #' @export
 #'
 #' @examples
-heatmap_wday_hourofday <- function(df, date_col) {
+heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col) {
+
+  df <- repvisforODK::check_data_args(df, csv, svc)
 
   names(df)[names(df) == date_col] <- 'tstamp'
 

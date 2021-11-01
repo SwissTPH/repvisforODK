@@ -7,8 +7,11 @@
 #' Below the plot, there is a range slider which can be used to define the range of time that the plot shows. Depending on the overall time span of the
 #' data, there are several buttons (1w = 1 week, 1m = 1 month, 6m = ..., 1y = ..., or all) that can be used to pre-define a time window that is applied to the range slider.
 #' In order to determine the collection period the function \code{\link{collection_period}} is used.
+#' Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 #'
-#' @param df Data frame that contains the data which is to be examined.
+#' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
+#' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
 #' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
@@ -20,13 +23,15 @@
 #' @export
 #'
 #' @examples
-submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
+submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
+
+  df <- repvisforODK::check_data_args(df, csv, svc)
 
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
 
-  date_limits = repvisforODK::collection_period(df, date_col)
+  date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
   names(df)[names(df) == date_col] <- 'date'
 
   all_dates_in_period = seq.Date(date_limits[[1]], date_limits[[2]], 'days')
@@ -44,7 +49,7 @@ submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal 
     df_count_full <- df_count_full[!df_count_full$wday %in% c(1, 7), ]
   }
 
-  fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', width = 900) %>%
+  fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', line = list(color = '#FF3232'), width = 900) %>%
     plotly::add_trace(
       x = ~all_dates_in_period,
       y = ~n,
@@ -110,7 +115,7 @@ submissions_timeseries_lineplot <- function(df, date_col, daily_submission_goal 
         y = y,
         name = 'Daily Submission Goal',
         showlegend = TRUE,
-        line = list(color = 'green',
+        line = list(color = '#22FF00',
                     width = 2,
                     dash = 'dash')
       ) %>%

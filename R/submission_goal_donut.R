@@ -4,8 +4,11 @@
 #' The target is calculated by multiplying the number-of-submissions goal per day times the number of days the data collection has been ongoing.
 #' The number of days are determined using the function \code{\link{collection_period}}
 #' If the targeted number of submissions has been exceeded the plot is all green and additionally provides the info by how many submissions the target number was exceeded.
+#' Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 #'
-#' @param df Data frame that contains the data which is to be examined.
+#' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
+#' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that reflects the targeted number of daily submissions.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #'
@@ -15,7 +18,9 @@
 #' @export
 #'
 #' @examples
-submission_goal_donut <- function(df, daily_submission_goal, date_col){
+submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col){
+
+  df <- repvisforODK::check_data_args(df, csv, svc)
 
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
@@ -25,7 +30,7 @@ submission_goal_donut <- function(df, daily_submission_goal, date_col){
     warning("The argument daily_submission_goal is set to 0.")
   }
 
-  date_limits = repvisforODK::collection_period(df, date_col)
+  date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
   date_diff = date_limits[[2]] - date_limits[[1]]
 
   submission_goal_total = as.numeric(date_diff)*daily_submission_goal

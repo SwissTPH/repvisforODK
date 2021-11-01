@@ -1,10 +1,13 @@
 #' Generate a calendar heat map that shows the number of submissions for each day of the data collection period.
 #'
 #' The heat map can be created using any date or time stamp feature.
+#' Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 #'
-#' @param df Data frame that contains the data which is to be examined.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
+#' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
+#' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #'
 #' @return This function returns a ggplot object which contains a calendar heat map.
 #'
@@ -13,11 +16,13 @@
 #'
 #' @examples
 
-heatmap_calendar <- function(df, date_col, daily_submission_goal = 0){
+heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv = NULL, svc = FALSE){
 
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
+
+  df <- repvisforODK::check_data_args(df, csv, svc)
 
   names(df)[names(df) == date_col] <- 'ndate'
 
@@ -63,7 +68,7 @@ heatmap_calendar <- function(df, date_col, daily_submission_goal = 0){
     ggplot2::scale_fill_gradientn(colours = c("#FF3232", "#FFF44A", "#22FF00"),
                          name = "Number of submissions",
                          guide = 'colourbar') +
-    ggplot2::facet_wrap(~month, nrow = 4, ncol = 3, scales = "free")
+    ggplot2::facet_wrap(~month, nrow = 6, ncol = 2, scales = "free")
 
   if (daily_submission_goal > 0) {
     ggp <- ggp + ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black")

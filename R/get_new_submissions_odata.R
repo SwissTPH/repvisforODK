@@ -24,7 +24,9 @@
 #'
 get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=NULL, merge_data=TRUE, force_timezone=TRUE){
 
-  if (ruODK::ru_settings()[[2]]=='') stop('Please run the function ODKlyse::setup_ruODK() with your credentials and svc of the from you want to look at.')
+  if (ruODK::ru_settings()[[2]]=='') {
+    stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine.')
+  }
 
   if (is.null(csv) & is.null(df)){
     stop('Please pass either a csv path or a data frame as an argument.')
@@ -32,9 +34,7 @@ get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=
     df_gnio = readr::read_csv(csv)
   } else df_gnio = df
 
-  critical_date = paste0(gsub(' ',
-                              'T',
-                              as.character(max(df_gnio[[submission_date_col]]+1))),
+  critical_date = paste0(gsub(' ', 'T', as.character(max(df_gnio[[submission_date_col]]+1))),
                          'Z')
 
   new_data_df = ruODK::odata_submission_get(filter = paste0('__system/submissionDate gt ',

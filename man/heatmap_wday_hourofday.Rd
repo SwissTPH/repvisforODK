@@ -4,10 +4,14 @@
 \alias{heatmap_wday_hourofday}
 \title{Generates a heat map of the number of submissions per weekday and hour.}
 \usage{
-heatmap_wday_hourofday(df, date_col)
+heatmap_wday_hourofday(df = NULL, csv = NULL, svc = FALSE, date_col)
 }
 \arguments{
-\item{df}{Data frame that contains the data which is to be examined.}
+\item{df}{Data frame containing the ODK data that is to be used. Optional, defaults to NULL.}
+
+\item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
+
+\item{svc}{Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.}
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 }
@@ -16,5 +20,5 @@ Plotly html-widget
 }
 \description{
 Takes any timestamp column in the data and aggregates by weekday and hour of the day. The generated plot then shows for each combination
-the frequency.
+the frequency. Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 }
