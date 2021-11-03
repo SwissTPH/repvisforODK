@@ -31,23 +31,9 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
   if (svc) {
 
     # deriving questions and choices from form schema
-    repvisforODK::info_msg('Identifying single choice questions through extended form schema directly from ODK Central.')
-
-    df_schema <- ruODK::form_schema_ext()
-    df_schema <- df_schema %>%
-      dplyr::filter(!grepl("generated_", name), type != 'structure')
-
-    if (!is.null(lang_suffix)) {
-      names(df_schema)[names(df_schema) == paste0('choices_', lang_suffix[1], '_(', lang_suffix[2], ')')] <- 'choices_fin'
-      names(df_schema)[names(df_schema) == paste0('label_', lang_suffix[1], '_(', lang_suffix[2], ')')] <- 'labels_fin'
-    } else {
-      names(df_schema)[names(df_schema) == 'choices'] <- 'choices_fin'
-      names(df_schema)[names(df_schema) == 'label'] <- 'labels_fin'
-    }
-
-    # filtering for only questions that have choices and are not NA or NULL
-    qvec_pre <- df_schema$ruodk_name[df_schema$choices_fin != 'NULL' & df_schema$choices_fin != 'NA']
-    qvec_pre <- qvec_pre[!is.na(qvec_pre)]
+    choice_questions <- repvisforODK::identify_choice_questions(lang_suffix)
+    df_schema <- choice_questions[[1]]
+    qvec_pre <- choice_questions[[2]]
 
   } else if (is.null(qvec) & !svc) {
     stop('Please specify the qvec argument or run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine.')
