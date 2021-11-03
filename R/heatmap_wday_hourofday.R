@@ -40,7 +40,7 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
 
   ggp <- ggplot2::ggplot(df_wday_hour, aes(x = wday, y = hour, fill = count_wday_hour)) +
     ggplot2::geom_tile(colour="white") +
-    ggplot2::scale_fill_gradientn(colours = c("#FF3232", "#FFF44A", "#22FF00"),
+    ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('tricolor'),
                          name = "Number of submissions",
                          guide = 'colourbar') +
     ggplot2::scale_y_reverse(breaks=c(23:0), labels=c(23:0), expand = c(0,0)) +

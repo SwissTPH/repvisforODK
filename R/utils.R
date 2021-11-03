@@ -60,3 +60,72 @@ check_data_args <- function(df = NULL, csv = NULL, svc = FALSE) {
     return(ruODK::odata_submission_get(download = FALSE))
   }
 }
+
+#------------------------------------------------------------------------------------------------------------------------
+
+#' Outputs message in CLI with an info symbol in magenta color.
+#'
+#' @param msg String that is used as the message content.
+#'
+#' @return NULL
+#'
+#' @export
+#' @import clisymbols crayon
+#'
+#' @examples
+info_msg <- function(msg) {
+  arrow <- clisymbols::symbol$info
+  return(message(crayon::magenta(paste(arrow, msg))))
+}
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+#' Outputs a string containing one or vector containing multiple color codes.
+#'
+#' The function is supposed to help in keeping a concise color schema.
+#'
+#' @param val Character that specifies which color code is shall be returned.
+#'
+#' @return Character character vector
+#'
+#' @export
+#'
+#' @examples
+set_color <- function(val) {
+  if (val == 'green') {
+    return('#1A9850')
+  } else if (val == 'red') {
+    return('#D73027')
+  } else if (val == 'yellow') {
+    return("#FDAE61")
+  } else if (val == 'contrast_scale') {
+    return(c("#D73027", "#A6D96A", "#A50026", "#FEE08B", "#66BD63", "#F46D43", "#FFFFBF", "#1A9850", "#FDAE61", "#D9EF8B", "#006837"))
+  } else if (val == 'continous_scale') {
+    return(c("#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#D9EF8B", "#A6D96A", "#66BD63", "#1A9850", "#006837"))
+  } else if (val == 'tricolor') {
+    return(c('#D73027', "#FDAE61", '#1A9850'))
+  }
+}
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+#' Splits a string after certain amount of characters, finds the last white space and inserts an html line break (<br>).
+#'
+#' @param string Character that contains the text which is to be split.
+#' @param n Specifies the number of characters before which the last word is looked for.
+#'
+#' @return Character
+#'
+#' @export
+#'
+#' @examples
+fit_title <- function(string, n) {
+
+  sub <- substr(string, 1, n)
+  final_string1 <- strsplit(sub, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
+  final_string2 <- substr(string, nchar(final_string1) + 1, nchar(string))
+
+  final_string_concat <- paste0('\n', final_string1, ' <br>', final_string2)
+
+  return(final_string_concat)
+}

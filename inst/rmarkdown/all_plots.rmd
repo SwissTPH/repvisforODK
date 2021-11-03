@@ -8,6 +8,7 @@ output:
 params:
   csv: NULL
   daily_submission_goal: NULL
+  svc: NULL
   date_col: NULL
   exclude_weekend: NULL
   title: NULL
@@ -21,13 +22,15 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 library(repvisforODK)
 library(readr)
 library(knitr)
+library(htmltools)
 ```
 
 ```{r, include = FALSE, message=FALSE, warning=FALSE}
 # general
-df = readr::read_csv(params$csv)
-date_col = params$date_col
-daily_submission_goal = as.numeric(params$daily_submission_goal)
+df <- readr::read_csv(params$csv)
+date_col <- params$date_col
+daily_submission_goal <- as.numeric(params$daily_submission_goal)
+svc <- params$svc
 
 # only for submissions_time series_lineplot
 exclude_weekend = as.logical(params$exclude_weekend)
@@ -63,3 +66,8 @@ fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_sub
 fig
 ```
 
+# Distribution of Answers for Single-Choice Questions
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+plots <- repvisforODK::single_choice_question_pie(lang_suffix = c('english', 'en'))
+htmltools::tagList(plots)
+```

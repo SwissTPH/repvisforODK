@@ -44,7 +44,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                            labels=c('Received', 'Missing'),
                            values=c(submissions_total, submission_goal_deviation),
                            textinfo='label+percent',
-                           marker=list(colors=c("#22FF00", "#FF3232")),
+                           marker=list(colors=c(repvisforODK::set_color('green'), repvisforODK::set_color('red'))),
                            hole=0.4)
 
     fig <- fig %>% plotly::layout(title = paste0('Total Number of Submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
@@ -56,7 +56,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                            labels=c('Received'),
                            values=c(submissions_total),
                            textinfo='label+percent',
-                           marker=list(colors=c("#22FF00", "#FF3232")),
+                           marker=list(colors=c(repvisforODK::set_color('green'), repvisforODK::set_color('red'))),
                            hole=0.4)
 
     fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
@@ -65,7 +65,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                                   annotations=list(x=0.66, y=0.5,
                                                    xanchor='right',
                                                    showarrow=F,
-                                                   font=list(color='orange'),
+                                                   font=list(color = repvisforODK::set_color('yellow')),
                                                    text=paste0('Target exceeded by: <br>',
                                                                round(abs(submission_goal_deviation), 0),
                                                                ' submissions (',

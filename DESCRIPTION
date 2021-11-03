@@ -27,4 +27,6 @@ Imports:
     utils,
     ggplot2,
     scales,
-    rmarkdown
+    rmarkdown,
+    crayon,
+    clisymbols

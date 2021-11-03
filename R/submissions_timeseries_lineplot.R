@@ -49,7 +49,7 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
     df_count_full <- df_count_full[!df_count_full$wday %in% c(1, 7), ]
   }
 
-  fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', line = list(color = '#FF3232'), width = 900) %>%
+  fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', line = list(color = repvisforODK::set_color('red')), width = 900) %>%
     plotly::add_trace(
       x = ~all_dates_in_period,
       y = ~n,
@@ -115,7 +115,7 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
         y = y,
         name = 'Daily Submission Goal',
         showlegend = TRUE,
-        line = list(color = '#22FF00',
+        line = list(color = repvisforODK::set_color('green'),
                     width = 2,
                     dash = 'dash')
       ) %>%

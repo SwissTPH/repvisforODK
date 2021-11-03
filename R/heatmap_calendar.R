@@ -65,7 +65,7 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
           panel.spacing = unit(3, 'lines'),
           plot.title = element_text(hjust = 0.5, size = 21, face = "bold",
                                     margin = margin(0,0,0.5,0, unit = "cm"))) +
-    ggplot2::scale_fill_gradientn(colours = c("#FF3232", "#FFF44A", "#22FF00"),
+    ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('tricolor'),
                          name = "Number of submissions",
                          guide = 'colourbar') +
     ggplot2::facet_wrap(~month, nrow = 6, ncol = 2, scales = "free")
