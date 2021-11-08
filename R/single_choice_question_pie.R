@@ -50,8 +50,8 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
 
     # ensuring that only single choice questions are plotted
     if (class(df_count) == "data.frame") {
-      if (!TRUE %in% grepl(' ', df_count$x)) {
-        if (svc) {
+      if (svc) {
+        if (!TRUE %in% grepl(' ', df_count$x)) {
 
           # mapping choice labels to their respective names
           df_count$label <- lapply(df_count$x,
@@ -68,22 +68,22 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
                                         y = 1,
                                         x = 0)
                            )
-        } else {
-
-          title = df_schema$labels_fin[df_schema$ruodk_name == q]
-
-          fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
-                                 marker = list(colors = repvisforODK::set_color('contrast_scale')),
-                                 hovertemplate = "%{label} <br>%{value}<extra></extra>")
-          fig <- fig %>%
-            plotly::layout(title = list(text = ifelse(nchar(title) < 40, title, ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
-                                        font = list(size = 10),
-                                        y = 1,
-                                        x = 0)
-                           )
         }
-        figs[[q]] <- plotly::plotly_build(fig)
+      } else {
+
+        title = q
+
+        fig <- plotly::plot_ly(data = df_count, labels = ~x, values = ~freq, type = 'pie', direction = 'clockwise',
+                               marker = list(colors = repvisforODK::set_color('contrast_scale')),
+                               hovertemplate = "%{label} <br>%{value}<extra></extra>")
+        fig <- fig %>%
+          plotly::layout(title = list(text = ifelse(nchar(title) < 40, title, ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
+                                      font = list(size = 10),
+                                      y = 1,
+                                      x = 0)
+          )
       }
+      figs[[q]] <- plotly::plotly_build(fig)
     }
   }
   return(figs)

@@ -125,7 +125,7 @@ fit_title <- function(string, n) {
   final_string1 <- strsplit(sub, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
   final_string2 <- substr(string, nchar(final_string1) + 1, nchar(string))
 
-  final_string_concat <- paste0('\n', final_string1, ' <br>', final_string2)
+  final_string_concat <- paste0('\n <b>', final_string1, ' <br>', final_string2, '</b>')
 
   return(final_string_concat)
 }
