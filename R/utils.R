@@ -99,7 +99,7 @@ set_color <- function(val) {
   } else if (val == 'yellow') {
     return("#FDAE61")
   } else if (val == 'contrast_scale') {
-    return(c("#D73027", "#A6D96A", "#A50026", "#FEE08B", "#66BD63", "#F46D43", "#FFFFBF", "#1A9850", "#FDAE61", "#D9EF8B", "#006837"))
+    return(c("#D73027", "#A6D96A", "#A50026", "#FEE08B", "#66BD63", "#F46D43", "#1A9850", "#FDAE61", "#D9EF8B", "#006837"))
   } else if (val == 'continous_scale') {
     return(c("#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#D9EF8B", "#A6D96A", "#66BD63", "#1A9850", "#006837"))
   } else if (val == 'tricolor') {

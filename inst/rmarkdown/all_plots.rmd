@@ -11,6 +11,7 @@ params:
   svc: NULL
   date_col: NULL
   exclude_weekend: NULL
+  delimiter: NULL
   title: NULL
   author: NULL
 title: "`r params$title`"
@@ -34,6 +35,9 @@ svc <- params$svc
 
 # only for submissions_time series_lineplot
 exclude_weekend = as.logical(params$exclude_weekend)
+
+# only for multiple_choice_question_bar
+delimiter = params$delimiter
 ```
 
 # Number of Submissions: Received vs. Missing to Target
@@ -70,4 +74,10 @@ fig
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
 plots <- repvisforODK::single_choice_question_pie(lang_suffix = c('english', 'en'))
 htmltools::tagList(plots)
+```
+
+# Distribution of Answers for Mutiple-Choice Questions
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+plots <- repvisforODK::multiple_choice_question_bar(lang_suffix = c('english', 'en'))
+htmltools::tagList(plots) 
 ```

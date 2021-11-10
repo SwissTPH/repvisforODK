@@ -12,7 +12,8 @@ render_all_plots(
   author = Sys.info()["effective_user"][[1]],
   daily_submission_goal = 0,
   svc = TRUE,
-  exclude_weekend = TRUE
+  exclude_weekend = TRUE,
+  delimiter = " "
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ render_all_plots(
 \item{svc}{Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.}
 
 \item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
+
+\item{delimiter}{Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.}
 }
 \value{
 

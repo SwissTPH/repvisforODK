@@ -12,12 +12,13 @@
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal. Optional, defaults to 0.
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
+#' @param delimiter Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-render_all_plots <- function(output_file, title, csv, date_col, author = Sys.info()['effective_user'][[1]], daily_submission_goal = 0, svc = TRUE, exclude_weekend = TRUE) {
+render_all_plots <- function(output_file, title, csv, date_col, author = Sys.info()['effective_user'][[1]], daily_submission_goal = 0, svc = TRUE, exclude_weekend = TRUE, delimiter = ' ') {
 
   file_path = system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
 
@@ -29,7 +30,8 @@ render_all_plots <- function(output_file, title, csv, date_col, author = Sys.inf
                                   date_col = date_col,
                                   daily_submission_goal = as.character(daily_submission_goal),
                                   svc = as.character(svc),
-                                  exclude_weekend = as.character(exclude_weekend)
+                                  exclude_weekend = as.character(exclude_weekend),
+                                  delimiter = delimiter
                     )
   )
 }

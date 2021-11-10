@@ -77,11 +77,14 @@ multiple_choice_question_bar <- function(svc = TRUE, df = NULL, csv = NULL, qvec
 
       fig <- fig %>%
         layout(yaxis = list(tickformat = '.0%',
-                            title = '% of Surveyees who selected choice out of all Surveyees who Answered Question',
+                            title = '% of Surveyees who Selected Choice*',
+                            titlefont = list(size = 12),
                             range = c(0, 1)),
                xaxis = list(categoryorder = "total descending",
-                            title = 'Choices'),
-               title = list(text = paste0(ifelse(nchar(title) < 80, title, repvisforODK::fit_title(title, 80)), '<br><br><i>', num_peop_q, ' out of ', nrow(df), ' have answered this question.</i>'),
+                            title = '*percentage only refers to surveyees who answered the question.',
+                            titlefont = list(size = 10)),
+               title = list(text = paste0(ifelse(nchar(title) < 120, paste0('<b>', title, '</b>'),
+                                                 repvisforODK::fit_title(title, 80)), '<br><br><i>', num_peop_q, ' out of ', nrow(df), ' have answered this question.</i>'),
                             font = list(size = 12),
                             x = 0.8),
                plot_bgcolor = 'FCE0E0'
