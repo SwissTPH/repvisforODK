@@ -9,11 +9,14 @@ render_all_plots(
   title,
   csv,
   date_col,
+  lang_wc,
+  text_col,
   author = Sys.info()["effective_user"][[1]],
   daily_submission_goal = 0,
   svc = TRUE,
   exclude_weekend = TRUE,
-  delimiter = " "
+  delimiter = " ",
+  lang = "english"
 )
 }
 \arguments{
@@ -25,6 +28,10 @@ render_all_plots(
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 
+\item{lang_wc}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
+
+\item{text_col}{Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.}
+
 \item{author}{String that defines the name that is put as the author in the YAML header of the markdown file. Optional, defaults to the system user name.}
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal. Optional, defaults to 0.}
@@ -34,6 +41,8 @@ render_all_plots(
 \item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
 
 \item{delimiter}{Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.}
+
+\item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 }
 \value{
 

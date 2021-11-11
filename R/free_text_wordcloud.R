@@ -9,6 +9,7 @@
 #' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
+#' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #'
 #' @return List
@@ -16,24 +17,28 @@
 #' @export
 #'
 #' @examples
-free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lang = 'english') {
+free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english') {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
-  wc_list = lapply(text_col, preprocess_wc_generation, df_pr = df)
+  wc_list = lapply(text_col, preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang)
 
   return(wc_list)
 }
 
-#' Takes a data frame column, generates a corpus, preprocesses it and generates a wordcloud.
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#' Takes a data frame column, generates a corpus, preprocesses it and generates a word cloud.
 #'
 #' This function is used within \code{\link{free_text_wordcloud}}. It uses the tm package to create
 #' a corpus, apply preprocessing and create a Term Document Matrix. Then wordcloud2 is used to create
-#' the wordcloud.
+#' the word cloud.
 #'
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
-#' @param df_pr Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
-#' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param df_c Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
+#' @param lang_wc_c Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param lang_c Character containing the name of the language that is to be examined.
+#' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
 #'
 #' @return wordcloud2 html-widget
 #'
@@ -41,10 +46,10 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' @import tm wordcloud2
 #'
 #' @examples
-preprocess_wc_generation <- function(text_col, df_pr = df, lang = 'english') {
+preprocess_wc_generation <- function(text_col, df_c = df, lang_wc_c, lang_c = 'english', svc_c = svc) {
 
   # isolating text in vector
-  text = df_pr[[text_col]]
+  text = df_c[[text_col]]
   text = text[!is.na(text)]
 
   # creating corpus
@@ -56,7 +61,7 @@ preprocess_wc_generation <- function(text_col, df_pr = df, lang = 'english') {
     tm::tm_map(removePunctuation) %>%
     tm::tm_map(stripWhitespace)
   corpus <- tm::tm_map(corpus, content_transformer(tolower))
-  corpus <- tm::tm_map(corpus, removeWords, stopwords(lang))
+  corpus <- tm::tm_map(corpus, removeWords, stopwords(lang_wc_c))
 
   # creating TD matrix
   dtm <- tm::TermDocumentMatrix(corpus)
@@ -64,7 +69,23 @@ preprocess_wc_generation <- function(text_col, df_pr = df, lang = 'english') {
   words <- sort(rowSums(dtm_matrix),decreasing = TRUE)
   df_wc <- data.frame(word = names(words),freq = words)
 
+  # defining title
+  if (svc_c) {
+
+    df_schema <- ruODK::form_schema_ext()
+    df_schema = repvisforODK::rename_schema(df_schema, lang_c)
+
+    title = df_schema$labels_fin[df_schema$ruodk_name == text_col]
+  } else title = text_col
+
+  # html title tag
+  title_tag <- htmltools::tags$h3(style = 'text-align: center; font-family: Segoe UI; font-style: italic', title)
+
+  # generating word cloud
   wc = wordcloud2::wordcloud2(df_wc, size=1.6, color=repvisforODK::set_color('contrast_scale'))
+
+  # adding title to the html widget
+  wc = htmlwidgets::prependContent(wc, title_tag)
 
   return(wc)
 }

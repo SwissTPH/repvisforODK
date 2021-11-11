@@ -13,12 +13,26 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
 #' @param delimiter Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.
+#' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-render_all_plots <- function(output_file, title, csv, date_col, author = Sys.info()['effective_user'][[1]], daily_submission_goal = 0, svc = TRUE, exclude_weekend = TRUE, delimiter = ' ') {
+render_all_plots <- function(output_file,
+                             title,
+                             csv,
+                             date_col,
+                             lang_wc,
+                             text_col,
+                             author = Sys.info()['effective_user'][[1]],
+                             daily_submission_goal = 0, svc = TRUE,
+                             exclude_weekend = TRUE,
+                             delimiter = ' ',
+                             lang = 'english'
+                             ) {
 
   file_path = system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
 
@@ -31,7 +45,10 @@ render_all_plots <- function(output_file, title, csv, date_col, author = Sys.inf
                                   daily_submission_goal = as.character(daily_submission_goal),
                                   svc = as.character(svc),
                                   exclude_weekend = as.character(exclude_weekend),
-                                  delimiter = delimiter
+                                  delimiter = delimiter,
+                                  lang = lang,
+                                  lang_wc = lang_wc,
+                                  text_col = text_col
                     )
   )
 }

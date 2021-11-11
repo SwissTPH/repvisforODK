@@ -4,15 +4,15 @@
 \alias{identify_choice_questions}
 \title{Identifies all questions in a form that have choices.}
 \usage{
-identify_choice_questions(lang_suffix = NULL)
+identify_choice_questions(lang = NULL)
 }
 \arguments{
-\item{lang_suffix}{Character vector containing the name and the country abbreviation of the language that is to be examined. E.g.: c('english', 'en').}
+\item{lang}{Character containing the name of the language that is to be examined.}
 }
 \value{
 List
 }
 \description{
-The function also accounts for different languages when the lang_suffix argument is specified.
+The function also accounts for different languages when the lang argument is specified.
 In both cases the relevant question label and choice column is named the same to facilitate code progression.
 }

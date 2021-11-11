@@ -9,6 +9,7 @@ free_text_wordcloud(
   df = NULL,
   csv = NULL,
   text_col,
+  lang_wc,
   lang = "english"
 )
 }
@@ -20,6 +21,8 @@ free_text_wordcloud(
 \item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
 
 \item{text_col}{Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.}
+
+\item{lang_wc}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 
 \item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 }

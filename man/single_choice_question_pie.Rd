@@ -9,7 +9,7 @@ single_choice_question_pie(
   df = NULL,
   csv = NULL,
   qvec = NULL,
-  lang_suffix = NULL
+  lang = NULL
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ single_choice_question_pie(
 
 \item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined.}
 
-\item{lang_suffix}{Character vector containing the name and the country abbreviation of the language that is to be examined. E.g.: c('english', 'en').}
+\item{lang}{Character containing the name of the language that is to be examined.}
 }
 \value{
 List
@@ -33,7 +33,7 @@ questions which allow multiple choices but only have received single choices are
 which is provided by the ODK Central API and accessed using ruODK's \code{\link[ruODK]{form_schema_ext}} does not provide this info.
 After identifying the questions, the functions also maps the question and choices labels according to their names so that the final plot
 contains a meaningful title and legend. By default, the function assumes that there is no language differentiation implemented in the form.
-If so, the argument lang_suffix has to be specified accordingly (see parameter description).
+If so, the argument lang has to be specified accordingly (see parameter description).
 If svc is set to FALSE and the data is passed locally, the argument qvec has to be specified with the column names of single-choice questions
 one wants to examine. Please note that for this case the column name will be displayed as the title while the row values will be displayed as
 the choice labels.

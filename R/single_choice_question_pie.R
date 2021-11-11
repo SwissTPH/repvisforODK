@@ -6,7 +6,7 @@
 #' which is provided by the ODK Central API and accessed using ruODK's \code{\link[ruODK]{form_schema_ext}} does not provide this info.
 #' After identifying the questions, the functions also maps the question and choices labels according to their names so that the final plot
 #' contains a meaningful title and legend. By default, the function assumes that there is no language differentiation implemented in the form.
-#' If so, the argument lang_suffix has to be specified accordingly (see parameter description).
+#' If so, the argument lang has to be specified accordingly (see parameter description).
 #' If svc is set to FALSE and the data is passed locally, the argument qvec has to be specified with the column names of single-choice questions
 #' one wants to examine. Please note that for this case the column name will be displayed as the title while the row values will be displayed as
 #' the choice labels.
@@ -16,7 +16,7 @@
 #' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
 #' @param qvec Character vector containing the column names of the single-choice questions that is to be examined.
-#' @param lang_suffix Character vector containing the name and the country abbreviation of the language that is to be examined. E.g.: c('english', 'en').
+#' @param lang Character containing the name of the language that is to be examined.
 #'
 #' @return List
 #'
@@ -24,14 +24,14 @@
 #' @import ruODK plyr plotly
 #'
 #' @examples
-single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec = NULL, lang_suffix = NULL) {
+single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec = NULL, lang = NULL) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
   if (svc) {
 
     # deriving questions and choices from form schema
-    choice_questions <- repvisforODK::identify_choice_questions(lang_suffix)
+    choice_questions <- repvisforODK::identify_choice_questions(lang)
     df_schema <- choice_questions[[1]]
     qvec_pre <- choice_questions[[2]]
 
@@ -58,31 +58,24 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
                                    function(x) df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$labels[match(x, df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$values)])
 
           title = df_schema$labels_fin[df_schema$ruodk_name == q]
+          } else next
 
-          fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
-                                 marker = list(colors = repvisforODK::set_color('contrast_scale')),
-                                 hovertemplate = "%{label} <br>%{value}<extra></extra>")
-          fig <- fig %>%
-            plotly::layout(title = list(text = ifelse(nchar(title) < 40, title, ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
-                                        font = list(size = 10),
-                                        y = 1,
-                                        x = 0)
-                           )
-        }
       } else {
-
         title = q
-
-        fig <- plotly::plot_ly(data = df_count, labels = ~x, values = ~freq, type = 'pie', direction = 'clockwise',
-                               marker = list(colors = repvisforODK::set_color('contrast_scale')),
-                               hovertemplate = "%{label} <br>%{value}<extra></extra>")
-        fig <- fig %>%
-          plotly::layout(title = list(text = ifelse(nchar(title) < 40, title, ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
-                                      font = list(size = 10),
-                                      y = 1,
-                                      x = 0)
-          )
+        df_count$label <- df_count$x
       }
+
+      fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
+                             marker = list(colors = repvisforODK::set_color('contrast_scale')),
+                             hovertemplate = "%{label} <br>%{value}<extra></extra>")
+      fig <- fig %>%
+        plotly::layout(title = list(text = ifelse(nchar(title) < 40, paste0('<b>', title, '</b>'),
+                                                  ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
+                                    font = list(size = 10),
+                                    y = 1,
+                                    x = 0)
+                       )
+
       figs[[q]] <- plotly::plotly_build(fig)
     }
   }

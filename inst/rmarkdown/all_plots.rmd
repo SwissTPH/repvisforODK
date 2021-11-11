@@ -12,6 +12,9 @@ params:
   date_col: NULL
   exclude_weekend: NULL
   delimiter: NULL
+  text_col: NULL
+  lang: NULL
+  lang_wc: NULL
   title: NULL
   author: NULL
 title: "`r params$title`"
@@ -33,11 +36,18 @@ date_col <- params$date_col
 daily_submission_goal <- as.numeric(params$daily_submission_goal)
 svc <- params$svc
 
+# for question-specific plots
+lang <- params$lang
+
 # only for submissions_time series_lineplot
-exclude_weekend = as.logical(params$exclude_weekend)
+exclude_weekend <- as.logical(params$exclude_weekend)
 
 # only for multiple_choice_question_bar
-delimiter = params$delimiter
+delimiter <- params$delimiter
+
+# only for word cloud
+text_col <- params$text_col
+lang_wc <- params$lang_wc
 ```
 
 # Number of Submissions: Received vs. Missing to Target
@@ -72,12 +82,18 @@ fig
 
 # Distribution of Answers for Single-Choice Questions
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-plots <- repvisforODK::single_choice_question_pie(lang_suffix = c('english', 'en'))
+plots <- repvisforODK::single_choice_question_pie(lang = lang)
 htmltools::tagList(plots)
 ```
 
 # Distribution of Answers for Mutiple-Choice Questions
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-plots <- repvisforODK::multiple_choice_question_bar(lang_suffix = c('english', 'en'))
+plots <- repvisforODK::multiple_choice_question_bar(lang = lang)
 htmltools::tagList(plots) 
+```
+
+# Wordcloud for Free Text Question
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+wordclouds <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc)
+htmltools::tagList(wordclouds) 
 ```

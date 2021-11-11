@@ -2,16 +2,26 @@
 % Please edit documentation in R/free_text_wordcloud.R
 \name{preprocess_wc_generation}
 \alias{preprocess_wc_generation}
-\title{Takes a data frame column, generates a corpus, preprocesses it and generates a wordcloud.}
+\title{Takes a data frame column, generates a corpus, preprocesses it and generates a word cloud.}
 \usage{
-preprocess_wc_generation(text_col, df_pr = df, lang = "english")
+preprocess_wc_generation(
+  text_col,
+  df_c = df,
+  lang_wc_c,
+  lang_c = "english",
+  svc_c = svc
+)
 }
 \arguments{
 \item{text_col}{Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.}
 
-\item{df_pr}{Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.}
+\item{df_c}{Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.}
 
-\item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
+\item{lang_wc_c}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
+
+\item{lang_c}{Character containing the name of the language that is to be examined.}
+
+\item{svc_c}{Logical that specifies whether the data is coming directly from ODK or not.}
 }
 \value{
 wordcloud2 html-widget
@@ -19,5 +29,5 @@ wordcloud2 html-widget
 \description{
 This function is used within \code{\link{free_text_wordcloud}}. It uses the tm package to create
 a corpus, apply preprocessing and create a Term Document Matrix. Then wordcloud2 is used to create
-the wordcloud.
+the word cloud.
 }
