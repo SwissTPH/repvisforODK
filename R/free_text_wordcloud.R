@@ -11,17 +11,20 @@
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
 #' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param return_table Logical that defines whether not only the wordcloud but also its corresponding table is returned.
 #'
 #' @return List
 #'
 #' @export
+#' @import tm wordcloud2
 #'
 #' @examples
-free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english') {
+free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english', return_table = FALSE) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
-  wc_list = lapply(text_col, preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang)
+  wc_list = lapply(text_col,
+                   preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, return_table_c = return_table)
 
   return(wc_list)
 }
@@ -35,18 +38,19 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' the word cloud.
 #'
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
-#' @param df_c Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
 #' @param lang_wc_c Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
+#' @param df_c Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
 #' @param lang_c Character containing the name of the language that is to be examined.
 #' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
+#' @param return_table_c Logical that defines whether not only the wordcloud but also its corresponding table is returned.
 #'
 #' @return wordcloud2 html-widget
 #'
 #' @export
-#' @import tm wordcloud2
+#' @import tm wordcloud2 DT
 #'
 #' @examples
-preprocess_wc_generation <- function(text_col, df_c = df, lang_wc_c, lang_c = 'english', svc_c = svc) {
+preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc, return_table_c = return_table) {
 
   # isolating text in vector
   text = df_c[[text_col]]
@@ -78,14 +82,22 @@ preprocess_wc_generation <- function(text_col, df_c = df, lang_wc_c, lang_c = 'e
     title = df_schema$labels_fin[df_schema$ruodk_name == text_col]
   } else title = text_col
 
-  # html title tag
-  title_tag <- htmltools::tags$h3(style = 'text-align: center; font-family: Segoe UI; font-style: italic', title)
-
   # generating word cloud
-  wc = wordcloud2::wordcloud2(df_wc, size=1.6, color=repvisforODK::set_color('contrast_scale'))
+  wc = wordcloud2::wordcloud2(df_wc,
+                              size=1.6,
+                              color=repvisforODK::set_color('contrast_scale')
+                              )
 
   # adding title to the html widget
-  wc = htmlwidgets::prependContent(wc, title_tag)
+  wc <- repvisforODK::add_html_title_tag(wc, title)
 
-  return(wc)
+  if (return_table_c) {
+
+    rownames(df_wc) <- 1:nrow(df_wc)
+    return(DT::datatable(df_wc))
+
+  } else return(wc)
 }
+
+
+

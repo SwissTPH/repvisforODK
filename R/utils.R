@@ -109,28 +109,6 @@ set_color <- function(val) {
 
 #-------------------------------------------------------------------------------------------------------------------------
 
-#' Splits a string after certain amount of characters, finds the last white space and inserts an html line break (<br>).
-#'
-#' @param string Character that contains the text which is to be split.
-#' @param n Specifies the number of characters before which the last word is looked for.
-#'
-#' @return Character
-#'
-#' @export
-#'
-#' @examples
-fit_title <- function(string, n) {
-
-  sub <- substr(string, 1, n)
-  final_string1 <- strsplit(sub, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
-  final_string2 <- substr(string, nchar(final_string1) + 1, nchar(string))
-
-  final_string_concat <- paste0('\n <b>', final_string1, ' <br>', final_string2, '</b>')
-
-  return(final_string_concat)
-}
-
-#------------------------------------------------------------------------------------------------------------------------
 
 #' Changes the name of the labels and choices column in an ODk form schema.
 #'
@@ -159,3 +137,28 @@ rename_schema <- function(df, lang = NULL) {
 
   return(df)
 }
+
+#------------------------------------------------------------------------------------------------------------------------
+
+#' Prepends an h3 HTML tag to an HTML widget to serve as a header
+#'
+#' @param html_widget HTML widget you want to prepend the HTML tag on
+#' @param text Character that specifies the text of the title
+#'
+#' @return HTML widget
+#'
+#' @export
+#' @import htmltools htmlwidgets
+#'
+#' @examples
+add_html_title_tag <- function(html_widget, text) {
+
+  # html title tag
+  title_tag <- htmltools::tags$h3(style = 'text-align: left; font-family: Arial; font-style: italic', text)
+
+  # adding title to the html widget
+  html_widget_final = htmlwidgets::prependContent(html_widget, title_tag)
+
+  return(html_widget_final)
+}
+

@@ -4,7 +4,6 @@ output:
     toc: TRUE
     toc_float: TRUE
     number_section: TRUE
-    df_print: kable
 params:
   csv: NULL
   daily_submission_goal: NULL
@@ -15,6 +14,7 @@ params:
   text_col: NULL
   lang: NULL
   lang_wc: NULL
+  return_table: NULL
   title: NULL
   author: NULL
 title: "`r params$title`"
@@ -48,6 +48,7 @@ delimiter <- params$delimiter
 # only for word cloud
 text_col <- params$text_col
 lang_wc <- params$lang_wc
+return_table <- params$return_table
 ```
 
 # Number of Submissions: Received vs. Missing to Target
@@ -94,6 +95,13 @@ htmltools::tagList(plots)
 
 # Wordcloud for Free Text Question
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-wordclouds <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc)
-htmltools::tagList(wordclouds) 
+wordclouds <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc, return_table = return_table)
+htmltools::tagList(lapply(wordclouds, print)) 
+```
+
+# Frequency Table for Free Text Question
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+tables <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc, return_table = TRUE)
+tables[[1]]
+tables[[2]]
 ```

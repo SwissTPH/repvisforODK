@@ -29,4 +29,8 @@ Imports:
     scales,
     rmarkdown,
     crayon,
-    clisymbols
+    clisymbols,
+    htmlwidgets,
+    htmltools,
+    tm,
+    wordcloud2

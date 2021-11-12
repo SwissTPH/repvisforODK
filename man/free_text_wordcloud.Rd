@@ -10,7 +10,8 @@ free_text_wordcloud(
   csv = NULL,
   text_col,
   lang_wc,
-  lang = "english"
+  lang = "english",
+  return_table = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ free_text_wordcloud(
 \item{lang_wc}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 
 \item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
+
+\item{return_table}{Logical that defines whether not only the wordcloud but also its corresponding table is returned.}
 }
 \value{
 List

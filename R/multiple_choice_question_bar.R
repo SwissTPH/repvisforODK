@@ -43,11 +43,17 @@ multiple_choice_question_bar <- function(svc = TRUE, df = NULL, csv = NULL, qvec
 
   figs <- list()
 
+  # counter for color alternation between each plot
+  counter <- 0
+
   for (q in qvec_pre) {
 
     # ensuring that only single choice questions are plotted
     if (TRUE %in% grepl(delimiter, df[[q]])) {
+      counter <- counter + 1
+
       if (svc) {
+
         # mapping choice labels to their respective names and saving the result as a char vector in a new df col
         ansr <- lapply(df[[q]], function(x) strsplit(x, ' ', fixed = TRUE)[[1]])
         df$label <- I(lapply(ansr,
@@ -72,7 +78,11 @@ multiple_choice_question_bar <- function(svc = TRUE, df = NULL, csv = NULL, qvec
                      type = 'bar',
                      text = ~Freq,
                      textposition = 'outside',
-                     color = I('#A50026'),
+                     color = I(ifelse(counter %% 2 == 0,
+                                    repvisforODK::set_color('red'),
+                                    repvisforODK::set_color('green')
+                                    )
+                               ),
                      hovertemplate = "%{label} <br>%{y}<extra></extra>")
 
       fig <- fig %>%
@@ -83,12 +93,14 @@ multiple_choice_question_bar <- function(svc = TRUE, df = NULL, csv = NULL, qvec
                xaxis = list(categoryorder = "total descending",
                             title = '*percentage only refers to surveyees who answered the question.',
                             titlefont = list(size = 10)),
-               title = list(text = paste0(ifelse(nchar(title) < 120, paste0('<b>', title, '</b>'),
-                                                 repvisforODK::fit_title(title, 80)), '<br><br><i>', num_peop_q, ' out of ', nrow(df), ' have answered this question.</i>'),
+               title = list(text = paste0(num_peop_q, ' out of ', nrow(df), ' have answered this question.'),
                             font = list(size = 12),
                             x = 0.8),
-               plot_bgcolor = 'FCE0E0'
+               plot_bgcolor = '#e5ecf6'
         )
+
+      # adding title to the html widget
+      fig <- repvisforODK::add_html_title_tag(fig, title)
 
       figs[[q]] <- plotly::plotly_build(fig)
 

@@ -45,13 +45,17 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
                          guide = 'colourbar') +
     ggplot2::scale_y_reverse(breaks=c(23:0), labels=c(23:0), expand = c(0,0)) +
     ggplot2::scale_x_discrete(expand = c(0,0)) +
-    ggplot2::labs(title = "Number of Submissions by Day of Week / Hour of Day", y = "Hour of Day") +
+    ggplot2::labs(y = "Hour of Day") +
     theme_heatmap
 
   ggp <- plotly::ggplotly(ggp, tooltip = c('fill'))
 
   ggp <- ggp %>%
     plotly::layout(xaxis = list(side = 'top'))
+
+  # adding title to the html widget
+  title = "Number of Submissions by Day of Week / Hour of Day"
+  ggp <- repvisforODK::add_html_title_tag(ggp, title)
 
   return(ggp)
 }

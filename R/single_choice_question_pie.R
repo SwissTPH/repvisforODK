@@ -57,24 +57,29 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
           df_count$label <- lapply(df_count$x,
                                    function(x) df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$labels[match(x, df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$values)])
 
-          title = df_schema$labels_fin[df_schema$ruodk_name == q]
+          title <- df_schema$labels_fin[df_schema$ruodk_name == q]
           } else next
 
       } else {
-        title = q
+        title <- q
         df_count$label <- df_count$x
       }
+
+      # calculating number of people who answered the question
+      num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
       fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
                              marker = list(colors = repvisforODK::set_color('contrast_scale')),
                              hovertemplate = "%{label} <br>%{value}<extra></extra>")
       fig <- fig %>%
-        plotly::layout(title = list(text = ifelse(nchar(title) < 40, paste0('<b>', title, '</b>'),
-                                                  ifelse(nchar(title) < 80, repvisforODK::fit_title(title, 40), repvisforODK::fit_title(repvisforODK::fit_title(title, 40), 85))),
-                                    font = list(size = 10),
+        plotly::layout(title = list(text = paste0('<br>' ,num_peop_q, ' out of ', nrow(df), ' have \nanswered this question.'),
+                                    font = list(size = 12),
                                     y = 1,
                                     x = 0)
                        )
+
+      # adding title to the html widget
+      fig <- repvisforODK::add_html_title_tag(fig, title)
 
       figs[[q]] <- plotly::plotly_build(fig)
     }

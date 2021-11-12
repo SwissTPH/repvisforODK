@@ -19,8 +19,8 @@
 #'
 #' @return Plotly html-widget
 #'
-#' @import dplyr plotly lubridate
 #' @export
+#' @import dplyr plotly lubridate
 #'
 #' @examples
 submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
@@ -57,12 +57,11 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
       showlegend = TRUE
       ) %>%
     plotly::layout(
-           title = 'Number of Submissions per Day Over Time',
            showlegend = TRUE,
            xaxis = list(title = 'Date',
                         rangeslider = list(visible = T),
-                        rangeselector=list(
-                          buttons=
+                        rangeselector = list(
+                          buttons =
                             if (nrow(df_count) < 63) {
                               list(
                                 list(count=1, label="1w", step="week", stepmode="backward"),
@@ -99,7 +98,8 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
                         zerolinewidth = 2,
                         gridcolor = 'ffff',
                         title = 'Number of Submissions'),
-           plot_bgcolor='#e5ecf6', margin = 0.1
+           plot_bgcolor = '#e5ecf6',
+           margin = 0.1
       )
 
   if (daily_submission_goal > 0) {
@@ -121,5 +121,10 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
       ) %>%
       plotly::layout(showlegend = TRUE)
   }
+
+  # adding title to the html widget
+  title = 'Number of Submissions per Day Over Time'
+  fig <- repvisforODK::add_html_title_tag(fig, title)
+
   return(fig)
 }

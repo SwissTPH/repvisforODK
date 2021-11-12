@@ -39,7 +39,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
 
 
 
-  if (submission_goal_deviation>0){
+  if (submission_goal_deviation > 0){
     fig <- plotly::plot_ly(type='pie',
                            labels=c('Received', 'Missing'),
                            values=c(submissions_total, submission_goal_deviation),
@@ -47,10 +47,8 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                            marker=list(colors=c(repvisforODK::set_color('green'), repvisforODK::set_color('red'))),
                            hole=0.4)
 
-    fig <- fig %>% plotly::layout(title = paste0('Total Number of Submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
-                                  xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
+    fig <- fig %>% plotly::layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-    return(fig)
   } else{
     fig <- plotly::plot_ly(type='pie',
                            labels=c('Received'),
@@ -59,8 +57,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                            marker=list(colors=c(repvisforODK::set_color('green'), repvisforODK::set_color('red'))),
                            hole=0.4)
 
-    fig <- fig %>% plotly::layout(title = paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')'),
-                                  xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
+    fig <- fig %>% plotly::layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                   annotations=list(x=0.66, y=0.5,
                                                    xanchor='right',
@@ -71,6 +68,11 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
                                                                ' submissions (',
                                                                round(abs(submission_goal_deviation)/submission_goal_total*100, 1),
                                                                ' %)')))
-    return(fig)
   }
+
+  # adding title to the html widget
+  title <-  paste0('Total number of submissions: Received vs. Missing to Target (', date_limits[[2]], ')')
+  fig <- repvisforODK::add_html_title_tag(fig, title)
+
+  return(fig)
 }

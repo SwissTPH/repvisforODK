@@ -6,22 +6,25 @@
 \usage{
 preprocess_wc_generation(
   text_col,
-  df_c = df,
   lang_wc_c,
+  df_c = df,
   lang_c = "english",
-  svc_c = svc
+  svc_c = svc,
+  return_table_c = return_table
 )
 }
 \arguments{
 \item{text_col}{Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.}
 
-\item{df_c}{Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.}
-
 \item{lang_wc_c}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
+
+\item{df_c}{Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.}
 
 \item{lang_c}{Character containing the name of the language that is to be examined.}
 
 \item{svc_c}{Logical that specifies whether the data is coming directly from ODK or not.}
+
+\item{return_table_c}{Logical that defines whether not only the wordcloud but also its corresponding table is returned.}
 }
 \value{
 wordcloud2 html-widget

@@ -81,5 +81,9 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
   ggp <- ggp %>%
     layout(legend = list(orientation = 'h'))
 
+  # adding title to the html widget
+  title = "Number of Submissions by Calendar Day"
+  ggp <- repvisforODK::add_html_title_tag(ggp, title)
+
   return(ggp)
 }
