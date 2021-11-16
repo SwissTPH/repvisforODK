@@ -5,18 +5,18 @@ output:
     toc_float: TRUE
     number_section: TRUE
 params:
-  csv: NULL
-  daily_submission_goal: NULL
-  svc: NULL
-  date_col: NULL
-  exclude_weekend: NULL
-  delimiter: NULL
-  text_col: NULL
-  lang: NULL
-  lang_wc: NULL
-  return_table: NULL
-  title: NULL
-  author: NULL
+  csv: NA
+  daily_submission_goal: NA
+  svc: NA
+  date_col: NA
+  exclude_weekend: NA
+  delimiter: NA
+  text_col: NA
+  lang: NA
+  lang_wc: NA
+  return_table: NA
+  title: NA
+  author: NA
 title: "`r params$title`"
 author: "`r params$author`"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -103,5 +103,4 @@ htmltools::tagList(lapply(wordclouds, print))
 ```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
 tables <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc, return_table = TRUE)
 tables[[1]]
-tables[[2]]
 ```
