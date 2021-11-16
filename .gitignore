@@ -37,4 +37,4 @@ rsconnect/
 .Rproj.user
 
 # Explorative testing files
-explore/**
+explore/*
