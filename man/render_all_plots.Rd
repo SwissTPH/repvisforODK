@@ -17,7 +17,7 @@ render_all_plots(
   exclude_weekend = TRUE,
   delimiter = " ",
   lang = "english",
-  return_table = TRUE
+  return_table = FALSE
 )
 }
 \arguments{

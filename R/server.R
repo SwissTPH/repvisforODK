@@ -1,10 +1,21 @@
+#' Server code for the shiny app that users can use to do generate reports.
+#'
+#' @param input
+#' @param output
+#'
+#' @return
+#'
+#' @export
+#' @import ruODK shiny rmarkdown
+#'
+#' @examples
 server <- function(input, output) {
 
-  df <- eventReactive(input$load_render_button, {
+  df <- shiny::eventReactive(input$load_render_button, {
 
     if (input$data_source == 'csv') {
 
-      req(input$csv_file)
+      shiny::req(input$csv_file)
 
       df <- read.csv(input$csv_file$datapath,
                      header = input$header,
@@ -13,10 +24,10 @@ server <- function(input, output) {
 
     } else if (input$data_source == 'svc') {
 
-      req(input$svc_text)
-      req(input$un)
-      req(input$pw)
-      req(input$tz)
+      shiny::req(input$svc_text)
+      shiny::req(input$un)
+      shiny::req(input$pw)
+      shiny::req(input$tz)
 
       repvisforODK::setup_ruODK(svc = input$svc_text, un = input$un, pw = input$pw, tz = input$tz)
 
@@ -28,24 +39,42 @@ server <- function(input, output) {
 
     if (input$data_source == 'svc') {
 
-      req(input$svc_text)
-      req(input$un)
-      req(input$pw)
-      req(input$tz)
+      shiny::req(input$svc_text)
+      shiny::req(input$un)
+      shiny::req(input$pw)
+      shiny::req(input$tz)
 
       df_schema <- ruODK::form_schema_ext()
     }
   })
 
   output$contents <- renderDataTable({
-    req(df())
+    shiny::req(df())
 
     df()
   })
 
+  shiny::observeEvent(input$next1, {
+    shiny::updateTabsetPanel(inputId = "tab",
+                      selected = '2. Select Visualisations')
+  })
 
+  shiny::observeEvent(input$next2, {
+    shiny::updateTabsetPanel(inputId = "tab",
+                      selected = '3. Set Parameters')
+  })
 
-  output$report <- downloadHandler(
+  shiny::observeEvent(input$prev1, {
+    shiny::updateTabsetPanel(inputId = "tab",
+                      selected = '1. Select Data')
+  })
+
+  shiny::observeEvent(input$prev2, {
+    shiny::updateTabsetPanel(inputId = "tab",
+                      selected = '2. Select Visualisations')
+  })
+
+  output$report <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "report.html",
     content = function(file) {
@@ -68,4 +97,3 @@ server <- function(input, output) {
     }
   )
 }
-)
