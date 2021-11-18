@@ -14,14 +14,15 @@ visualize data retrieved from ODK Central.
 
 ## Installation
 
-You can install the released version of repvisforODK from
-[CRAN](https://CRAN.R-project.org) with:
+At the moment you cannot install repvisforODK from
+[CRAN](https://CRAN.R-project.org) because it has not been published yet.
+When published installing will be possible through:
 
 ``` r
 install.packages("repvisforODK")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+However, the development version from [GitHub](https://github.com/) can be isntalled with:
 
 ``` r
 # install.packages("devtools")
