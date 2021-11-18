@@ -33,4 +33,5 @@ Imports:
     htmlwidgets,
     htmltools,
     tm,
-    wordcloud2
+    wordcloud2,
+    shiny

@@ -3,7 +3,7 @@
 #' The function also accounts for different languages when the lang argument is specified.
 #' In both cases the relevant question label and choice column is named the same to facilitate code progression.
 #'
-#' @param lang Character containing the name of the language that is to be examined.
+#' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
 #'
 #' @return List
 #'

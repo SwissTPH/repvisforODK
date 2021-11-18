@@ -15,8 +15,8 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
-#' @param qvec Character vector containing the column names of the single-choice questions that is to be examined.
-#' @param lang Character containing the name of the language that is to be examined.
+#' @param qvec Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL.
+#' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
 #'
 #' @return List
 #'

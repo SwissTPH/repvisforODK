@@ -74,6 +74,12 @@ server <- function(input, output) {
                       selected = '2. Select Visualisations')
   })
 
+  output$tab_explain <- renderText('Based on the visualisations you selected, more parameters have to be defined.')
+
+  output$lang_explain <- renderText('If the ODk form was designed for multiple languages, please enter the langauge in which you want to translate question labels and choices. If the former does not apply, just leave it blank.')
+
+  output$date_col_explain <- renderText('For the date column, it is important that your spelling is identical to column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).')
+
   output$report <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "report.html",

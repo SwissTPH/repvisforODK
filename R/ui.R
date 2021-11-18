@@ -13,7 +13,7 @@ ui <- function() {
 
                                 # Input: Select data source
                                 shiny::radioButtons(inputId = 'data_source',
-                                             label = 'Select data source:',
+                                             label = 'Data source:',
                                              choices = c('Directly from ODK (ODATA)' = 'svc',
                                                          'CSV file' = 'csv')
                                 ),
@@ -59,22 +59,22 @@ ui <- function() {
 
                                   # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
-                                            label = 'SVC',
+                                            label = 'SVC:',
                                             placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions'),
 
                                   # Input: Enter username
                                   shiny::textInput(inputId = 'un',
-                                            label = 'Username',
+                                            label = 'Username:',
                                             placeholder = 'lucas.silbernagel@swisstph.ch'),
 
                                   # Input: Enter password
                                   shiny::passwordInput(inputId = 'pw',
-                                                label = 'Password',
+                                                label = 'Password:',
                                                 placeholder = 'S3cur3_Password123'),
 
                                   # Input: Enter timezone
                                   shiny::textInput(inputId = 'tz',
-                                            label = 'Timezone',
+                                            label = 'Timezone:',
                                             placeholder = "Europe/Berlin"),
                                 ),
 
@@ -104,26 +104,24 @@ ui <- function() {
                               shiny::sidebarPanel(
 
                                 # Input: Select data source
-                                shiny::selectInput(inputId = 'general_plots',
+                                shiny::checkboxGroupInput(inputId = 'general_plots',
                                             label = 'Select general plots:',
                                             choices = c('Daily Submission Goal Donut' = 'donut',
                                                         'Submissions Over Time Line Chart (Cumulative)' = 'line_chart_cumsum',
                                                         'Submissions Over Time Line Chart (Non-Cumulative)' = 'line_chart_no_cumsum',
                                                         'Day of Week / Time of Day Heat Map' = 'day_heatmap',
-                                                        'Calendar Heat Map' = 'cal_heatmap'),
-                                            multiple = TRUE
+                                                        'Calendar Heat Map' = 'cal_heatmap')
                                 ),
 
                                 # Horizontal line
                                 tags$hr(),
 
-                                shiny::selectInput(inputId = 'question_plots',
+                                shiny::checkboxGroupInput(inputId = 'question_plots',
                                             label = 'Select question-specific plots:',
                                             choices = c('Single Choice Question Pie Chart' = 'single_pie',
                                                         'Multiple Choice Question Bar Chart' = 'multiple_bar',
                                                         'Free Text Question Word Cloud' = 'wordcloud',
-                                                        'Free Text Question Word Frequency Table' = 'freq_table'),
-                                            multiple = TRUE
+                                                        'Free Text Question Word Frequency Table' = 'freq_table')
                                 ),
 
                                 # Horizontal line
@@ -144,12 +142,56 @@ ui <- function() {
                             )),
 
                    shiny::tabPanel('3. Set Parameters',
-                            shiny::downloadButton("report", "Generate report"),
 
-                            # Horizontal line
-                            tags$hr(),
+                                   # Explain tab
+                                   shiny::textOutput('tab_explain'),
 
-                            shiny::actionButton('prev2', 'Previous'))
+                                   shiny::conditionalPanel(
+                                     condition = 'input.general_plots !== null',
+
+                                     shiny::textOutput('date_col_explain'),
+
+                                     # Input: Enter svc link
+                                     shiny::textInput(inputId = 'date_col_param',
+                                                      label = 'Enter date column',
+                                                      placeholder = 'start'),
+
+                                     shiny::checkboxInput(inputId = 'sub_goal_check',
+                                                          label = 'Include submission goal'),
+
+                                     shiny::conditionalPanel(
+                                       condition = 'input.sub_goal_check == true',
+                                       shiny::numericInput(inputId = 'sub_goal',
+                                                           label = 'Enter submission goal:')
+                                     )
+                                   ),
+
+                                   shiny::conditionalPanel(
+                                     condition = 'input.question_plots !== null',
+
+                                     shiny::textOutput('lang_explain'),
+
+                                     # Input: Enter report language link
+                                     shiny::textInput(inputId = 'lang_param',
+                                                      label = 'Enter report language:',
+                                                      placeholder = 'english')
+                                   ),
+
+                                   shiny::conditionalPanel(
+                                     condition = 'input.general_plots.indexOf("donut") > -1',
+
+                                     # Input: Enter svc link
+                                     shiny::textInput(inputId = 'svc_text',
+                                                      label = 'SVC',
+                                                      placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions')
+                                     ),
+
+                                   shiny::downloadButton("report", "Generate report"),
+
+                                   # Horizontal line
+                                   tags$hr(),
+
+                                   shiny::actionButton('prev2', 'Previous'))
 
 
 
