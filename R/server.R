@@ -35,7 +35,7 @@ server <- function(input, output) {
     }
   })
 
-  df_schema <- reactive({
+  df_schema <- shiny::eventReactive(input$load_render_button, {
 
     if (input$data_source == 'svc') {
 
@@ -74,11 +74,15 @@ server <- function(input, output) {
                       selected = '2. Select Visualisations')
   })
 
-  output$tab_explain <- renderText('Based on the visualisations you selected, more parameters have to be defined.')
+  output$data_flag <- reactive(
+    if (nrow(df()) > 0) TRUE else FALSE
+    )
+  outputOptions(output, "data_flag", suspendWhenHidden = FALSE)
 
-  output$lang_explain <- renderText('If the ODk form was designed for multiple languages, please enter the langauge in which you want to translate question labels and choices. If the former does not apply, just leave it blank.')
-
-  output$date_col_explain <- renderText('For the date column, it is important that your spelling is identical to column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).')
+  output$lang_flag <- reactive(
+    if (TRUE %in% grepl("label_\\w*", colnames(df_schema()))) TRUE else FALSE
+  )
+  outputOptions(output, "lang_flag", suspendWhenHidden = FALSE)
 
   output$report <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
