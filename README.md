@@ -9,8 +9,8 @@
 **This package is currently under active development and has no MVP
 yet.**
 
-The goal of repvisforODK is to enable its users to export, manipulate, and
-visualize data retrieved from ODK Central.
+The goal of repvisforODK is to enable its users to quickly visualize data retrieved from ODK Central by offering a variety of plots for different question types.
+Through the included Shiny app, this is even possible for users with little to none coding skills.
 
 ## Installation
 
@@ -30,6 +30,8 @@ devtools::install_github("lucidviews/repvisforODK")
 ```
 
 ## Example
+
+COMING SOON
 
 This is a basic example which shows you how to solve a common problem:
 
