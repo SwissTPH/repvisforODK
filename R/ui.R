@@ -188,7 +188,7 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h4('For the date column, it is important that your spelling is identical to column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                         tags$h4('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
@@ -198,11 +198,9 @@ ui <- function() {
                                          # Horizontal line
                                          tags$hr(),
 
-                                         # TODO: Implement logic for selection of donut
-                                         tags$h4('Please tick the box and enter a number if you want to include a submission goal in the general plots you selected.'),
-
+                                         # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
                                          shiny::checkboxInput(inputId = 'sub_goal_check',
-                                                              label = 'Include submission goal'),
+                                                              label = 'Tick the box if you want to include a submission goal in your general plots'),
 
                                          shiny::conditionalPanel(
                                            condition = 'input.sub_goal_check == true',
@@ -219,12 +217,22 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.question_plots.length > 0 && output.lang_flag == true',
 
-                                         tags$h4('Please enter the langauge in which you want to translate question labels and choices to.'),
+                                         # Input: Enter report language link
+                                         shiny::textInput(inputId = 'lang_param',
+                                                          label = 'Enter the langauge in which you want to translate question labels and choices to:',
+                                                          placeholder = 'e.g.: english'),
+
+                                         # Horizontal line
+                                         tags$hr(),
+                                       ),
+
+                                       shiny::conditionalPanel(
+                                         condition = 'input.question_plots.indexOf("multiple_bar") > -1',
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'lang_param',
-                                                          label = 'Enter report language:',
-                                                          placeholder = 'e.g.: english'),
+                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated:',
+                                                          placeholder = 'e.g.: ,'),
 
                                          # Horizontal line
                                          tags$hr(),
