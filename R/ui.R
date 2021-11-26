@@ -205,7 +205,7 @@ ui <- function() {
                                          shiny::conditionalPanel(
                                            condition = 'input.sub_goal_check == true',
 
-                                           shiny::numericInput(inputId = 'sub_goal',
+                                           shiny::numericInput(inputId = 'sub_goal_param',
                                                                label = 'Enter submission goal:',
                                                                value = 0)
                                          ),
@@ -230,8 +230,28 @@ ui <- function() {
                                          condition = 'input.question_plots.indexOf("multiple_bar") > -1',
 
                                          # Input: Enter report language link
-                                         shiny::textInput(inputId = 'lang_param',
+                                         shiny::textInput(inputId = 'delimiter_param',
                                                           label = 'Please specify the delimiter with which the multiple choice question answers are separated:',
+                                                          placeholder = 'e.g.: ,'),
+
+                                         # Horizontal line
+                                         tags$hr(),
+                                       ),
+
+                                       shiny::conditionalPanel(
+                                         condition = 'input.question_plots.indexOf("wordcloud") > -1',
+
+                                         # Input: Enter report language link
+                                         shiny::textInput(inputId = 'text_col_param',
+                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for:',
+                                                          placeholder = 'e.g.: ,'),
+
+                                         # Horizontal line
+                                         tags$hr(),
+
+                                         # Input: Enter report language link
+                                         shiny::textInput(inputId = 'text_col_param',
+                                                          label = 'Please specify the language of the answers to the(se) question(s):',
                                                           placeholder = 'e.g.: ,'),
 
                                          # Horizontal line

@@ -42,7 +42,6 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' @param df_c Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
 #' @param lang_c Character containing the name of the language that is to be examined.
 #' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
-#' @param return_table_c Logical that defines whether not only the wordcloud but also its corresponding table is returned.
 #'
 #' @return wordcloud2 html-widget
 #'
@@ -50,7 +49,7 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' @import tm wordcloud2 DT
 #'
 #' @examples
-preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc, return_table_c = return_table) {
+preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc) {
 
   # isolating text in vector
   text = df_c[[text_col]]
@@ -91,12 +90,7 @@ preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'e
   # adding title to the html widget
   wc <- repvisforODK::add_html_title_tag(wc, title)
 
-  if (return_table_c) {
-
-    rownames(df_wc) <- 1:nrow(df_wc)
-    return(DT::datatable(df_wc))
-
-  } else return(wc)
+  return(wc)
 }
 
 
