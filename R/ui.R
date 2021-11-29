@@ -180,15 +180,18 @@ ui <- function() {
                                        condition = 'input.question_plots.length > 0 || input.general_plots.length > 0',
 
                                        # explain tab
-                                       tags$h2('Based on the visualisations you selected, more parameters have to be defined.'),
+                                       tags$h5('Based on the visualisations you selected, more parameters have to be defined.'),
 
                                        # line break
                                        tags$br(),
 
+                                       # for plots
+                                       tags$h3('1. Plot Parameters'),
+
                                        shiny::conditionalPanel(
                                          condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h4('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                         tags$h6('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
@@ -219,7 +222,7 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'lang_param',
-                                                          label = 'Enter the langauge in which you want to translate question labels and choices to:',
+                                                          label = 'Enter the langauge in which you want to translate question labels and choices to',
                                                           placeholder = 'e.g.: english'),
 
                                          # Horizontal line
@@ -231,7 +234,7 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'delimiter_param',
-                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated:',
+                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated',
                                                           placeholder = 'e.g.: ,'),
 
                                          # Horizontal line
@@ -243,16 +246,16 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'text_col_param',
-                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for:',
-                                                          placeholder = 'e.g.: ,'),
+                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for',
+                                                          placeholder = 'e.g.: j4_j4_2a'),
 
                                          # Horizontal line
                                          tags$hr(),
 
                                          # Input: Enter report language link
-                                         shiny::textInput(inputId = 'text_col_param',
-                                                          label = 'Please specify the language of the answers to the(se) question(s):',
-                                                          placeholder = 'e.g.: ,'),
+                                         shiny::textInput(inputId = 'lang_wc_param',
+                                                          label = 'Please specify the language of the answers to the(se) question(s)',
+                                                          placeholder = 'e.g.: english'),
 
                                          # Horizontal line
                                          tags$hr(),
@@ -262,7 +265,7 @@ ui <- function() {
                                          condition = 'input.general_plots.indexOf("donut") > -1 || input.general_plots.indexOf("line_chart_cumsum") > -1 || input.general_plots.indexOf("line_chart_no_cumsum") > -1',
 
                                          # Input: exclude weekend?
-                                         shiny::checkboxInput(inputId = 'exclude_weekend',
+                                         shiny::checkboxInput(inputId = 'exclude_weekend_param',
                                                           label = 'Tick to not consider weekends for line chart(s) and/or donut chart',
                                                           value = FALSE)
                                          ),
@@ -270,6 +273,19 @@ ui <- function() {
                                        tags$br(),
 
                                        tags$br(),
+
+                                       # for report
+                                       tags$h3('2. Report Parameters'),
+
+                                       # Input: Enter report language link
+                                       shiny::textInput(inputId = 'title_param',
+                                                        label = 'Please enter a title',
+                                                        placeholder = 'e.g.: timci_report_Nov_21'),
+
+                                       # Input: Enter report language link
+                                       shiny::textInput(inputId = 'author_param',
+                                                        label = 'Please enter your name (will be shown as author)',
+                                                        placeholder = 'e.g.: Lucas Silbernagel'),
 
                                        tags$br(),
 

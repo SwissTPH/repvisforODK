@@ -9,8 +9,7 @@ preprocess_wc_generation(
   lang_wc_c,
   df_c = df,
   lang_c = "english",
-  svc_c = svc,
-  return_table_c = return_table
+  svc_c = svc
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ preprocess_wc_generation(
 \item{lang_c}{Character containing the name of the language that is to be examined.}
 
 \item{svc_c}{Logical that specifies whether the data is coming directly from ODK or not.}
-
-\item{return_table_c}{Logical that defines whether not only the wordcloud but also its corresponding table is returned.}
 }
 \value{
 wordcloud2 html-widget

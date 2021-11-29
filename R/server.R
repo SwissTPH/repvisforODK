@@ -86,21 +86,29 @@ server <- function(input, output) {
 
   output$report <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "report.html",
+    filename = "repvis_report.html",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      report_path <- system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
 
       # Set up parameters to pass to Rmd document
-      params <- list(n = input$slider)
+      params <- list(title = input$title_param,
+                     author = input$author_param,
+                     date_col = input$date_col_param,
+                     daily_submission_goal = input$sub_goal_param,
+                     exclude_weekend = input$exclude_weekend_param,
+                     delimiter = input$delimiter_param,
+                     lang = input$lang_param,
+                     lang_wc = input$lang_wc_param,
+                     text_col = input$text_col_param)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
       # from the code in this app).
-      rmarkdown::render(tempReport, output_file = file,
+      rmarkdown::render(input = report_path,
+                        output_file = file,
                         params = params,
                         envir = new.env(parent = globalenv())
       )

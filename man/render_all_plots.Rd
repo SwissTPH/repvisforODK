@@ -44,8 +44,6 @@ render_all_plots(
 \item{delimiter}{Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.}
 
 \item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
-
-\item{return_table}{Logical that defines whether not only the wordcloud but also its corresponding table is returned.}
 }
 \description{
 The rendered file is based on the all_plots.rmd template that comes with the package. It contains all plots that the package offers.

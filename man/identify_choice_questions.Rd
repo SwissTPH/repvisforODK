@@ -7,7 +7,7 @@
 identify_choice_questions(lang = NULL)
 }
 \arguments{
-\item{lang}{Character containing the name of the language that is to be examined.}
+\item{lang}{Character containing the name of the language that is to be examined, defaults to NULL.}
 }
 \value{
 List

@@ -19,9 +19,9 @@ single_choice_question_pie(
 
 \item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
 
-\item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined.}
+\item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL.}
 
-\item{lang}{Character containing the name of the language that is to be examined.}
+\item{lang}{Character containing the name of the language that is to be examined, defaults to NULL.}
 }
 \value{
 List

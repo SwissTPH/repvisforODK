@@ -16,7 +16,6 @@
 #' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
-#' @param return_table Logical that defines whether not only the wordcloud but also its corresponding table is returned.
 #'
 #' @return NULL
 #'
@@ -31,14 +30,15 @@ render_all_plots <- function(output_file,
                              lang_wc,
                              text_col,
                              author = Sys.info()['effective_user'][[1]],
-                             daily_submission_goal = 0, svc = TRUE,
+                             daily_submission_goal = 0,
+                             svc = TRUE,
                              exclude_weekend = TRUE,
                              delimiter = ' ',
                              lang = 'english',
                              return_table = FALSE
                              ) {
 
-  file_path = system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
+  file_path <- system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
 
   rmarkdown::render(input = file_path,
                     output_file = output_file,
@@ -52,8 +52,7 @@ render_all_plots <- function(output_file,
                                   delimiter = delimiter,
                                   lang = lang,
                                   lang_wc = lang_wc,
-                                  text_col = text_col,
-                                  return_table = return_table
-                    )
+                                  text_col = text_col
+                                  )
   )
 }
