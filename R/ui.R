@@ -13,25 +13,25 @@ ui <- function() {
 
                                 # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
-                                            label = 'SVC:',
+                                            label = 'SVC',
                                             placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions',
                                             value = 'https://research.odk.path.org/v1/projects/4/forms/02-TIMCI-SPA-cgei.svc'),
 
                                   # Input: Enter username
                                   shiny::textInput(inputId = 'un',
-                                            label = 'Username:',
+                                            label = 'Username',
                                             placeholder = 'lucas.silbernagel@swisstph.ch',
                                             value = 'lucas.silbernagel@swisstph.ch'),
 
                                   # Input: Enter password
                                   shiny::passwordInput(inputId = 'pw',
-                                                label = 'Password:',
+                                                label = 'Password',
                                                 placeholder = 'S3cur3_Password123',
                                                 value = 'Sturm_66666613359'),
 
                                   # Input: Enter timezone
                                   shiny::textInput(inputId = 'tz',
-                                            label = 'Timezone:',
+                                            label = 'Timezone',
                                             placeholder = "Europe/Berlin",
                                             value = 'Europe/Berlin'),
 
@@ -73,7 +73,7 @@ ui <- function() {
 
                                           # Input: Select data source
                                           shiny::checkboxGroupInput(inputId = 'general_plots',
-                                                      label = 'Select general plots:',
+                                                      label = 'Select general plots',
                                                       choices = c('Daily Submission Goal Donut' = 'donut',
                                                                   'Submissions Over Time Line Chart (Cumulative)' = 'line_chart_cumsum',
                                                                   'Submissions Over Time Line Chart (Non-Cumulative)' = 'line_chart_no_cumsum',
@@ -85,7 +85,7 @@ ui <- function() {
                                           tags$hr(),
 
                                           shiny::checkboxGroupInput(inputId = 'question_plots',
-                                                      label = 'Select question-specific plots:',
+                                                      label = 'Select question-specific plots',
                                                       choices = c('Single Choice Question Pie Chart' = 'single_pie',
                                                                   'Multiple Choice Question Bar Chart' = 'multiple_bar',
                                                                   'Free Text Question Word Cloud' = 'wordcloud')
@@ -151,8 +151,8 @@ ui <- function() {
                                                           label = 'Enter date column',
                                                           placeholder = 'e.g.: start'),
 
-                                         # Horizontal line
-                                         tags$hr(),
+                                         # line break
+                                         tags$br(),
 
                                          # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
                                          shiny::checkboxInput(inputId = 'sub_goal_check',
@@ -166,8 +166,8 @@ ui <- function() {
                                                                value = 0)
                                          ),
 
-                                         # Horizontal line
-                                         tags$hr()
+                                         # line break
+                                         tags$br(),
                                        ),
 
                                        shiny::conditionalPanel(
@@ -178,8 +178,8 @@ ui <- function() {
                                                           label = 'Enter the langauge in which you want to translate question labels and choices to',
                                                           placeholder = 'e.g.: english'),
 
-                                         # Horizontal line
-                                         tags$hr(),
+                                         # line break
+                                         tags$br(),
                                        ),
 
                                        shiny::conditionalPanel(
@@ -190,8 +190,8 @@ ui <- function() {
                                                           label = 'Please specify the delimiter with which the multiple choice question answers are separated',
                                                           placeholder = 'e.g.: ,'),
 
-                                         # Horizontal line
-                                         tags$hr(),
+                                         # line break
+                                         tags$br(),
                                        ),
 
                                        shiny::conditionalPanel(
@@ -202,16 +202,16 @@ ui <- function() {
                                                           label = 'Please specify the name of the question(s) you want to generate a word cloud for',
                                                           placeholder = 'e.g.: j4_j4_2a'),
 
-                                         # Horizontal line
-                                         tags$hr(),
+                                         # line break
+                                         tags$br(),
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'lang_wc_param',
                                                           label = 'Please specify the language of the answers to the(se) question(s)',
                                                           placeholder = 'e.g.: english'),
 
-                                         # Horizontal line
-                                         tags$hr(),
+                                         # line break
+                                         tags$br(),
                                        ),
 
                                        shiny::conditionalPanel(
@@ -225,6 +225,9 @@ ui <- function() {
 
                                        tags$br(),
 
+                                       # Horizontal line
+                                       tags$hr(),
+
                                        tags$br(),
 
                                        # for report
@@ -235,23 +238,21 @@ ui <- function() {
                                                         label = 'Please enter a title',
                                                         placeholder = 'e.g.: timci_report_Nov_21'),
 
+                                       # line break
+                                       tags$br(),
+
                                        # Input: Enter report language link
                                        shiny::textInput(inputId = 'author_param',
                                                         label = 'Please enter your name (will be shown as author)',
                                                         placeholder = 'e.g.: Lucas Silbernagel'),
 
+                                       # line break
                                        tags$br(),
 
-                                       tags$br(),
+                                       # Horizontal line
+                                       tags$hr(),
 
-                                       tags$br(),
-
-                                       tags$br(),
-
-                                       tags$br(),
-
-                                       tags$br(),
-
+                                       # line break
                                        tags$br(),
 
                                        shiny::downloadButton("report", "Generate report"),

@@ -89,8 +89,9 @@ server <- function(input, output) {
                      delimiter = input$delimiter_param,
                      lang = input$lang_param,
                      lang_wc = input$lang_wc_param,
-                     text_col = input$text_col_param
-                     )
+                     text_col = input$text_col_param,
+                     plots_general = input$general_plots,
+                     plots_question = input$question_plots)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
