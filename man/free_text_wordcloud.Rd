@@ -5,13 +5,13 @@
 \title{Generates a wordcloud based on text from free text questions in an ODK form.}
 \usage{
 free_text_wordcloud(
-  svc = TRUE,
+  svc = FALSE,
   df = NULL,
   csv = NULL,
   text_col,
   lang_wc,
   lang = "english",
-  return_table = FALSE
+  df_schema_ext = NULL
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ free_text_wordcloud(
 
 \item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 
-\item{return_table}{Logical that defines whether not only the wordcloud but also its corresponding table is returned.}
+\item{df_schema_ext}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
 }
 \value{
 List

@@ -11,7 +11,7 @@
 #' @param text_col Character or Character vector (if multiple questions shall be examined) that specifies the names of the columns of the free text questions.
 #' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
-#' @param return_table Logical that defines whether not only the wordcloud but also its corresponding table is returned.
+#' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
 #'
 #' @return List
 #'
@@ -19,12 +19,12 @@
 #' @import tm wordcloud2
 #'
 #' @examples
-free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english', return_table = FALSE) {
+free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english', df_schema_ext = NULL) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
   wc_list = lapply(text_col,
-                   preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, return_table_c = return_table)
+                   preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, df_schema_ext_c = df_schema_ext)
 
   return(wc_list)
 }
@@ -42,6 +42,7 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' @param df_c Data frame containing the ODK data that is to be used. Optional, defaults to df which is the df parsed in \code{\link{free_text_wordcloud}}.
 #' @param lang_c Character containing the name of the language that is to be examined.
 #' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
+#' @param df_schema_ext_c Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
 #'
 #' @return wordcloud2 html-widget
 #'
@@ -49,7 +50,7 @@ free_text_wordcloud <- function(svc = TRUE, df = NULL, csv = NULL, text_col, lan
 #' @import tm wordcloud2 DT
 #'
 #' @examples
-preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc) {
+preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc, df_schema_ext_c = df_schema_ext) {
 
   # isolating text in vector
   text = df_c[[text_col]]
@@ -73,7 +74,7 @@ preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'e
   df_wc <- data.frame(word = names(words),freq = words)
 
   # defining title
-  if (svc_c) {
+  if (svc_c | !is.null(df_schema_ext_c)) {
 
     df_schema <- ruODK::form_schema_ext()
     df_schema = repvisforODK::rename_schema(df_schema, lang_c)

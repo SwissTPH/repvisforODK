@@ -11,53 +11,7 @@ ui <- function() {
                             shiny::sidebarLayout(
                               shiny::sidebarPanel(
 
-                                # Input: Select data source
-                                shiny::radioButtons(inputId = 'data_source',
-                                             label = 'Data source:',
-                                             choices = c('Directly from ODK (ODATA)' = 'svc',
-                                                         'CSV file' = 'csv')
-                                ),
-
-                                # Horizontal line
-                                tags$hr(),
-
-                                shiny::conditionalPanel(
-                                  condition = 'input.data_source == "csv"',
-
-                                  # Input: Select a file
-                                  shiny::fileInput("csv_file", "Choose CSV File",
-                                            multiple = TRUE,
-                                            accept = c("text/csv",
-                                                       "text/comma-separated-values,text/plain",
-                                                       ".csv")
-                                  ),
-
-                                  # Horizontal line
-                                  tags$hr(),
-
-                                  # Input: Checkbox if file has header
-                                  shiny::checkboxInput("header", "Header", TRUE),
-
-                                  # Input: Select separator
-                                  shiny::radioButtons("sep", "Separator",
-                                               choices = c(Comma = ",",
-                                                           Semicolon = ";",
-                                                           Tab = "\t"),
-                                               selected = ","),
-
-                                  # Input: Select quotes
-                                  shiny::radioButtons("quote", "Quote",
-                                               choices = c(None = "",
-                                                           "Double Quote" = '"',
-                                                           "Single Quote" = "'"),
-                                               selected = '"')
-
-                                ),
-
-                                shiny::conditionalPanel(
-                                  condition = 'input.data_source == "svc"',
-
-                                  # Input: Enter svc link
+                                # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
                                             label = 'SVC:',
                                             placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions',
@@ -80,7 +34,7 @@ ui <- function() {
                                             label = 'Timezone:',
                                             placeholder = "Europe/Berlin",
                                             value = 'Europe/Berlin'),
-                                ),
+
 
                                 # Horizontal line
                                 tags$hr(),
@@ -134,8 +88,7 @@ ui <- function() {
                                                       label = 'Select question-specific plots:',
                                                       choices = c('Single Choice Question Pie Chart' = 'single_pie',
                                                                   'Multiple Choice Question Bar Chart' = 'multiple_bar',
-                                                                  'Free Text Question Word Cloud' = 'wordcloud',
-                                                                  'Free Text Question Word Frequency Table' = 'freq_table')
+                                                                  'Free Text Question Word Cloud' = 'wordcloud')
                                           ),
 
                                           # Horizontal line
@@ -195,7 +148,7 @@ ui <- function() {
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
-                                                          label = 'Enter date column:',
+                                                          label = 'Enter date column',
                                                           placeholder = 'e.g.: start'),
 
                                          # Horizontal line
@@ -209,7 +162,7 @@ ui <- function() {
                                            condition = 'input.sub_goal_check == true',
 
                                            shiny::numericInput(inputId = 'sub_goal_param',
-                                                               label = 'Enter submission goal:',
+                                                               label = 'Enter daily submission goal',
                                                                value = 0)
                                          ),
 

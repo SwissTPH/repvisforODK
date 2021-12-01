@@ -4,6 +4,7 @@
 #' In both cases the relevant question label and choice column is named the same to facilitate code progression.
 #'
 #' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
+#' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
 #'
 #' @return List
 #'
@@ -11,11 +12,17 @@
 #' @import ruODK dplyr
 #'
 #' @examples
-identify_choice_questions <- function(lang = NULL) {
-  # deriving questions and choices from form schema
-  repvisforODK::info_msg('Identifying single choice questions through extended form schema directly from ODK Central.')
 
-  df_schema <- ruODK::form_schema_ext()
+identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL) {
+  # deriving questions and choices from form schema
+  repvisforODK::info_msg('Identifying single choice questions through extended form schema.')
+
+  if (is.null(df_schema_ext)) {
+    df_schema <- ruODK::form_schema_ext()
+  } else {
+    df_schema <- df_schema_ext
+  }
+
   df_schema <- df_schema %>%
     dplyr::filter(!grepl("generated_", name), type != 'structure')
 

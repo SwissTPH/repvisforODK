@@ -7,25 +7,20 @@
 render_all_plots(
   output_file,
   title,
-  csv,
   date_col,
   lang_wc,
   text_col,
   author = Sys.info()["effective_user"][[1]],
   daily_submission_goal = 0,
-  svc = TRUE,
   exclude_weekend = TRUE,
   delimiter = " ",
-  lang = "english",
-  return_table = FALSE
+  lang = "english"
 )
 }
 \arguments{
 \item{output_file}{String that specifies the path where the generated file shall be stored.}
 
 \item{title}{String that specifies the title parameter in the YAML header of the document.}
-
-\item{csv}{String that specifies the file path to the csv file that contians the ODK data.}
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 
@@ -36,8 +31,6 @@ render_all_plots(
 \item{author}{String that defines the name that is put as the author in the YAML header of the markdown file. Optional, defaults to the system user name.}
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal. Optional, defaults to 0.}
-
-\item{svc}{Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.}
 
 \item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
 

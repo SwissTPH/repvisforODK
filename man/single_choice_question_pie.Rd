@@ -5,11 +5,12 @@
 \title{Generates pie charts for single-choice questions.}
 \usage{
 single_choice_question_pie(
-  svc = TRUE,
+  svc = FALSE,
   df = NULL,
   csv = NULL,
   qvec = NULL,
-  lang = NULL
+  lang = NULL,
+  df_schema_ext = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ single_choice_question_pie(
 \item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL.}
 
 \item{lang}{Character containing the name of the language that is to be examined, defaults to NULL.}
+
+\item{df_schema_ext}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
 }
 \value{
 List

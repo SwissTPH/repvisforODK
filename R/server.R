@@ -13,39 +13,26 @@ server <- function(input, output) {
 
   df <- shiny::eventReactive(input$load_render_button, {
 
-    if (input$data_source == 'csv') {
+    shiny::req(input$svc_text)
+    shiny::req(input$un)
+    shiny::req(input$pw)
+    shiny::req(input$tz)
 
-      shiny::req(input$csv_file)
+    repvisforODK::setup_ruODK(svc = input$svc_text, un = input$un, pw = input$pw, tz = input$tz)
 
-      df <- read.csv(input$csv_file$datapath,
-                     header = input$header,
-                     sep = input$sep,
-                     quote = input$quote)
+    df <- ruODK::odata_submission_get(download = FALSE)
 
-    } else if (input$data_source == 'svc') {
-
-      shiny::req(input$svc_text)
-      shiny::req(input$un)
-      shiny::req(input$pw)
-      shiny::req(input$tz)
-
-      repvisforODK::setup_ruODK(svc = input$svc_text, un = input$un, pw = input$pw, tz = input$tz)
-
-      df <- ruODK::odata_submission_get(download = FALSE)
-    }
   })
 
   df_schema <- shiny::eventReactive(input$load_render_button, {
 
-    if (input$data_source == 'svc') {
+    shiny::req(input$svc_text)
+    shiny::req(input$un)
+    shiny::req(input$pw)
+    shiny::req(input$tz)
 
-      shiny::req(input$svc_text)
-      shiny::req(input$un)
-      shiny::req(input$pw)
-      shiny::req(input$tz)
+    df_schema <- ruODK::form_schema_ext()
 
-      df_schema <- ruODK::form_schema_ext()
-    }
   })
 
   output$contents <- renderDataTable({
@@ -102,7 +89,8 @@ server <- function(input, output) {
                      delimiter = input$delimiter_param,
                      lang = input$lang_param,
                      lang_wc = input$lang_wc_param,
-                     text_col = input$text_col_param)
+                     text_col = input$text_col_param
+                     )
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

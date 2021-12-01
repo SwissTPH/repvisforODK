@@ -5,16 +5,13 @@ output:
     toc_float: TRUE
     number_section: TRUE
 params:
-  csv: NA
   daily_submission_goal: NA
-  svc: NA
   date_col: NA
   exclude_weekend: NA
   delimiter: NA
   text_col: NA
   lang: NA
   lang_wc: NA
-  return_table: NA
   title: NA
   author: NA
 title: "`r params$title`"
@@ -29,9 +26,28 @@ library(knitr)
 library(htmltools)
 ```
 
-```{r, include = FALSE, message=FALSE, warning=FALSE}
+```{r setup, include=FALSE} 
+ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE) 
+``` 
+
+```{r, eval=TRUE}
+# loading data
+df <- repvisforODK::check_data_args(svc = TRUE)
+
+# getting extended form schema when svc is used
+df_schema_ext <- ruODK::form_schema_ext()
+```
+
+```{r, eval=TRUE}
+# loading data
+df <- repvisforODK::check_data_args(svc = TRUE)
+
+# getting extended form schema when svc is used
+df_schema_ext <- ruODK::form_schema_ext()
+```
+
+```{r, include=FALSE}
 # general
-df <- readr::read_csv(params$csv)
 date_col <- params$date_col
 daily_submission_goal <- as.numeric(params$daily_submission_goal)
 svc <- params$svc
@@ -51,49 +67,49 @@ lang_wc <- params$lang_wc
 ```
 
 # Number of Submissions: Received vs. Missing to Target
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE}
 fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
 fig
 ```
 
 # Received Submissions Over Time: Cumulative
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE}
 fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
 fig
 ```
 
 # Received Submissions Over Time: Non-Cumulative
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE}
 fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
 fig
 ```
 
 # Submission Activitiy by Weekday and Day of the Week 
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE}
 fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
 fig
 ```
 
 # Submission Activity by Day 
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE}
 fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
 fig
 ```
 
 # Distribution of Answers for Single-Choice Questions
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-plots <- repvisforODK::single_choice_question_pie(lang = lang)
+```{r, eval=TRUE}
+plots <- repvisforODK::single_choice_question_pie(df = df, lang = lang, df_schema_ext = df_schema_ext)
 htmltools::tagList(plots)
 ```
 
 # Distribution of Answers for Mutiple-Choice Questions
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-plots <- repvisforODK::multiple_choice_question_bar(lang = lang)
+```{r, eval=TRUE}
+plots <- repvisforODK::multiple_choice_question_bar(df = df, lang = lang, df_schema_ext = df_schema_ext)
 htmltools::tagList(plots) 
 ```
 
 # Wordcloud for Free Text Question
-```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-wordclouds <- repvisforODK::free_text_wordcloud(text_col = text_col, lang = lang, lang_wc = lang_wc, return_table = return_table)
+```{r, eval=TRUE}
+wordclouds <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang = lang, lang_wc = lang_wc, df_schema_ext = df_schema_ext)
 htmltools::tagList(lapply(wordclouds, print)) 
 ```

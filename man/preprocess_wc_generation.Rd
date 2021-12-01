@@ -9,7 +9,8 @@ preprocess_wc_generation(
   lang_wc_c,
   df_c = df,
   lang_c = "english",
-  svc_c = svc
+  svc_c = svc,
+  df_schema_ext_c = df_schema_ext
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ preprocess_wc_generation(
 \item{lang_c}{Character containing the name of the language that is to be examined.}
 
 \item{svc_c}{Logical that specifies whether the data is coming directly from ODK or not.}
+
+\item{df_schema_ext_c}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
 }
 \value{
 wordcloud2 html-widget

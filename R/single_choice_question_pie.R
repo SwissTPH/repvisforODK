@@ -17,6 +17,7 @@
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
 #' @param qvec Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL.
 #' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
+#' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
 #'
 #' @return List
 #'
@@ -24,19 +25,21 @@
 #' @import ruODK plyr plotly
 #'
 #' @examples
-single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec = NULL, lang = NULL) {
+single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
-  if (svc) {
+  if (sum(svc, !is.null(df_schema_ext), !is.null(qvec)) != 1) {
+
+    stop('The function is not able to clearly identify single choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
+
+  } else if (!is.null(df_schema_ext) | svc) {
 
     # deriving questions and choices from form schema
-    choice_questions <- repvisforODK::identify_choice_questions(lang)
+    choice_questions <- repvisforODK::identify_choice_questions(lang, df_schema_ext)
     df_schema <- choice_questions[[1]]
     qvec_pre <- choice_questions[[2]]
 
-  } else if (is.null(qvec) & !svc) {
-    stop('Please specify the qvec argument or run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine.')
   } else {
     qvec_pre <- qvec
   }
@@ -50,7 +53,7 @@ single_choice_question_pie <- function(svc = TRUE, df = NULL, csv = NULL, qvec =
 
     # ensuring that only single choice questions are plotted
     if (class(df_count) == "data.frame") {
-      if (svc) {
+      if (svc | !is.null(df_schema_ext)) {
         if (!TRUE %in% grepl(' ', df_count$x)) {
 
           # mapping choice labels to their respective names
