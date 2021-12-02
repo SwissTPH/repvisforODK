@@ -8,7 +8,7 @@
 #' @examples
 ui <- function() {
   ui <- shiny::navbarPage(includeCSS('www/styles.css'),
-                          title = div(img(src = 'logo.png'), 'repvisforODK'),
+                          title = 'repvisforODK',
                           id = 'tab',
                           selected = '1. Select Data',
 
