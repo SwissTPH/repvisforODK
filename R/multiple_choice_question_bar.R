@@ -31,7 +31,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
   if (sum(svc, !is.null(df_schema_ext), !is.null(qvec)) != 1) {
 
-    stop('The function is not able to clearly identify single choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
+    stop('The function is not able to clearly identify multiple choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
 
   } else if (!is.null(df_schema_ext) | svc) {
 

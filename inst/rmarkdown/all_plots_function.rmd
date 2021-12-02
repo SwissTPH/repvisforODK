@@ -72,10 +72,7 @@ lang_wc <- params$lang_wc
 `r if (!plot_evals$donut) {"\\begin{comment}"}`
 # Number of Submissions: Received vs. Missing to Target
 ```{r}
-if (plot_evals$donut) {
-  fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
-} else fig <- NULL
-
+fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
 fig
 ```
 `r if (!plot_evals$donut) {"\\end{comment}"}`
@@ -83,10 +80,7 @@ fig
 `r if (!plot_evals$line_chart_cumsum) {"\\begin{comment}"}`
 # Received Submissions Over Time: Cumulative
 ```{r}
-if (plot_evals$line_chart_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
-} else fig <- NULL
-
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
 fig
 ```
 `r if (!plot_evals$line_chart_cumsum) {"\\end{comment}"}`
@@ -94,10 +88,7 @@ fig
 `r if (!plot_evals$line_chart_no_cumsum) {"\\begin{comment}"}`
 # Received Submissions Over Time: Non-Cumulative
 ```{r}
-if (plot_evals$line_chart_no_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
-} else fig <- NULL
-
+fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
 fig
 ```
 `r if (!plot_evals$line_chart_no_cumsum) {"\\end{comment}"}`
@@ -105,10 +96,7 @@ fig
 `r if (!plot_evals$day_heatmap) {"\\begin{comment}"}`
 # Submission Activitiy by Weekday and Day of the Week 
 ```{r}
-if (plot_evals$day_heatmap) {
-  fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
-} else fig <- NULL
-
+fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
 fig
 ```
 `r if (!plot_evals$day_heatmap) {"\\end{comment}"}`
@@ -116,10 +104,7 @@ fig
 `r if (!plot_evals$cal_heatmap) {"\\begin{comment}"}`
 # Submission Activity by Day 
 ```{r}
-if (plot_evals$cal_heatmap) {
-  fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
-} else fig <- NULL
-
+fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
 fig
 ```
 `r if (!plot_evals$cal_heatmap) {"\\end{comment}"}`
@@ -127,10 +112,7 @@ fig
 `r if (!plot_evals$single_pie) {"\\begin{comment}"}`
 # Distribution of Answers for Single-Choice Questions
 ```{r}
-if (plot_evals$single_pie) {
-  plots <- repvisforODK::single_choice_question_pie(df = df, lang = lang, df_schema_ext = df_schema_ext)
-} else plots <- NULL
-
+plots <- repvisforODK::single_choice_question_pie(df = df, lang = lang, df_schema_ext = df_schema_ext)
 htmltools::tagList(plots)
 ```
 `r if (!plot_evals$single_pie) {"\\end{comment}"}`
@@ -138,10 +120,7 @@ htmltools::tagList(plots)
 `r if (!plot_evals$multiple_bar) {"\\begin{comment}"}`
 # Distribution of Answers for Mutiple-Choice Questions
 ```{r}
-if (plot_evals$multiple_bar) {
-  plots <- repvisforODK::multiple_choice_question_bar(df = df, lang = lang, df_schema_ext = df_schema_ext)
-} else plots <- NULL
-
+plots <- repvisforODK::multiple_choice_question_bar(df = df, lang = lang, df_schema_ext = df_schema_ext)
 htmltools::tagList(plots) 
 ```
 `r if (!plot_evals$multiple_bar) {"\\end{comment}"}`
@@ -149,10 +128,7 @@ htmltools::tagList(plots)
 `r if (!plot_evals$wordcloud) {"\\begin{comment}"}`
 # Wordcloud for Free Text Question
 ```{r}
-if (plot_evals$wordcloud) {
-  plots <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang = lang, lang_wc = lang_wc, df_schema_ext = df_schema_ext)
-} else plots <- NULL
-
-htmltools::tagList(lapply(plots, print)) 
+wordclouds <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang = lang, lang_wc = lang_wc, df_schema_ext = df_schema_ext)
+htmltools::tagList(lapply(wordclouds, print)) 
 ```
 `r if (!plot_evals$wordcloud) {"\\end{comment}"}`

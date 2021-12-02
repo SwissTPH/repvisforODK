@@ -132,19 +132,13 @@ ui <- function() {
                                      shiny::conditionalPanel(
                                        condition = 'input.question_plots.length > 0 || input.general_plots.length > 0',
 
-                                       # explain tab
-                                       tags$h5('Based on the visualisations you selected, more parameters have to be defined.'),
-
-                                       # line break
-                                       tags$br(),
-
                                        # for plots
                                        tags$h3('1. Plot Parameters'),
 
                                        shiny::conditionalPanel(
                                          condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h6('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                         tags$h5('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
@@ -260,7 +254,10 @@ ui <- function() {
                                        # Horizontal line
                                        tags$hr(),
 
-                                       shiny::actionButton('prev2', 'Previous')
+                                       shiny::actionButton('prev2', 'Previous'),
+
+                                       # line break
+                                       tags$br()
                                        )
                                      )
                    )
