@@ -62,7 +62,7 @@ lang_wc <- params$lang_wc
 
 # Number of Submissions: Received vs. Missing to Target
 ```{r}
-fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
+fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend)
 fig
 ```
 

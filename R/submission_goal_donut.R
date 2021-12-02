@@ -11,14 +11,15 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that reflects the targeted number of daily submissions.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
+#' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
 #'
 #' @return Plotly html-widget
 #'
-#' @import plotly
+#' @import plotly lubridate
 #' @export
 #'
 #' @examples
-submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col){
+submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col, exclude_weekend = TRUE){
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
@@ -31,7 +32,21 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
   }
 
   date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
-  date_diff = date_limits[[2]] - date_limits[[1]]
+
+  # calculating number of days of data collection period
+  # first w/o weekend
+  if (exclude_weekend) {
+
+    all_wdays_in_period <- lubridate::wday(seq.Date(date_limits[[1]], date_limits[[2]], 'days'), abbr = TRUE)
+
+    all_wdays_in_period_filtered <- all_wdays_in_period[!all_wdays_in_period %in% c(1, 7)]
+
+    date_diff <- length(all_wdays_in_period_filtered)
+
+  } else {
+    # then with weekend
+    date_diff = date_limits[[2]] - date_limits[[1]]
+  }
 
   submission_goal_total = as.numeric(date_diff)*daily_submission_goal
   submissions_total = nrow(df)

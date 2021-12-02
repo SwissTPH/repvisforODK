@@ -9,7 +9,8 @@ submission_goal_donut(
   csv = NULL,
   svc = FALSE,
   daily_submission_goal,
-  date_col
+  date_col,
+  exclude_weekend = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ submission_goal_donut(
 \item{daily_submission_goal}{Integer or float that reflects the targeted number of daily submissions.}
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
+
+\item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
 }
 \value{
 Plotly html-widget
