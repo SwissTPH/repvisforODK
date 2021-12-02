@@ -3,6 +3,7 @@
 #' @return
 #'
 #' @export
+#' @import shiny dplyr shinycssloaders
 #'
 #' @examples
 ui <- function() {
@@ -54,7 +55,7 @@ ui <- function() {
 
                               shiny::mainPanel(
                                 # Output: Preview data file
-                                shiny::dataTableOutput("contents")
+                                shiny::dataTableOutput("contents") %>% shinycssloaders::withSpinner(color = '#66BD63')
                               )
                             )
                    ),

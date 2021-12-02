@@ -73,7 +73,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       for (vec in df$label) fin_vec <- c(fin_vec, vec)
       df_count_final <- as.data.frame(table(fin_vec))
 
-      title = ifelse(svc, df_schema$labels_fin[df_schema$ruodk_name == q], q)
+      title = ifelse(svc | !is.null(df_schema_ext), df_schema$labels_fin[df_schema$ruodk_name == q], q)
 
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 

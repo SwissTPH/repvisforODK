@@ -33,7 +33,7 @@ render_all_plots <- function(output_file,
                              lang = 'english'
                              ) {
 
-  file_path <- system.file('rmarkdown', 'all_plots.rmd', package = 'repvisforODK')
+  file_path <- system.file('rmarkdown', 'all_plots_function.rmd', package = 'repvisforODK')
 
   rmarkdown::render(input = file_path,
                     output_file = output_file,

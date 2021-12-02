@@ -34,4 +34,5 @@ Imports:
     htmltools,
     tm,
     wordcloud2,
-    shiny
+    shiny,
+    shinycssloaders
