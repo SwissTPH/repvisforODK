@@ -7,7 +7,8 @@
 #'
 #' @examples
 ui <- function() {
-  ui <- shiny::navbarPage(includeCSS('www/styles.css'),
+  ui <- fluidPage(
+    shiny::navbarPage(includeCSS('www/styles.css'),
                           title = 'repvisforODK',
                           id = 'tab',
                           selected = '1. Select Data',
@@ -258,7 +259,12 @@ ui <- function() {
                                        tags$br()
                                        )
                                      )
-                   )
+                   ),
+
+    div(class = "footer",
+        includeHTML("html/footer.html")
+       )
+    )
 
 
   return(ui)
