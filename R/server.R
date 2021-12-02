@@ -11,7 +11,7 @@
 #' @examples
 server <- function(input, output) {
 
-  df <- shiny::eventReactive(input$load_render_button, {
+  df <- shiny::eventReactive(input$load_preview_button, {
 
     shiny::req(input$svc_text)
     shiny::req(input$un)
@@ -24,7 +24,7 @@ server <- function(input, output) {
 
   })
 
-  df_schema <- shiny::eventReactive(input$load_render_button, {
+  df_schema <- shiny::eventReactive(input$load_preview_button, {
 
     shiny::req(input$svc_text)
     shiny::req(input$un)
@@ -71,7 +71,7 @@ server <- function(input, output) {
   )
   outputOptions(output, "lang_flag", suspendWhenHidden = FALSE)
 
-  output$report <- shiny::downloadHandler(
+  output$report_button <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "repvis_report.html",
     content = function(file) {

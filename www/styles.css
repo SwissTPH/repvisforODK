@@ -1,0 +1,43 @@
+/* Get a fancy font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif;
+}
+
+h3 {
+  text-decoration: underline;
+  text-decoration-color: #bf3227;
+}
+
+#load_preview_button, #next1, #report_button, #prev1, #next2, #prev2 {
+  background-color: #bf3227;
+  color: white;
+}
+
+#load_preview_button:hover, #next1:hover, #report_button:hover, #prev1:hover, #next2:hover, #prev2:hover {
+  text-decoration: underline;
+}
+
+#report_button {
+  background-color: #bf3227;
+  color: white;
+}
+
+#report_button:hover {
+  text-decoration: underline;
+}
+
+#side1 {
+    background-color: #337ab7;
+    color: white;
+}
+
+#side2 {
+    background-color: #337ab7;
+    color: white;
+}
+
+#sub_goal_check {
+  font-weight: bold;
+}

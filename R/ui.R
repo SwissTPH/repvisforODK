@@ -7,10 +7,14 @@
 #'
 #' @examples
 ui <- function() {
-  ui <- shiny::navbarPage('repvisforODK', id = 'tab',
+  ui <- shiny::navbarPage(includeCSS('www/styles.css'),
+                          title = div(img(src = 'logo.png'), 'repvisforODK'),
+                          id = 'tab',
+                          selected = '1. Select Data',
+
                           shiny::tabPanel('1. Select Data',
                             shiny::sidebarLayout(
-                              shiny::sidebarPanel(
+                              shiny::sidebarPanel(id = 'side1',
 
                                 # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
@@ -40,7 +44,7 @@ ui <- function() {
                                 # Horizontal line
                                 tags$hr(),
 
-                                shiny::actionButton("load_render_button", "Load and Preview Data"),
+                                shiny::actionButton("load_preview_button", "Load and Preview Data"),
 
                                 shiny::conditionalPanel(
                                   condition = 'output.data_flag == true',
@@ -55,7 +59,7 @@ ui <- function() {
 
                               shiny::mainPanel(
                                 # Output: Preview data file
-                                shiny::dataTableOutput("contents") %>% shinycssloaders::withSpinner(color = '#66BD63')
+                                shiny::dataTableOutput("contents") %>% shinycssloaders::withSpinner(color = '#bf3227')
                               )
                             )
                    ),
@@ -70,7 +74,7 @@ ui <- function() {
                                     shiny::conditionalPanel(
                                       condition = 'output.data_flag == true',
                                       shiny::sidebarLayout(
-                                        shiny::sidebarPanel(
+                                        shiny::sidebarPanel(id = 'side2',
 
                                           # Input: Select data source
                                           shiny::checkboxGroupInput(inputId = 'general_plots',
@@ -100,6 +104,9 @@ ui <- function() {
                                           shiny::conditionalPanel(
                                             condition = 'input.question_plots.length > 0 || input.general_plots.length > 0',
 
+                                            # Horizontal line
+                                            tags$hr(),
+
                                             shiny::actionButton('next2', 'Next')
                                           )
                                         ),
@@ -107,7 +114,7 @@ ui <- function() {
                                         shiny::mainPanel(
 
                                           shiny::conditionalPanel(
-                                            condition = 'input.question_plots.length > 0 || input.general_plots.length > 0',
+                                            condition = 'input.question_plots.length == 0 && input.general_plots.length == 0',
 
                                             tags$h3('Please select at least one visualisation before you proceed.')
                                           ),
@@ -218,12 +225,8 @@ ui <- function() {
                                                           value = FALSE)
                                          ),
 
-                                       tags$br(),
-
                                        # Horizontal line
-                                       tags$hr(),
-
-                                       tags$br(),
+                                       tags$hr(style = 'border-color: #337ab7;'),
 
                                        # for report
                                        tags$h3('2. Report Parameters'),
@@ -241,19 +244,13 @@ ui <- function() {
                                                         label = 'Please enter your name (will be shown as author)',
                                                         placeholder = 'e.g.: Lucas Silbernagel'),
 
-                                       # line break
-                                       tags$br(),
+                                       # Horizontal line
+                                       tags$hr(style = 'border-color: #337ab7;'),
+
+                                       shiny::downloadButton("report_button", "Generate report"),
 
                                        # Horizontal line
-                                       tags$hr(),
-
-                                       # line break
-                                       tags$br(),
-
-                                       shiny::downloadButton("report", "Generate report"),
-
-                                       # Horizontal line
-                                       tags$hr(),
+                                       tags$hr(style = 'border-color: #337ab7;'),
 
                                        shiny::actionButton('prev2', 'Previous'),
 
