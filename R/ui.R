@@ -32,8 +32,7 @@ ui <- function() {
                                   # Input: Enter password
                                   shiny::passwordInput(inputId = 'pw',
                                                 label = 'Password',
-                                                placeholder = 'S3cur3_Password123',
-                                                value = 'Sturm_66666613359'),
+                                                placeholder = 'S3cur3_Password123'),
 
                                   # Input: Enter timezone
                                   shiny::textInput(inputId = 'tz',
