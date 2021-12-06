@@ -131,7 +131,9 @@ if (plot_evals$single_pie) {
   plots <- repvisforODK::single_choice_question_pie(df = df, lang = lang, df_schema_ext = df_schema_ext)
 } else plots <- NULL
 
-htmltools::tagList(plots)
+if (length(plots) == 0) {
+  print('No Single Choice Questions were identified.')
+} else htmltools::tagList(plots)
 ```
 `r if (!plot_evals$single_pie) {"\\end{comment}"}`
 
@@ -142,7 +144,9 @@ if (plot_evals$multiple_bar) {
   plots <- repvisforODK::multiple_choice_question_bar(df = df, lang = lang, df_schema_ext = df_schema_ext)
 } else plots <- NULL
 
-htmltools::tagList(plots) 
+if (length(plots) == 0) {
+  print('No Multiple Choice Questions were identified.')
+} else htmltools::tagList(plots)
 ```
 `r if (!plot_evals$multiple_bar) {"\\end{comment}"}`
 

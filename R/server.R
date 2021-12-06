@@ -87,7 +87,7 @@ server <- function(input, output) {
                      daily_submission_goal = input$sub_goal_param,
                      exclude_weekend = input$exclude_weekend_param,
                      delimiter = input$delimiter_param,
-                     lang = input$lang_param,
+                     lang = NULL, #input$lang_param,
                      lang_wc = input$lang_wc_param,
                      text_col = input$text_col_param,
                      plots_general = input$general_plots,

@@ -108,7 +108,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       figs[[q]] <- plotly::plotly_build(fig)
 
     } else {
-      if (!svc) {
+      if (!svc | is.null(df_schema_ext)) {
         warning(paste0('The answers to question `', q, '` do not contain the specified delimiter `', delimiter, '`.'))
       }
       next

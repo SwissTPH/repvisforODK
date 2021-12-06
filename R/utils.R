@@ -107,36 +107,6 @@ set_color <- function(val) {
   }
 }
 
-#-------------------------------------------------------------------------------------------------------------------------
-
-
-#' Changes the name of the labels and choices column in an ODk form schema.
-#'
-#' This function to give the column used in another function a uniform name so that no matter what language (or no language at all) is chosen,
-#' all functions still work as they refer to the unifrom name given by this function.
-#'
-#' @param df Data frame containing the ODK form schema
-#' @param lang Language of the choice/label column which is to be changed. Optional, defaults to NULL.
-#'
-#' @return Data frame
-#'
-#' @export
-#'
-#' @examples
-rename_schema <- function(df, lang = NULL) {
-
-  lang_2_char <- substr(lang, 1, 2)
-
-  if (!is.null(lang)) {
-    names(df)[names(df) == paste0('choices_', lang, '_(', lang_2_char, ')')] <- 'choices_fin'
-    names(df)[names(df) == paste0('label_', lang, '_(', lang_2_char, ')')] <- 'labels_fin'
-  } else {
-    names(df)[names(df) == 'choices'] <- 'choices_fin'
-    names(df)[names(df) == 'label'] <- 'labels_fin'
-  }
-
-  return(df)
-}
 
 #------------------------------------------------------------------------------------------------------------------------
 

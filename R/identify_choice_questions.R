@@ -37,11 +37,10 @@ identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL) {
 
 #-------------------------------------------------------------------------------------------------------------------------
 
-
-#' Changes the name of the labels and choices column in an ODk form schema.
+#' Changes the name of the labels and choices column in an ODK form schema.
 #'
 #' This function to give the column used in another function a uniform name so that no matter what language (or no language at all) is chosen,
-#' all functions still work as they refer to the unifrom name given by this function.
+#' all functions still work as they refer to the uniform name given by this function.
 #'
 #' @param df Data frame containing the ODK form schema
 #' @param lang Language of the choice/label column which is to be changed. Optional, defaults to NULL.
