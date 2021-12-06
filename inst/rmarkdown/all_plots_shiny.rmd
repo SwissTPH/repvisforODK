@@ -57,6 +57,7 @@ svc <- params$svc
 
 # for question-specific plots
 lang <- params$lang
+# if lag arg is left blank in app, it needs to be set to NULL for the choice question functions to work 
 if (lang == "") lang <- NULL
 
 # only for submissions_time series_lineplot

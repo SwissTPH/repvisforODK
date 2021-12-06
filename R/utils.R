@@ -107,7 +107,6 @@ set_color <- function(val) {
   }
 }
 
-
 #------------------------------------------------------------------------------------------------------------------------
 
 #' Prepends an h3 HTML tag to an HTML widget to serve as a header
@@ -130,5 +129,22 @@ add_html_title_tag <- function(html_widget, text) {
   html_widget_final = htmlwidgets::prependContent(html_widget, title_tag)
 
   return(html_widget_final)
+}
+
+#------------------------------------------------------------------------------------------------------------------------
+
+#' Removes all HTML tags from a string.
+#'
+#' To do so, the function uses a Regular Expression which looks for any instances with the pattern '<.*?>'.
+#'
+#' @param html_string
+#'
+#' @return Character
+#'
+#' @export
+#'
+#' @examples
+remove_html_tags <- function(html_string) {
+  return(gsub("<.*?>", "", htmlString))
 }
 

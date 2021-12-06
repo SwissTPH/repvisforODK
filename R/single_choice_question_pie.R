@@ -11,7 +11,6 @@
 #' one wants to examine. Please note that for this case the column name will be displayed as the title while the row values will be displayed as
 #' the choice labels.
 #'
-#'
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
@@ -68,10 +67,13 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
         df_count$label <- df_count$x
       }
 
+      # removing all HTML tags form the question label
+      df_count$label_clean <- lapply(df_count$label, repvisforODK::remove_html_tags)
+
       # calculating number of people who answered the question
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
-      fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
+      fig <- plotly::plot_ly(data = df_count, labels = ~label_clean, values = ~freq, type = 'pie', direction = 'clockwise',
                              marker = list(colors = repvisforODK::set_color('contrast_scale')),
                              hovertemplate = "%{label} <br>%{value}<extra></extra>")
       fig <- fig %>%

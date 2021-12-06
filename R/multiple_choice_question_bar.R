@@ -73,7 +73,14 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       for (vec in df$label) fin_vec <- c(fin_vec, vec)
       df_count_final <- as.data.frame(table(fin_vec))
 
-      title = ifelse(svc | !is.null(df_schema_ext), df_schema$labels_fin[df_schema$ruodk_name == q], q)
+
+      if(svc | !is.null(df_schema_ext)) {
+
+        # removing all HTML tags form the question label
+        df_schema$labels_fin_clean <- lapply(df_schema$labels_fin, repvisforODK::remove_html_tags)
+        title <- df_schema$labels_fin_clean[df_schema$ruodk_name == q]
+
+      } else title <- q
 
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
