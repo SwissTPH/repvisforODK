@@ -59,7 +59,9 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
           df_count$label <- lapply(df_count$x,
                                    function(x) df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$labels[match(x, df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$values)])
 
-          title <- df_schema$labels_fin[df_schema$ruodk_name == q]
+          # removing all HTML tags form the question label
+          df_schema$labels_fin_clean <- lapply(df_schema$labels_fin, repvisforODK::remove_html_tags)
+          title <- df_schema$labels_fin_clean[df_schema$ruodk_name == q]
           } else next
 
       } else {
@@ -67,13 +69,10 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
         df_count$label <- df_count$x
       }
 
-      # removing all HTML tags form the question label
-      df_count$label_clean <- lapply(df_count$label, repvisforODK::remove_html_tags)
-
       # calculating number of people who answered the question
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
-      fig <- plotly::plot_ly(data = df_count, labels = ~label_clean, values = ~freq, type = 'pie', direction = 'clockwise',
+      fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
                              marker = list(colors = repvisforODK::set_color('contrast_scale')),
                              hovertemplate = "%{label} <br>%{value}<extra></extra>")
       fig <- fig %>%
