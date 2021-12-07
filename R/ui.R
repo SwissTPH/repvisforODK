@@ -150,7 +150,7 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h5('For the date column, it is important that your spelling is identical to the column name in the data. Common choices for this parameter are "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                         tags$h5('Spelling must be identical to the column name in the data. Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
@@ -162,14 +162,14 @@ ui <- function() {
 
                                          # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
                                          shiny::checkboxInput(inputId = 'sub_goal_check',
-                                                              label = 'Tick the box if you want to include a submission goal in your general plots'),
+                                                              label = 'Include submission goal in general plots'),
 
                                          shiny::conditionalPanel(
                                            condition = 'input.sub_goal_check == true',
 
                                            shiny::numericInput(inputId = 'sub_goal_param',
-                                                               label = 'Enter daily submission goal',
-                                                               value = 0)
+                                                               label = 'Enter daily submission goal*',
+                                                               value = 1)
                                          ),
 
                                          # line break
@@ -179,10 +179,18 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.question_plots.length > 0 && output.lang_flag == true',
 
-                                         # Input: Enter report language link
-                                         shiny::textInput(inputId = 'lang_param',
-                                                          label = 'Enter the langauge in which you want to translate question labels and choices to',
-                                                          placeholder = 'e.g.: english'),
+                                         # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
+                                         shiny::checkboxInput(inputId = 'lang_check',
+                                                              label = 'Form was created in multiple languages'),
+
+                                         shiny::conditionalPanel(
+                                           condition = 'input.lang_check == true',
+
+                                           # Input: Enter report language link
+                                           shiny::textInput(inputId = 'lang_param',
+                                                            label = 'Enter the langauge in which you want to translate question labels and choices to*',
+                                                            placeholder = 'e.g.: english'),
+                                         ),
 
                                          # line break
                                          tags$br(),
