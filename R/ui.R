@@ -19,27 +19,31 @@ ui <- function() {
 
                                 # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
-                                            label = 'SVC',
+                                            label = 'SVC*',
                                             placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions',
                                             value = 'https://research.odk.path.org/v1/projects/4/forms/02-TIMCI-SPA-cgei.svc'),
 
                                   # Input: Enter username
                                   shiny::textInput(inputId = 'un',
-                                            label = 'Username',
+                                            label = 'Username*',
                                             placeholder = 'lucas.silbernagel@swisstph.ch',
                                             value = 'lucas.silbernagel@swisstph.ch'),
 
                                   # Input: Enter password
                                   shiny::passwordInput(inputId = 'pw',
-                                                label = 'Password',
+                                                label = 'Password*',
                                                 placeholder = 'S3cur3_Password123'),
 
                                   # Input: Enter timezone
                                   shiny::textInput(inputId = 'tz',
-                                            label = 'Timezone',
+                                            label = 'Timezone*',
                                             placeholder = "Europe/Berlin",
                                             value = 'Europe/Berlin'),
 
+                                # line break
+                                tags$br(),
+
+                                tags$h6('*required'),
 
                                 # Horizontal line
                                 tags$hr(),
@@ -150,7 +154,7 @@ ui <- function() {
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
-                                                          label = 'Enter date column',
+                                                          label = 'Enter date column*',
                                                           placeholder = 'e.g.: start'),
 
                                          # line break
@@ -189,7 +193,7 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'delimiter_param',
-                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated',
+                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated*',
                                                           placeholder = 'e.g.: ,'),
 
                                          # line break
@@ -201,7 +205,7 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'text_col_param',
-                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for',
+                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for*',
                                                           placeholder = 'e.g.: j4_j4_2a'),
 
                                          # line break
@@ -209,7 +213,7 @@ ui <- function() {
 
                                          # Input: Enter report language link
                                          shiny::textInput(inputId = 'lang_wc_param',
-                                                          label = 'Please specify the language of the answers to the(se) question(s)',
+                                                          label = 'Please specify the language of the answers to the(se) question(s)*',
                                                           placeholder = 'e.g.: english'),
 
                                          # line break
@@ -233,7 +237,7 @@ ui <- function() {
 
                                        # Input: Enter report language link
                                        shiny::textInput(inputId = 'title_param',
-                                                        label = 'Please enter a title',
+                                                        label = 'Please enter a title*',
                                                         placeholder = 'e.g.: timci_report_Nov_21'),
 
                                        # line break
@@ -241,8 +245,13 @@ ui <- function() {
 
                                        # Input: Enter report language link
                                        shiny::textInput(inputId = 'author_param',
-                                                        label = 'Please enter your name (will be shown as author)',
+                                                        label = 'Please enter your name (will be shown as author)*',
                                                         placeholder = 'e.g.: Lucas Silbernagel'),
+
+                                       # line break
+                                       tags$br(),
+
+                                       tags$h6('*required'),
 
                                        # Horizontal line
                                        tags$hr(style = 'border-color: #337ab7;'),
