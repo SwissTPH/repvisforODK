@@ -31,6 +31,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
     warning("The argument daily_submission_goal is set to 0.")
   }
 
+  # finding min and max date of the collection period
   date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
 
   # calculating number of days of data collection period

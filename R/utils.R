@@ -145,6 +145,6 @@ add_html_title_tag <- function(html_widget, text) {
 #'
 #' @examples
 remove_html_tags <- function(html_string) {
-  return(gsub("<.*?>", "", htmlString))
+  return(gsub("<.*?>", "", html_string))
 }
 

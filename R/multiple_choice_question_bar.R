@@ -121,5 +121,6 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       next
     }
   }
+
   return(figs)
 }

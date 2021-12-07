@@ -30,8 +30,11 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
     mutate(ndate = as.Date(ndate)) %>%
     dplyr::count(ndate)
 
+  # finding min and max date of the collection period
+  date_limits = repvisforODK::collection_period(df = df, date_col = 'ndate')
+
   sdate <- as.Date(min(df1$ndate))
-  day_seq <- data.frame(ndate = seq(lubridate::floor_date(sdate, 'month'), as.Date(lubridate::ceiling_date(Sys.Date(), "month") - 1), "days"))
+  day_seq <- data.frame(ndate = seq(lubridate::floor_date(date_limits[[1]], 'month'), as.Date(lubridate::ceiling_date(date_limits[[2]], "month") - 1), "days"))
   df2 <- merge(day_seq, df1, by = "ndate", all = TRUE)
   df2$n[(df2$ndate >= sdate) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
 
