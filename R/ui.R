@@ -8,7 +8,7 @@
 #' @examples
 ui <- function() {
   ui <- fluidPage(
-    list(tags$head(HTML('<link rel="icon", href="https://lucidviews.github.io/gh-pages/logo.png",
+    list(tags$head(HTML('<link rel="icon", href="https://lucidviews.github.io/gh-pages/logo_only.PNG",
                                    type="image/png" />'))),
     div(style="padding: 1px 0px; width: '100%'",
         titlePanel(
@@ -124,16 +124,48 @@ ui <- function() {
 
                                         shiny::mainPanel(
 
-                                          shiny::conditionalPanel(
-                                            condition = 'input.question_plots.length == 0 && input.general_plots.length == 0',
-
-                                            tags$h3('Please select at least one visualisation before you proceed.')
-                                          ),
+                                          tags$h3('Visualisation Examples'),
 
                                           shiny::tabsetPanel(type = 'tab',
-                                                      shiny::tabPanel('Examples', tags$iframe(style = 'height:400px; width:100%; scrolling=yes',
-                                                                                       src = 'https://lucidviews.github.io/gh-pages/example_plots_repvis.pdf')
-                                                                      )
+                                                      shiny::tabPanel('Daily Submission Goal Donut',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/donut.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                                      ),
+
+                                                      shiny::tabPanel('Submissions Over Time Line Chart (Cumulative)',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/line_cumsum.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Submissions Over Time Line Chart (Non-Cumulative)',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/line_no_cumsum.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Day of Week / Time of Day Heat Map',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/weekday_heatmap.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Calendar Heat Map',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/cal_heatmap.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Single Choice Question Pie Chart',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/pie.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Multiple Choice Question Bar Chart',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/bar.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      ),
+
+                                                      shiny::tabPanel('Free Text Question Word Cloud',
+                                                                      tags$img(src = 'https://lucidviews.github.io/gh-pages/wc.PNG',
+                                                                               style = 'height:auto; width:100%; max-width:900px;')
+                                                      )
                                                       )
                                           )
                                         )
