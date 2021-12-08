@@ -183,117 +183,122 @@ ui <- function() {
                                      shiny::conditionalPanel(
                                        condition = 'input.question_plots.length > 0 || input.general_plots.length > 0',
 
-                                       # for plots
-                                       tags$h3('1. Plot Parameters'),
+                                       fluidPage(
+                                         fluidRow(
+                                           column(6,
+                                                  # for plots
+                                                  tags$h3('1. Plot Parameters'),
 
-                                       shiny::conditionalPanel(
-                                         condition = 'input.general_plots.length > 0 ',
+                                                  shiny::conditionalPanel(
+                                                    condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h5('Spelling must be identical to the column name in the data.\n Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                                    tags$h5('Spelling must be identical to the column name in the data.\n Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
-                                         # Input: Enter date column link
-                                         shiny::textInput(inputId = 'date_col_param',
-                                                          label = 'Enter date column*',
-                                                          placeholder = 'e.g.: start'),
+                                                    # Input: Enter date column link
+                                                    shiny::textInput(inputId = 'date_col_param',
+                                                                     label = 'Enter date column*',
+                                                                     placeholder = 'e.g.: start'),
 
-                                         # line break
-                                         tags$br(),
+                                                    # line break
+                                                    tags$br(),
 
-                                         # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
-                                         shiny::checkboxInput(inputId = 'sub_goal_check',
-                                                              label = 'Include submission goal in general plots'),
+                                                    # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
+                                                    shiny::checkboxInput(inputId = 'sub_goal_check',
+                                                                         label = 'Include submission goal in general plots'),
 
-                                         shiny::conditionalPanel(
-                                           condition = 'input.sub_goal_check == true',
+                                                    shiny::conditionalPanel(
+                                                      condition = 'input.sub_goal_check == true',
 
-                                           shiny::numericInput(inputId = 'sub_goal_param',
-                                                               label = 'Enter daily submission goal*',
-                                                               value = 1)
-                                         ),
+                                                      shiny::numericInput(inputId = 'sub_goal_param',
+                                                                          label = 'Enter daily submission goal*',
+                                                                          value = 1)
+                                                    ),
 
-                                         # line break
-                                         tags$br(),
+                                                    # line break
+                                                    tags$br(),
+                                                  ),
+
+                                                  shiny::conditionalPanel(
+                                                    condition = 'input.question_plots.length > 0 && output.lang_flag == true',
+
+                                                    shiny::radioButtons(inputId = 'label_col',
+                                                                        label = 'Select the question label column to use for translation.',
+                                                                        choices = c('labels')),
+
+
+                                                    shiny::radioButtons(inputId = 'choice_col',
+                                                                        label = 'Select the choice column to use for translation.',
+                                                                        choices = c('choices')),
+
+                                                    tags$br(),
+                                                  ),
+
+                                                  shiny::conditionalPanel(
+                                                    condition = 'input.question_plots.indexOf("multiple_bar") > -1',
+
+                                                    # Input: Enter report language link
+                                                    shiny::textInput(inputId = 'delimiter_param',
+                                                                     label = 'Please specify the delimiter with which the multiple choice question answers are separated*',
+                                                                     placeholder = 'e.g.: ,'),
+
+                                                    # line break
+                                                    tags$br(),
+                                                  ),
+
+                                                  shiny::conditionalPanel(
+                                                    condition = 'input.question_plots.indexOf("wordcloud") > -1',
+
+                                                    # Input: Enter report language link
+                                                    shiny::textInput(inputId = 'text_col_param',
+                                                                     label = 'Please specify the name of the question(s) you want to generate a word cloud for*',
+                                                                     placeholder = 'e.g.: j4_j4_2a'),
+
+                                                    # line break
+                                                    tags$br(),
+
+                                                    # Input: Enter report language link
+                                                    shiny::textInput(inputId = 'lang_wc_param',
+                                                                     label = 'Please specify the language of the answers to the(se) question(s)*',
+                                                                     placeholder = 'e.g.: english'),
+
+                                                    # line break
+                                                    tags$br(),
+                                                  ),
+
+                                                  shiny::conditionalPanel(
+                                                    condition = 'input.general_plots.indexOf("donut") > -1 || input.general_plots.indexOf("line_chart_cumsum") > -1 || input.general_plots.indexOf("line_chart_no_cumsum") > -1',
+
+                                                    # Input: exclude weekend?
+                                                    shiny::checkboxInput(inputId = 'exclude_weekend_param',
+                                                                         label = 'Tick to not consider weekends for line chart(s) and/or donut chart',
+                                                                         value = FALSE)
+                                                  ),
+
+                                                  # line break
+                                                  tags$br(),
+
+                                                  tags$h6('*required   (Only click "Generate Report" if all required parameters are specified)')
+                                                  ),
+
+                                           column(6,
+                                                  # for report
+                                                  tags$h3('2. Report Parameters'),
+
+                                                  # Input: Enter report language link
+                                                  shiny::textInput(inputId = 'title_param',
+                                                                   label = 'Please enter a title*',
+                                                                   placeholder = 'e.g.: timci_report_Nov_21'),
+
+                                                  # line break
+                                                  tags$br(),
+
+                                                  # Input: Enter report language link
+                                                  shiny::textInput(inputId = 'author_param',
+                                                                   label = 'Please enter your name (will be shown as author)*',
+                                                                   placeholder = 'e.g.: Lucas Silbernagel')
+                                                  )
+                                         )
                                        ),
-
-                                       shiny::conditionalPanel(
-                                         condition = 'input.question_plots.length > 0 && output.lang_flag == true',
-
-                                         shiny::radioButtons(inputId = 'label_col',
-                                                             label = 'Select the question label column to use for translation.',
-                                                             choices = c('labels')),
-
-
-                                         shiny::radioButtons(inputId = 'choice_col',
-                                                             label = 'Select the choice column to use for translation.',
-                                                             choices = c('choices')),
-
-                                         tags$br(),
-                                       ),
-
-                                       shiny::conditionalPanel(
-                                         condition = 'input.question_plots.indexOf("multiple_bar") > -1',
-
-                                         # Input: Enter report language link
-                                         shiny::textInput(inputId = 'delimiter_param',
-                                                          label = 'Please specify the delimiter with which the multiple choice question answers are separated*',
-                                                          placeholder = 'e.g.: ,'),
-
-                                         # line break
-                                         tags$br(),
-                                       ),
-
-                                       shiny::conditionalPanel(
-                                         condition = 'input.question_plots.indexOf("wordcloud") > -1',
-
-                                         # Input: Enter report language link
-                                         shiny::textInput(inputId = 'text_col_param',
-                                                          label = 'Please specify the name of the question(s) you want to generate a word cloud for*',
-                                                          placeholder = 'e.g.: j4_j4_2a'),
-
-                                         # line break
-                                         tags$br(),
-
-                                         # Input: Enter report language link
-                                         shiny::textInput(inputId = 'lang_wc_param',
-                                                          label = 'Please specify the language of the answers to the(se) question(s)*',
-                                                          placeholder = 'e.g.: english'),
-
-                                         # line break
-                                         tags$br(),
-                                       ),
-
-                                       shiny::conditionalPanel(
-                                         condition = 'input.general_plots.indexOf("donut") > -1 || input.general_plots.indexOf("line_chart_cumsum") > -1 || input.general_plots.indexOf("line_chart_no_cumsum") > -1',
-
-                                         # Input: exclude weekend?
-                                         shiny::checkboxInput(inputId = 'exclude_weekend_param',
-                                                          label = 'Tick to not consider weekends for line chart(s) and/or donut chart',
-                                                          value = FALSE)
-                                         ),
-
-                                       # Horizontal line
-                                       tags$hr(style = 'border-color: #337ab7;'),
-
-                                       # for report
-                                       tags$h3('2. Report Parameters'),
-
-                                       # Input: Enter report language link
-                                       shiny::textInput(inputId = 'title_param',
-                                                        label = 'Please enter a title*',
-                                                        placeholder = 'e.g.: timci_report_Nov_21'),
-
-                                       # line break
-                                       tags$br(),
-
-                                       # Input: Enter report language link
-                                       shiny::textInput(inputId = 'author_param',
-                                                        label = 'Please enter your name (will be shown as author)*',
-                                                        placeholder = 'e.g.: Lucas Silbernagel'),
-
-                                       # line break
-                                       tags$br(),
-
-                                       tags$h6('*required'),
 
                                        # Horizontal line
                                        tags$hr(style = 'border-color: #337ab7;'),
