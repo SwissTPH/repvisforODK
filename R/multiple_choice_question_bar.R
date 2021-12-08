@@ -60,7 +60,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       if (svc | !is.null(df_schema_ext)) {
 
         # mapping choice labels to their respective names and saving the result as a char vector in a new df col
-        ansr <- lapply(df[[q]], function(x) strsplit(x, ' ', fixed = TRUE)[[1]])
+        ansr <- lapply(df[[q]], function(x) strsplit(x, delimiter, fixed = TRUE)[[1]])
         df$label <- I(lapply(ansr,
                              function(x) sapply(x,
                                                 function(x) df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$labels[match(x, df_schema$choices_fin[df_schema$ruodk_name == q][[1]]$values)],
@@ -71,9 +71,28 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
         df$label <- I(lapply(df[[q]], function(x) strsplit(x, delimiter, fixed = TRUE)[[1]]))
       }
 
-      fin_vec <- c()
-      for (vec in df$label) fin_vec <- c(fin_vec, vec)
-      df_count_final <- as.data.frame(table(fin_vec))
+      # separating single choice from multiple choice answers
+      fin_vec_single <- c()
+      fin_vec_multi <- c()
+      for (vec in df$label){
+        if (length(vec) > 1) {
+          fin_vec_multi <- c(fin_vec_multi, vec)
+        } else {
+          fin_vec_single <- c(fin_vec_single, vec)
+        }
+      }
+
+      # getting counts for both dfs
+      df_s <- as.data.frame(table(fin_vec_single))
+      colnames(df_s)[1] <- 'choice'
+
+      df_m <- as.data.frame(table(fin_vec_multi))
+      colnames(df_m)[1] <- 'choice'
+
+      # outer join to merge both dfs without losing info
+      df_merge <- merge(df_s, df_m, by = 'choice', all = TRUE)
+      df_merge[is.na(df_merge)] <- 0
+      df_merge$Freq.total <- df_merge$Freq.x + df_merge$Freq.y
 
 
       if(svc | !is.null(df_schema_ext)) {
@@ -86,16 +105,22 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
-      fig <- plot_ly(data = df_count_final, x = ~fin_vec, y = ~Freq/num_peop_q,
+      fig <- plot_ly(data = df_merge, x = ~choice, y = ~Freq.y/num_peop_q,
                      type = 'bar',
-                     text = ~Freq,
+                     name = 'Among Multiple Choices',
+                     text = ~Freq.total,
                      textposition = 'outside',
                      color = I(ifelse(counter %% 2 == 0,
                                     repvisforODK::set_color('red'),
                                     repvisforODK::set_color('green')
-                                    )
-                               ),
+                                    )),
                      hovertemplate = "%{label} <br>%{y}<extra></extra>")
+
+      fig <- fig %>% add_trace(x = ~choice, y = ~Freq.x/num_peop_q,
+                               type = 'bar',
+                               name = 'As Single Choice',
+                               marker = list(color = if (counter %% 2 == 0) "#FEE08B" else "#A6D96A")
+                               )
 
       fig <- fig %>%
         layout(yaxis = list(tickformat = '.0%',
@@ -108,7 +133,8 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
                title = list(text = paste0(num_peop_q, ' out of ', nrow(df), ' have answered this question.'),
                             font = list(size = 12),
                             x = 0.8),
-               plot_bgcolor = '#e5ecf6'
+               plot_bgcolor = '#e5ecf6',
+               barmode = 'stack'
         )
 
       # adding title to the html widget
