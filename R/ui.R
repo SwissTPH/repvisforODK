@@ -63,7 +63,7 @@ ui <- function() {
                                   # Horizontal line
                                   tags$hr(),
 
-                                  shiny::actionButton('next1', 'Next')
+                                  shiny::actionButton('next1', 'Use Data and Next')
                                 ),
 
                               ),
