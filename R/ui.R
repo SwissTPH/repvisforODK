@@ -8,6 +8,13 @@
 #' @examples
 ui <- function() {
   ui <- fluidPage(
+    list(tags$head(HTML('<link rel="icon", href="https://lucidviews.github.io/gh-pages/logo.png",
+                                   type="image/png" />'))),
+    div(style="padding: 1px 0px; width: '100%'",
+        titlePanel(
+          title="", windowTitle="repvisforODK"
+        )
+    ),
     shiny::navbarPage(includeCSS('www/styles.css'),
                           title = 'repvisforODK',
                           id = 'tab',
