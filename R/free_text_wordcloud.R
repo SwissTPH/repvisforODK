@@ -12,6 +12,8 @@
 #' @param lang_wc Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param lang Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.
 #' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
+#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return List
 #'
@@ -19,12 +21,16 @@
 #' @import tm wordcloud2
 #'
 #' @examples
-free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, lang_wc, lang = 'english', df_schema_ext = NULL) {
+free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, lang_wc, lang = NULL, df_schema_ext = NULL, choice_col = NULL, label_col = NULL) {
+
+  if (svc & !is.null(df_schema_ext)) {
+    stop('Please specify one and only one of the arguments "svc" and "df_schema_ext".')
+  }
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
   wc_list = lapply(text_col,
-                   preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, df_schema_ext_c = df_schema_ext)
+                   preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, df_schema_ext_c = df_schema_ext, choice_col_c = choice_col, label_col_c = label_col)
 
   return(wc_list)
 }
@@ -43,6 +49,8 @@ free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, la
 #' @param lang_c Character containing the name of the language that is to be examined.
 #' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
 #' @param df_schema_ext_c Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
+#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return wordcloud2 html-widget
 #'
@@ -50,7 +58,7 @@ free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, la
 #' @import tm wordcloud2 DT
 #'
 #' @examples
-preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'english', svc_c = svc, df_schema_ext_c = df_schema_ext) {
+preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = lang, svc_c = svc, df_schema_ext_c = df_schema_ext, choice_col_c = choice_col, label_col_c = label_col) {
 
   # isolating text in vector
   text = df_c[[text_col]]
@@ -76,8 +84,11 @@ preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = 'e
   # defining title
   if (svc_c | !is.null(df_schema_ext_c)) {
 
-    df_schema <- ruODK::form_schema_ext()
-    df_schema = repvisforODK::rename_schema(df_schema, lang_c)
+    if (svc_c) {
+      df_schema <- ruODK::form_schema_ext()
+    } else df_schema <- df_schema_ext_c
+
+    df_schema = repvisforODK::rename_schema(df = df_schema, lang = lang_c, choice_col = choice_col_c, label_col = label_col_c)
 
     title = df_schema$labels_fin[df_schema$ruodk_name == text_col]
   } else title = text_col

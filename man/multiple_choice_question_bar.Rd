@@ -11,7 +11,9 @@ multiple_choice_question_bar(
   qvec = NULL,
   lang = NULL,
   df_schema_ext = NULL,
-  delimiter = " "
+  delimiter = " ",
+  choice_col = NULL,
+  label_col = NULL
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ multiple_choice_question_bar(
 \item{df_schema_ext}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
 
 \item{delimiter}{Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.}
+
+\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+
+\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 List

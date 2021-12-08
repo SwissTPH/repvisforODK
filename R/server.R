@@ -6,7 +6,7 @@
 #' @return
 #'
 #' @export
-#' @import ruODK shiny rmarkdown
+#' @import ruODK shiny rmarkdown shinyalert
 #'
 #' @examples
 server <- function(input, output) {
@@ -33,6 +33,16 @@ server <- function(input, output) {
 
     df_schema <- ruODK::form_schema_ext()
 
+  })
+
+  observe({
+    label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
+    updateRadioButtons(inputId = 'label_col',
+                       choices = label_col_choices)
+
+    choice_col_choices <- colnames(df_schema())[grepl("choices\\w*", colnames(df_schema()))]
+    updateRadioButtons(inputId = 'choice_col',
+                       choices = choice_col_choices)
   })
 
   output$contents <- renderDataTable({
@@ -71,10 +81,37 @@ server <- function(input, output) {
   )
   outputOptions(output, "lang_flag", suspendWhenHidden = FALSE)
 
+
+  # Create reactiveValues object and set flag to 0 to prevent errors with adding NULL
+  rv <- reactiveValues(download_flag = 0)
+
   output$report_button <- shiny::downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "repvis_report.html",
     content = function(file) {
+
+      # When the downloadHandler function runs, increment rv$download_flag
+      rv$download_flag <- rv$download_flag + 1
+
+      if(rv$download_flag > 0){  # trigger event whenever the value of rv$download_flag changes
+        shinyalert::shinyalert(
+          title = 'Your report is on the way!',
+          text = 'Usually the creation only takes some seconds.\n Depending on data size and download speed it can be more...',
+          size = 's',
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "success",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "OK",
+          confirmButtonCol = " #bf3227",
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+      }
+
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
@@ -87,9 +124,10 @@ server <- function(input, output) {
                      daily_submission_goal = input$sub_goal_param,
                      exclude_weekend = input$exclude_weekend_param,
                      delimiter = input$delimiter_param,
-                     lang = tolower(input$lang_param),
                      lang_wc = tolower(input$lang_wc_param),
-                     text_col = input$text_col_param,
+                     text_col = strsplit(input$text_col_param, ', ', fixed = TRUE)[[1]],
+                     choice_col = input$choice_col,
+                     label_col = input$label_col,
                      plots_general = input$general_plots,
                      plots_question = input$question_plots)
 

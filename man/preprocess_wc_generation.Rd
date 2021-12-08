@@ -8,9 +8,11 @@ preprocess_wc_generation(
   text_col,
   lang_wc_c,
   df_c = df,
-  lang_c = "english",
+  lang_c = lang,
   svc_c = svc,
-  df_schema_ext_c = df_schema_ext
+  df_schema_ext_c = df_schema_ext,
+  choice_col_c = choice_col,
+  label_col_c = label_col
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ preprocess_wc_generation(
 \item{svc_c}{Logical that specifies whether the data is coming directly from ODK or not.}
 
 \item{df_schema_ext_c}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
+
+\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+
+\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 wordcloud2 html-widget

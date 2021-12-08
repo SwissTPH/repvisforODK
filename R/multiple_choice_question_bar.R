@@ -18,6 +18,8 @@
 #' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
 #' @param delimiter Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.
 #' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
+#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return List
 #'
@@ -25,7 +27,7 @@
 #' @import ruODK plotly
 #'
 #' @examples
-multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL, delimiter = ' ') {
+multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL, delimiter = ' ', choice_col = NULL, label_col = NULL) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
@@ -36,7 +38,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
   } else if (!is.null(df_schema_ext) | svc) {
 
     # deriving questions and choices from form schema
-    choice_questions <- repvisforODK::identify_choice_questions(lang, df_schema_ext)
+    choice_questions <- repvisforODK::identify_choice_questions(lang = lang, df = df_schema_ext, choice_col = choice_col, label_col = label_col)
     df_schema <- choice_questions[[1]]
     qvec_pre <- choice_questions[[2]]
 

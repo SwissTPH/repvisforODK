@@ -5,6 +5,8 @@
 #'
 #' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
 #' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
+#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return List
 #'
@@ -13,7 +15,7 @@
 #'
 #' @examples
 
-identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL) {
+identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL, choice_col = NULL, label_col = NULL) {
   # deriving questions and choices from form schema
   repvisforODK::info_msg('Identifying single choice questions through extended form schema.')
 
@@ -26,7 +28,7 @@ identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL) {
   df_schema <- df_schema %>%
     dplyr::filter(!grepl("generated_", name), type != 'structure')
 
-  df_schema <- repvisforODK::rename_schema(df = df_schema, lang)
+  df_schema <- repvisforODK::rename_schema(df = df_schema, lang = lang, choice_col = choice_col, label_col = label_col)
 
   # filtering for only questions that have choices and are not NA or NULL
   qvec_pre <- df_schema$ruodk_name[df_schema$choices_fin != 'NULL' & df_schema$choices_fin != 'NA']
@@ -43,23 +45,30 @@ identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL) {
 #' all functions still work as they refer to the uniform name given by this function.
 #'
 #' @param df Data frame containing the ODK form schema
-#' @param lang Language of the choice/label column which is to be changed. Optional, defaults to NULL.
+#' @param lang String specifying the language of the choice/label column which is to be changed. Optional, defaults to NULL.
+#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return Data frame
 #'
 #' @export
 #'
 #' @examples
-rename_schema <- function(df, lang = NULL) {
+rename_schema <- function(df, lang = NULL, choice_col = NULL, label_col = NULL) {
 
   lang_2_char <- substr(lang, 1, 2)
 
-  if (!is.null(lang)) {
+  if (!is.null(lang) & is.null(choice_col) & is.null(label_col)) {
     names(df)[names(df) == paste0('choices_', lang, '_(', lang_2_char, ')')] <- 'choices_fin'
     names(df)[names(df) == paste0('label_', lang, '_(', lang_2_char, ')')] <- 'labels_fin'
-  } else {
+  } else if (is.null(lang) & is.null(choice_col) & is.null(label_col)) {
     names(df)[names(df) == 'choices'] <- 'choices_fin'
     names(df)[names(df) == 'label'] <- 'labels_fin'
+  } else if (is.null(lang) & !is.null(choice_col) & !is.null(label_col)) {
+    names(df)[names(df) == choice_col] <- 'choices_fin'
+    names(df)[names(df) == label_col] <- 'labels_fin'
+  } else {
+    stop('Please specify either choice_col and label_col OR lang OR none of the arguments mentioned. At the moment there is a conflict between these arguments.')
   }
 
   return(df)

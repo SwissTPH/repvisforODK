@@ -4,12 +4,21 @@
 \alias{identify_choice_questions}
 \title{Identifies all questions in a form that have choices.}
 \usage{
-identify_choice_questions(lang = NULL, df_schema_ext = NULL)
+identify_choice_questions(
+  lang = NULL,
+  df_schema_ext = NULL,
+  choice_col = NULL,
+  label_col = NULL
+)
 }
 \arguments{
 \item{lang}{Character containing the name of the language that is to be examined, defaults to NULL.}
 
 \item{df_schema_ext}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
+
+\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+
+\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 List

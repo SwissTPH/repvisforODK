@@ -10,8 +10,10 @@ free_text_wordcloud(
   csv = NULL,
   text_col,
   lang_wc,
-  lang = "english",
-  df_schema_ext = NULL
+  lang = NULL,
+  df_schema_ext = NULL,
+  choice_col = NULL,
+  label_col = NULL
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ free_text_wordcloud(
 \item{lang}{Character that specifies the language of the answers of the free text question. Check \code{\link[tm]{stopwords}} to find out more about stopwords list options.}
 
 \item{df_schema_ext}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
+
+\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+
+\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 List

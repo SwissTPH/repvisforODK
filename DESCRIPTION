@@ -35,4 +35,5 @@ Imports:
     tm,
     wordcloud2,
     shiny,
-    shinycssloaders
+    shinycssloaders,
+    shinyalert

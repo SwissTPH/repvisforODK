@@ -3,7 +3,7 @@
 #' @return
 #'
 #' @export
-#' @import shiny dplyr shinycssloaders
+#' @import shiny dplyr shinycssloaders shinyalert
 #'
 #' @examples
 ui <- function() {
@@ -150,7 +150,7 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.general_plots.length > 0 ',
 
-                                         tags$h5('Spelling must be identical to the column name in the data. Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                         tags$h5('Spelling must be identical to the column name in the data.\n Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                          # Input: Enter date column link
                                          shiny::textInput(inputId = 'date_col_param',
@@ -179,20 +179,15 @@ ui <- function() {
                                        shiny::conditionalPanel(
                                          condition = 'input.question_plots.length > 0 && output.lang_flag == true',
 
-                                         # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
-                                         shiny::checkboxInput(inputId = 'lang_check',
-                                                              label = 'Form was created in multiple languages'),
+                                         shiny::radioButtons(inputId = 'label_col',
+                                                             label = 'Select the question label column to use for translation.',
+                                                             choices = c('labels')),
 
-                                         shiny::conditionalPanel(
-                                           condition = 'input.lang_check == true',
 
-                                           # Input: Enter report language link
-                                           shiny::textInput(inputId = 'lang_param',
-                                                            label = 'Enter the langauge in which you want to translate question labels and choices to*',
-                                                            placeholder = 'e.g.: english'),
-                                         ),
+                                         shiny::radioButtons(inputId = 'choice_col',
+                                                             label = 'Select the choice column to use for translation.',
+                                                             choices = c('choices')),
 
-                                         # line break
                                          tags$br(),
                                        ),
 
@@ -265,6 +260,8 @@ ui <- function() {
                                        tags$hr(style = 'border-color: #337ab7;'),
 
                                        shiny::downloadButton("report_button", "Generate report"),
+
+                                       shinyalert::useShinyalert(),
 
                                        # Horizontal line
                                        tags$hr(style = 'border-color: #337ab7;'),

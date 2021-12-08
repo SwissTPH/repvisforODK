@@ -4,12 +4,16 @@
 \alias{rename_schema}
 \title{Changes the name of the labels and choices column in an ODK form schema.}
 \usage{
-rename_schema(df, lang = NULL)
+rename_schema(df, lang = NULL, choice_col = NULL, label_col = NULL)
 }
 \arguments{
 \item{df}{Data frame containing the ODK form schema}
 
-\item{lang}{Language of the choice/label column which is to be changed. Optional, defaults to NULL.}
+\item{lang}{String specifying the language of the choice/label column which is to be changed. Optional, defaults to NULL.}
+
+\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+
+\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 Data frame

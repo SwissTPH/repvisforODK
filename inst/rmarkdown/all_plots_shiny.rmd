@@ -10,8 +10,9 @@ params:
   exclude_weekend: NA
   delimiter: NA
   text_col: NA
-  lang: NA
   lang_wc: NA
+  choice_col: NA
+  label_col: NA
   title: NA
   author: NA
   plots_general: NA
@@ -56,9 +57,8 @@ daily_submission_goal <- as.numeric(params$daily_submission_goal)
 svc <- params$svc
 
 # for question-specific plots
-lang <- params$lang
-# if lag arg is left blank in app, it needs to be set to NULL for the choice question functions to work 
-if (lang == "") lang <- NULL
+label_col <- params$label_col
+choice_col <- params$choice_col
 
 # only for submissions_time series_lineplot
 exclude_weekend <- as.logical(params$exclude_weekend)
@@ -130,7 +130,7 @@ fig
 # Distribution of Answers for Single-Choice Questions
 ```{r}
 if (plot_evals$single_pie) {
-  plots <- repvisforODK::single_choice_question_pie(df = df, lang = lang, df_schema_ext = df_schema_ext)
+  plots <- repvisforODK::single_choice_question_pie(df = df, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL
 
 if (length(plots) == 0) {
@@ -143,7 +143,7 @@ if (length(plots) == 0) {
 # Distribution of Answers for Mutiple-Choice Questions
 ```{r}
 if (plot_evals$multiple_bar) {
-  plots <- repvisforODK::multiple_choice_question_bar(df = df, lang = lang, df_schema_ext = df_schema_ext)
+  plots <- repvisforODK::multiple_choice_question_bar(df = df, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL
 
 if (length(plots) == 0) {
@@ -156,7 +156,7 @@ if (length(plots) == 0) {
 # Wordcloud for Free Text Question
 ```{r}
 if (plot_evals$wordcloud) {
-  plots <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang = lang, lang_wc = lang_wc, df_schema_ext = df_schema_ext)
+  plots <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang_wc = lang_wc, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL
 
 htmltools::tagList(lapply(plots, print)) 
