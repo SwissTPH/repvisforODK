@@ -7,7 +7,7 @@
 remove_html_tags(html_string)
 }
 \arguments{
-\item{html_string}{}
+\item{html_string}{String from which HTML tags shall be removed.}
 }
 \value{
 Character

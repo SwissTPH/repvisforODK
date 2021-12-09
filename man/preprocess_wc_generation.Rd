@@ -28,9 +28,9 @@ preprocess_wc_generation(
 
 \item{df_schema_ext_c}{Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.}
 
-\item{choice_col}{String specifying the choices column that is to be changed, defaults to NULL.}
+\item{choice_col_c}{String specifying the choices column that is to be changed, defaults to NULL.}
 
-\item{label_col}{String specifying the labels column that is to be changed, defaults to NULL.}
+\item{label_col_c}{String specifying the labels column that is to be changed, defaults to NULL.}
 }
 \value{
 wordcloud2 html-widget

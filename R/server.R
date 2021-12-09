@@ -1,7 +1,9 @@
 #' Server code for the shiny app that users can use to do generate reports.
 #'
-#' @param input
-#' @param output
+#' Standard Shiny app component.
+#'
+#' @param input Shiny server input param
+#' @param output Shiny server output param
 #'
 #' @return
 #'
@@ -20,7 +22,7 @@ server <- function(input, output) {
 
     repvisforODK::setup_ruODK(svc = input$svc_text, un = input$un, pw = input$pw, tz = input$tz)
 
-    df <- ruODK::odata_submission_get(download = FALSE)
+    df <- repvisforODK::load_data_sub_date(tz = 'Europe/Berlin')
 
   })
 
@@ -36,6 +38,19 @@ server <- function(input, output) {
   })
 
   observe({
+
+    collection_period <- repvisforODK::collection_period(date_col = input$filter_col, df = df())
+    updateDateRangeInput(inputId = 'date_range',
+                         start = collection_period[[1]],
+                         end = collection_period[[2]])
+  })
+
+  shiny::observeEvent(input$load_preview_button, {
+
+    datetime_col_choices <- colnames(df_test %>% select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
+    updateRadioButtons(inputId = 'filter_col',
+                       choices = datetime_col_choices)
+
     label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
     updateRadioButtons(inputId = 'label_col',
                        choices = label_col_choices)

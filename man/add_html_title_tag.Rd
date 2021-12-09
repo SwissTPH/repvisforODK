@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{add_html_title_tag}
 \alias{add_html_title_tag}
-\title{Prepends an h3 HTML tag to an HTML widget to serve as a header}
+\title{Prepends an h3 HTML tag to an HTML widget to serve as a header.}
 \usage{
 add_html_title_tag(html_widget, text)
 }
 \arguments{
-\item{html_widget}{HTML widget you want to prepend the HTML tag on}
+\item{html_widget}{HTML widget you want to prepend the HTML tag on.}
 
-\item{text}{Character that specifies the text of the title}
+\item{text}{Character that specifies the text of the title.}
 }
 \value{
 HTML widget
 }
 \description{
-Prepends an h3 HTML tag to an HTML widget to serve as a header
+Prepends an h3 HTML tag to an HTML widget to serve as a header.
 }

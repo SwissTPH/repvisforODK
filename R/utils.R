@@ -109,10 +109,10 @@ set_color <- function(val) {
 
 #------------------------------------------------------------------------------------------------------------------------
 
-#' Prepends an h3 HTML tag to an HTML widget to serve as a header
+#' Prepends an h3 HTML tag to an HTML widget to serve as a header.
 #'
-#' @param html_widget HTML widget you want to prepend the HTML tag on
-#' @param text Character that specifies the text of the title
+#' @param html_widget HTML widget you want to prepend the HTML tag on.
+#' @param text Character that specifies the text of the title.
 #'
 #' @return HTML widget
 #'
@@ -137,7 +137,7 @@ add_html_title_tag <- function(html_widget, text) {
 #'
 #' To do so, the function uses a Regular Expression which looks for any instances with the pattern '<.*?>'.
 #'
-#' @param html_string
+#' @param html_string String from which HTML tags shall be removed.
 #'
 #' @return Character
 #'
@@ -148,3 +148,28 @@ remove_html_tags <- function(html_string) {
   return(gsub("<.*?>", "", html_string))
 }
 
+#------------------------------------------------------------------------------------------------------------------------
+
+#' Downloads data from ODK Central with formatted submission date column.
+#'
+#' This function is necessary because this operation couldn't be performed in shiny.
+#'
+#' @param tz String that defines the timezone.
+#'
+#' @return data frame
+#'
+#' @export
+#'
+#' @examples
+load_data_sub_date <- function(tz) {
+
+
+  df <- ruODK::odata_submission_get(download = FALSE)
+
+  df$submission_date <- unlist(lapply(df$system_submission_date,
+                                      function(x) substring(gsub('T', ' ', x), 1, nchar(x)-5)))
+
+  df$submission_date <- strptime(df$submission_date, "%Y-%m-%d %H:%M:%S", tz = tz)
+
+  return(df)
+}

@@ -49,8 +49,8 @@ free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, la
 #' @param lang_c Character containing the name of the language that is to be examined.
 #' @param svc_c Logical that specifies whether the data is coming directly from ODK or not.
 #' @param df_schema_ext_c Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
-#' @param choice_col String specifying the choices column that is to be changed, defaults to NULL.
-#' @param label_col String specifying the labels column that is to be changed, defaults to NULL.
+#' @param choice_col_c String specifying the choices column that is to be changed, defaults to NULL.
+#' @param label_col_c String specifying the labels column that is to be changed, defaults to NULL.
 #'
 #' @return wordcloud2 html-widget
 #'

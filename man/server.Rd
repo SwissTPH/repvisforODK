@@ -7,11 +7,13 @@
 server(input, output)
 }
 \arguments{
-\item{output}{}
+\item{input}{Shiny server input param}
+
+\item{output}{Shiny server output param}
 }
 \value{
 
 }
 \description{
-Server code for the shiny app that users can use to do generate reports.
+Standard Shiny app component.
 }

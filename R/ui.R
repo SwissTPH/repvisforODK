@@ -63,6 +63,27 @@ ui <- function() {
                                   # Horizontal line
                                   tags$hr(),
 
+                                  # Input: Filter data
+                                  shiny::checkboxInput(inputId = 'filter_check',
+                                                       label = 'Filter data by date and time'),
+
+                                  shiny::conditionalPanel(
+                                    condition = 'input.filter_check == true',
+
+                                    shiny::radioButtons(inputId = 'filter_col',
+                                                        label = 'Select the date column to use for filtering',
+                                                        choices = c('NA')),
+
+                                    shiny::dateRangeInput('date_range',
+                                                   label = 'Select date range',
+                                                   start = Sys.Date() - 2,
+                                                   end = Sys.Date() + 2
+                                    )
+                                  ),
+
+                                  # Horizontal line
+                                  tags$hr(),
+
                                   shiny::actionButton('next1', 'Use Data and Next')
                                 ),
 
