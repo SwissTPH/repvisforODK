@@ -82,6 +82,7 @@ if (plot_evals$donut) {
 
 fig
 ```
+***
 `r if (!plot_evals$donut) {"\\end{comment}"}`
 
 `r if (!plot_evals$line_chart_cumsum) {"\\begin{comment}"}`
@@ -93,6 +94,7 @@ if (plot_evals$line_chart_cumsum) {
 
 fig
 ```
+***
 `r if (!plot_evals$line_chart_cumsum) {"\\end{comment}"}`
 
 `r if (!plot_evals$line_chart_no_cumsum) {"\\begin{comment}"}`
@@ -104,6 +106,7 @@ if (plot_evals$line_chart_no_cumsum) {
 
 fig
 ```
+***
 `r if (!plot_evals$line_chart_no_cumsum) {"\\end{comment}"}`
 
 `r if (!plot_evals$day_heatmap) {"\\begin{comment}"}`
@@ -115,6 +118,7 @@ if (plot_evals$day_heatmap) {
 
 fig
 ```
+***
 `r if (!plot_evals$day_heatmap) {"\\end{comment}"}`
 
 `r if (!plot_evals$cal_heatmap) {"\\begin{comment}"}`
@@ -126,6 +130,7 @@ if (plot_evals$cal_heatmap) {
 
 fig
 ```
+***
 `r if (!plot_evals$cal_heatmap) {"\\end{comment}"}`
 
 `r if (!plot_evals$single_pie) {"\\begin{comment}"}`
@@ -139,6 +144,7 @@ if (length(plots) == 0) {
   print('No Single Choice Questions were identified.')
 } else htmltools::tagList(plots)
 ```
+***
 `r if (!plot_evals$single_pie) {"\\end{comment}"}`
 
 `r if (!plot_evals$multiple_bar) {"\\begin{comment}"}`
@@ -152,6 +158,7 @@ if (length(plots) == 0) {
   print('No Multiple Choice Questions were identified.')
 } else htmltools::tagList(plots)
 ```
+***
 `r if (!plot_evals$multiple_bar) {"\\end{comment}"}`
 
 `r if (!plot_evals$wordcloud) {"\\begin{comment}"}`

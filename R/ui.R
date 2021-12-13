@@ -65,17 +65,17 @@ ui <- function() {
 
                                   # Input: Filter data
                                   shiny::checkboxInput(inputId = 'filter_check',
-                                                       label = 'Filter data by date and time'),
+                                                       label = 'Filter data by date'),
 
                                   shiny::conditionalPanel(
                                     condition = 'input.filter_check == true',
 
                                     shiny::radioButtons(inputId = 'filter_col',
-                                                        label = 'Select the date column to use for filtering',
+                                                        label = 'Date column to use for filtering',
                                                         choices = c('NA')),
 
                                     shiny::dateRangeInput('date_range',
-                                                   label = 'Select date range',
+                                                   label = 'Date range',
                                                    start = Sys.Date() - 2,
                                                    end = Sys.Date() + 2
                                     )
@@ -216,22 +216,22 @@ ui <- function() {
                                                     tags$h5('Spelling must be identical to the column name in the data.\n Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
 
                                                     # Input: Enter date column link
-                                                    shiny::textInput(inputId = 'date_col_param',
-                                                                     label = 'Enter date column*',
-                                                                     placeholder = 'e.g.: start'),
+                                                    shiny::selectInput(inputId = 'date_col_param',
+                                                                     label = 'Timestamp column*',
+                                                                     choices = c('NA')),
 
                                                     # line break
                                                     tags$br(),
 
                                                     # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
                                                     shiny::checkboxInput(inputId = 'sub_goal_check',
-                                                                         label = 'Include submission goal in general plots'),
+                                                                         label = 'Include daily submission goal in general plots'),
 
                                                     shiny::conditionalPanel(
                                                       condition = 'input.sub_goal_check == true',
 
                                                       shiny::numericInput(inputId = 'sub_goal_param',
-                                                                          label = 'Enter daily submission goal*',
+                                                                          label = 'Daily submission goal*',
                                                                           value = 1)
                                                     ),
 
@@ -242,14 +242,14 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.question_plots.length > 0 && output.lang_flag == true',
 
-                                                    shiny::radioButtons(inputId = 'label_col',
-                                                                        label = 'Select the question label column to use for translation.',
-                                                                        choices = c('labels')),
+                                                    shiny::selectInput(inputId = 'label_col_param',
+                                                                        label = 'Question label column to use for translation.',
+                                                                        choices = c('NA')),
 
 
-                                                    shiny::radioButtons(inputId = 'choice_col',
-                                                                        label = 'Select the choice column to use for translation.',
-                                                                        choices = c('choices')),
+                                                    shiny::selectInput(inputId = 'choice_col_param',
+                                                                        label = 'Choice column to use for translation.',
+                                                                        choices = c('NA')),
 
                                                     tags$br(),
                                                   ),
@@ -259,7 +259,7 @@ ui <- function() {
 
                                                     # Input: Enter report language link
                                                     shiny::textInput(inputId = 'delimiter_param',
-                                                                     label = 'Please specify the delimiter with which the multiple choice question answers are separated*',
+                                                                     label = 'Delimiter with which the multiple choice question answers are separated*',
                                                                      placeholder = 'e.g.: ,'),
 
                                                     # line break
@@ -271,7 +271,7 @@ ui <- function() {
 
                                                     # Input: Enter report language link
                                                     shiny::textInput(inputId = 'text_col_param',
-                                                                     label = 'Please specify the name of the question(s) you want to generate a word cloud for*',
+                                                                     label = 'Name of the question(s) you want to generate a word cloud for*',
                                                                      placeholder = 'e.g.: j4_j4_2a'),
 
                                                     # line break
@@ -279,7 +279,7 @@ ui <- function() {
 
                                                     # Input: Enter report language link
                                                     shiny::textInput(inputId = 'lang_wc_param',
-                                                                     label = 'Please specify the language of the answers to the(se) question(s)*',
+                                                                     label = 'Language of answers to free text question(s)*',
                                                                      placeholder = 'e.g.: english'),
 
                                                     # line break

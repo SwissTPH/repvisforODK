@@ -59,13 +59,15 @@ server <- function(input, output) {
     datetime_col_choices <- colnames(df() %>% select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
     updateRadioButtons(inputId = 'filter_col',
                        choices = datetime_col_choices)
+    updateSelectInput(inputId = 'date_col_param',
+                       choices = datetime_col_choices)
 
     label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
-    updateRadioButtons(inputId = 'label_col',
+    updateSelectInput(inputId = 'label_col_param',
                        choices = label_col_choices)
 
     choice_col_choices <- colnames(df_schema())[grepl("choices\\w*", colnames(df_schema()))]
-    updateRadioButtons(inputId = 'choice_col',
+    updateSelectInput(inputId = 'choice_col_param',
                        choices = choice_col_choices)
   })
 
@@ -153,8 +155,8 @@ server <- function(input, output) {
                      delimiter = input$delimiter_param,
                      lang_wc = tolower(input$lang_wc_param),
                      text_col = strsplit(input$text_col_param, ', ', fixed = TRUE)[[1]],
-                     choice_col = input$choice_col,
-                     label_col = input$label_col,
+                     choice_col = input$choice_col_param,
+                     label_col = input$label_col_param,
                      plots_general = input$general_plots,
                      plots_question = input$question_plots)
 
