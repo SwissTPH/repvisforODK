@@ -270,9 +270,10 @@ ui <- function() {
                                                     condition = 'input.question_plots.indexOf("wordcloud") > -1',
 
                                                     # Input: Enter report language link
-                                                    shiny::textInput(inputId = 'text_col_param',
-                                                                     label = 'Name of the question(s) you want to generate a word cloud for*',
-                                                                     placeholder = 'e.g.: j4_j4_2a'),
+                                                      shiny::selectInput(inputId = 'text_col_param',
+                                                                     label = 'Question(s) you want to generate a word cloud for*',
+                                                                     choices = c('Specify question label column above first to get set of choices'),
+                                                                     multiple = TRUE),
 
                                                     # line break
                                                     tags$br(),

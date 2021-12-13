@@ -46,13 +46,42 @@ server <- function(input, output) {
     } else df()
   })
 
+  collection_period <- reactive({
+
+    shiny::req(df())
+    shiny::req(input$filter_col)
+
+    repvisforODK::collection_period(date_col = input$filter_col, df = df())
+  })
+
   observe({
 
-    collection_period <- repvisforODK::collection_period(date_col = input$filter_col, df = df())
+    shiny::req(collection_period())
+
     updateDateRangeInput(inputId = 'date_range',
-                         start = collection_period[[1]],
-                         end = collection_period[[2]])
+                         start = collection_period()[[1]],
+                         end = collection_period()[[2]])
   })
+
+  # text_col_choices <- shiny::reactive({
+  #
+  #   shiny::req(df_schema())
+  #   shiny::req(input$label_col_param)
+  #   shiny::req(input$choice_col_param)
+  #
+  #   if (df_schema()[[input$label_col_param]] != 'label') {
+  #     df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
+  #   }
+  # })
+
+  # observe({
+  #
+  #   shiny::req(text_col_choices())
+  #
+  #   updateSelectInput(inputId = 'text_col_param',
+  #                     choices = text_col_choices)
+  #
+  # })
 
   shiny::observeEvent(input$load_preview_button, {
 
