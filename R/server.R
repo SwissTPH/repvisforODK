@@ -37,6 +37,15 @@ server <- function(input, output) {
 
   })
 
+  df_fin <- reactive({
+
+    shiny::req(df())
+
+    if (input$filter_check == TRUE) {
+      df()[as.Date(df()[[input$filter_col]]) >= input$date_range[1] & as.Date(df()[[input$filter_col]]) <= input$date_range[2], ]
+    } else df()
+  })
+
   observe({
 
     collection_period <- repvisforODK::collection_period(date_col = input$filter_col, df = df())
@@ -47,7 +56,7 @@ server <- function(input, output) {
 
   shiny::observeEvent(input$load_preview_button, {
 
-    datetime_col_choices <- colnames(df_test %>% select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
+    datetime_col_choices <- colnames(df() %>% select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
     updateRadioButtons(inputId = 'filter_col',
                        choices = datetime_col_choices)
 
@@ -61,9 +70,10 @@ server <- function(input, output) {
   })
 
   output$contents <- renderDataTable({
-    shiny::req(df())
+    shiny::req(df_fin())
 
-    df()
+    df_fin()
+
   })
 
   shiny::observeEvent(input$next1, {
@@ -135,6 +145,8 @@ server <- function(input, output) {
       # Set up parameters to pass to Rmd document
       params <- list(title = input$title_param,
                      author = input$author_param,
+                     df = df_fin(),
+                     df_schema = df_schema(),
                      date_col = input$date_col_param,
                      daily_submission_goal = input$sub_goal_param,
                      exclude_weekend = input$exclude_weekend_param,

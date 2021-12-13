@@ -5,6 +5,8 @@ output:
     toc_float: TRUE
     number_section: TRUE
 params:
+  df: NA
+  df_schema: NA
   daily_submission_goal: NA
   date_col: NA
   exclude_weekend: NA
@@ -44,10 +46,10 @@ names(plot_evals) <- all_plots
 
 ```{r}
 # loading data
-df <- repvisforODK::check_data_args(svc = TRUE)
+df <- repvisforODK::check_data_args(df = params$df)
 
 # getting extended form schema when svc is used
-df_schema_ext <- ruODK::form_schema_ext()
+df_schema_ext <- params$df_schema
 ```
 
 ```{r}
