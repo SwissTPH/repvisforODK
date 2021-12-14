@@ -70,6 +70,7 @@ delimiter <- params$delimiter
 
 # only for word cloud
 text_col <- params$text_col
+repvisforODK::info_msg(text_col)
 lang_wc <- params$lang_wc
 ```
 

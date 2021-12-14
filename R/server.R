@@ -63,25 +63,24 @@ server <- function(input, output) {
                          end = collection_period()[[2]])
   })
 
-  # text_col_choices <- shiny::reactive({
-  #
-  #   shiny::req(df_schema())
-  #   shiny::req(input$label_col_param)
-  #   shiny::req(input$choice_col_param)
-  #
-  #   if (df_schema()[[input$label_col_param]] != 'label') {
-  #     df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
-  #   }
-  # })
+  text_col_choices <- shiny::reactive({
 
-  # observe({
-  #
-  #   shiny::req(text_col_choices())
-  #
-  #   updateSelectInput(inputId = 'text_col_param',
-  #                     choices = text_col_choices)
-  #
-  # })
+    shiny::req(df_schema())
+    shiny::req(input$label_col_param)
+    shiny::req(input$choice_col_param)
+
+    df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
+
+  })
+
+  observe({
+
+  shiny::req(text_col_choices())
+
+  updateSelectInput(inputId = 'text_col_param',
+                    choices = text_col_choices())
+
+  })
 
   shiny::observeEvent(input$load_preview_button, {
 
@@ -92,12 +91,24 @@ server <- function(input, output) {
                        choices = datetime_col_choices)
 
     label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
+    label_col_choices_fin <- c()
+    for (col in label_col_choices) {
+      if (sum(is.na(df_schema()[[col]])) > nrow(df_schema())-2) {
+        next
+      } else label_col_choices_fin <- c(label_col_choices_fin, col)
+    }
     updateSelectInput(inputId = 'label_col_param',
-                       choices = label_col_choices)
+                       choices = label_col_choices_fin)
 
     choice_col_choices <- colnames(df_schema())[grepl("choices\\w*", colnames(df_schema()))]
+    choice_col_choices_fin <- c()
+    for (col in choice_col_choices) {
+      if (sum(is.na(df_schema()[[col]])) > nrow(df_schema())-2) {
+        next
+      } else choice_col_choices_fin <- c(choice_col_choices_fin, col)
+    }
     updateSelectInput(inputId = 'choice_col_param',
-                       choices = choice_col_choices)
+                       choices = choice_col_choices_fin)
   })
 
   output$contents <- renderDataTable({
@@ -183,7 +194,7 @@ server <- function(input, output) {
                      exclude_weekend = input$exclude_weekend_param,
                      delimiter = input$delimiter_param,
                      lang_wc = tolower(input$lang_wc_param),
-                     text_col = strsplit(input$text_col_param, ', ', fixed = TRUE)[[1]],
+                     text_col = df_schema()$ruodk_name[df_schema()[[input$label_col_param]] %in% input$text_col_param],
                      choice_col = input$choice_col_param,
                      label_col = input$label_col_param,
                      plots_general = input$general_plots,

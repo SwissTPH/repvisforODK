@@ -348,4 +348,3 @@ ui <- function() {
 
   return(ui)
 }
-
