@@ -45,7 +45,7 @@ ui <- function() {
                                   shiny::textInput(inputId = 'tz',
                                             label = 'Timezone*',
                                             placeholder = "Europe/Berlin",
-                                            value = 'Europe/Berlin'),
+                                            value = 'GMT'),
 
                                 # line break
                                 tags$br(),
@@ -223,7 +223,6 @@ ui <- function() {
                                                     # line break
                                                     tags$br(),
 
-                                                    # TODO: Implement logic for selection of donut (must be mandatory sub goal when selected)
                                                     shiny::checkboxInput(inputId = 'sub_goal_check',
                                                                          label = 'Include daily submission goal in general plots'),
 
@@ -290,10 +289,19 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.general_plots.indexOf("donut") > -1 || input.general_plots.indexOf("line_chart_cumsum") > -1 || input.general_plots.indexOf("line_chart_no_cumsum") > -1',
 
-                                                    # Input: exclude weekend?
-                                                    shiny::checkboxInput(inputId = 'exclude_weekend_param',
-                                                                         label = 'Tick to not consider weekends for line chart(s) and/or donut chart',
-                                                                         value = FALSE)
+                                                    # Input: exclude wday?
+                                                    shiny::checkboxInput(inputId = 'exclude_wday_check',
+                                                                         label = 'Select days of the week which will not be cosnidered for line chart(s) and/or donut chart',
+                                                                         value = FALSE),
+
+                                                    shiny::conditionalPanel(
+                                                      condition = 'input.exclude_wday_check == true',
+
+                                                      shiny::selectInput(inputId = 'exclude_wday_param',
+                                                                         label = 'Days of the week to exclude',
+                                                                         choices = c('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
+                                                                         multiple = TRUE)
+                                                    ),
                                                   ),
 
                                                   # line break

@@ -9,7 +9,7 @@ params:
   df_schema: NA
   daily_submission_goal: NA
   date_col: NA
-  exclude_weekend: NA
+  exclude_wday: NA
   delimiter: NA
   text_col: NA
   lang_wc: NA
@@ -63,14 +63,13 @@ label_col <- params$label_col
 choice_col <- params$choice_col
 
 # only for submissions_time series_lineplot
-exclude_weekend <- as.logical(params$exclude_weekend)
+exclude_wday <- params$exclude_wday
 
 # only for multiple_choice_question_bar
 delimiter <- params$delimiter
 
 # only for word cloud
 text_col <- params$text_col
-repvisforODK::info_msg(text_col)
 lang_wc <- params$lang_wc
 ```
 
@@ -78,7 +77,7 @@ lang_wc <- params$lang_wc
 # Number of Submissions: Received vs. Missing to Target
 ```{r}
 if (plot_evals$donut) {
-  fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend)
+  fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday)
 } else fig <- NULL
 
 fig
@@ -90,7 +89,7 @@ fig
 # Received Submissions Over Time: Cumulative
 ```{r}
 if (plot_evals$line_chart_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = TRUE)
+  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday, cumulative = TRUE)
 } else fig <- NULL
 
 fig
@@ -102,7 +101,7 @@ fig
 # Received Submissions Over Time: Non-Cumulative
 ```{r}
 if (plot_evals$line_chart_no_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_weekend = exclude_weekend, cumulative = FALSE)
+  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday, cumulative = FALSE)
 } else fig <- NULL
 
 fig

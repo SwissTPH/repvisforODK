@@ -127,6 +127,13 @@ server <- function(input, output) {
                        choices = choice_col_choices_fin)
   })
 
+  excluded_wday <- reactive({
+
+    shiny::req(input$exclude_wday_param)
+
+    match(input$exclude_wday_param, c('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'))
+  })
+
   output$contents <- renderDataTable({
     shiny::req(df_fin())
 
@@ -207,7 +214,7 @@ server <- function(input, output) {
                      df_schema = df_schema(),
                      date_col = input$date_col_param,
                      daily_submission_goal = input$sub_goal_param,
-                     exclude_weekend = input$exclude_weekend_param,
+                     exclude_wday = excluded_wday(),
                      delimiter = input$delimiter_param,
                      lang_wc = tolower(input$lang_wc_param),
                      text_col = df_schema()$ruodk_name[df_schema()[[input$label_col_param]] %in% input$text_col_param],

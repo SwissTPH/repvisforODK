@@ -14,7 +14,7 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
 #' @param daily_submission_goal Integer or float that defines the number of daily submissions goal.
-#' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
+ #' @param exclude_wday Integer (for one day) or integer vector (for multiple days) containing the day(s) of the week that shall not be included when generating the plot, defaults to NULL. Specify the days as following: 1 = Sun, 2 = Mon, ..., 7 = Sun.
 #' @param cumulative Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.
 #'
 #' @return Plotly html-widget
@@ -23,7 +23,7 @@
 #' @import dplyr plotly lubridate
 #'
 #' @examples
-submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_weekend = TRUE, cumulative = TRUE) {
+submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_wday = NULL, cumulative = TRUE) {
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
@@ -41,13 +41,13 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
   df_count_full$n <- sapply(df_count_full$all_dates_in_period,
                               function(x) ifelse(x %in% df_count$date, df_count$n[df_count$date == x], 0),
                               USE.NAMES = F)
-  if (cumulative) df_count_full <- df_count_full %>% dplyr::mutate(n = cumsum(n))
-
-  if (exclude_weekend) {
+  if (!is.null(exclude_wday)) {
     df_count_full$wday <- lubridate::wday(df_count_full$all_dates_in_period, abbr = T)
 
-    df_count_full <- df_count_full[!df_count_full$wday %in% c(1, 7), ]
+    df_count_full <- df_count_full[!df_count_full$wday %in% exclude_wday, ]
   }
+
+  if (cumulative) df_count_full <- df_count_full %>% dplyr::mutate(n = cumsum(n))
 
   fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', line = list(color = repvisforODK::set_color('red')), width = 900) %>%
     plotly::add_trace(

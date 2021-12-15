@@ -11,7 +11,7 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param daily_submission_goal Integer or float that reflects the targeted number of daily submissions.
 #' @param date_col String that specifies the date or time stamp column in the data which is to be examined.
-#' @param exclude_weekend Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.
+#' @param exclude_wday Integer (for one day) or integer vector (for multiple days) containing the day(s) of the week that shall not be included when generating the plot, defaults to NULL. Specify the days as following: 1 = Sun, 2 = Mon, ..., 7 = Sun.
 #'
 #' @return Plotly html-widget
 #'
@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col, exclude_weekend = TRUE){
+submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col, exclude_wday = NULL){
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
@@ -35,22 +35,18 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
   date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
 
   # calculating number of days of data collection period
-  # first w/o weekend
-  if (exclude_weekend) {
+  all_wdays_in_period <- lubridate::wday(seq.Date(date_limits[[1]], date_limits[[2]], 'days'), abbr = TRUE)
 
-    all_wdays_in_period <- lubridate::wday(seq.Date(date_limits[[1]], date_limits[[2]], 'days'), abbr = TRUE)
+  # first w/o excluded wdays
+  if (!is.null(exclude_wday)) {
 
-    all_wdays_in_period_filtered <- all_wdays_in_period[!all_wdays_in_period %in% c(1, 7)]
+    all_wdays_in_period <- all_wdays_in_period[!all_wdays_in_period %in% exclude_wday]
 
-    date_diff <- length(all_wdays_in_period_filtered)
-
-  } else {
-    # then with weekend
-    date_diff = date_limits[[2]] - date_limits[[1]]
+    df$wday <- lubridate::wday(df[[date_col]], abbr = T)
   }
 
-  submission_goal_total = as.numeric(date_diff)*daily_submission_goal
-  submissions_total = nrow(df)
+  submission_goal_total = length(all_wdays_in_period)*daily_submission_goal
+  submissions_total = nrow(df[!df$wday %in% exclude_wday, ])
   submission_goal_deviation = submission_goal_total - submissions_total
 
 
