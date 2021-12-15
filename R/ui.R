@@ -231,7 +231,7 @@ ui <- function() {
                                                       condition = 'input.sub_goal_check == true',
 
                                                       shiny::numericInput(inputId = 'sub_goal_param',
-                                                                          label = 'Daily submission goal*',
+                                                                          label = 'Daily submission goal',
                                                                           value = 1)
                                                     ),
 
@@ -299,7 +299,9 @@ ui <- function() {
                                                   # line break
                                                   tags$br(),
 
-                                                  tags$h6('*required   (Only click "Generate Report" if all required parameters are specified)')
+                                                  tags$h6('*required'),
+
+                                                  tags$h6('(only click "Generate Report" if all required parameters are specified)')
                                                   ),
 
                                            column(6,

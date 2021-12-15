@@ -13,6 +13,8 @@
 #' @examples
 server <- function(input, output) {
 
+  options(warn = -1)
+
   df <- shiny::eventReactive(input$load_preview_button, {
 
     shiny::req(input$svc_text)
@@ -61,6 +63,20 @@ server <- function(input, output) {
     updateDateRangeInput(inputId = 'date_range',
                          start = collection_period()[[1]],
                          end = collection_period()[[2]])
+  })
+
+  observe({
+
+    shiny::req(input$general_plots)
+    shiny::req(input$sub_goal_param)
+
+    if ('donut' %in% input$general_plots) {
+      updateNumericInput(inputId = 'sub_goal_param',
+                         label = 'Daily submission goal*')
+    } else {
+      updateNumericInput(inputId = 'sub_goal_param',
+                         label = 'Daily submission goal')
+    }
   })
 
   text_col_choices <- shiny::reactive({
