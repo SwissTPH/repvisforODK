@@ -37,6 +37,7 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
   day_seq <- data.frame(ndate = seq(lubridate::floor_date(date_limits[[1]], 'month'), as.Date(lubridate::ceiling_date(date_limits[[2]], "month") - 1), "days"))
   df2 <- merge(day_seq, df1, by = "ndate", all = TRUE)
   df2$n[(df2$ndate >= sdate) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
+  max_n <- max(df2$n, na.rm = TRUE)
 
   df2 <- df2 %>%
     dplyr::mutate(weekday = lubridate::wday(ndate, label = TRUE, abbr = TRUE, week_start = 7, locale = 'English'),
@@ -68,15 +69,21 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
           panel.spacing = unit(3, 'lines'),
           plot.title = element_text(hjust = 0.5, size = 21, face = "bold",
                                     margin = margin(0,0,0.5,0, unit = "cm"))) +
-    ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('tricolor'),
-                         name = "Number of submissions",
-                         guide = 'colourbar') +
     ggplot2::facet_wrap(~month, nrow = 6, ncol = 2, scales = "free")
 
   if (daily_submission_goal > 0) {
-    ggp <- ggp + ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black")
+    ggp <- ggp +
+      ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black") +
+      ggplot2::scale_fill_gradientn(colours = c(repvisforODK::set_color('tricolor'), "#006837"),
+                                    name = "Number of submissions",
+                                    guide = 'colourbar',
+                                    values = c(0, daily_submission_goal/max_n-000.1, daily_submission_goal/max_n, 1))
   } else {
-    ggp <- ggp + ggplot2::geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black")
+    ggp <- ggp +
+      ggplot2::geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black") +
+      ggplot2::scale_fill_gradientn(colours = c(repvisforODK::set_color('tricolor'), "#006837"),
+                                    name = "Number of submissions",
+                                    guide = 'colourbar')
   }
 
   ggp <- plotly::ggplotly(ggp, tooltip = c('fill'))

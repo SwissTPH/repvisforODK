@@ -103,7 +103,7 @@ set_color <- function(val) {
   } else if (val == 'continous_scale') {
     return(c("#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#D9EF8B", "#A6D96A", "#66BD63", "#1A9850", "#006837"))
   } else if (val == 'tricolor') {
-    return(c('#D73027', "#FDAE61", '#1A9850'))
+    return(c('#D73027', "#F46D43", '#66BD63'))
   }
 }
 
