@@ -7,11 +7,13 @@ output:
 params:
   df: NA
   df_schema: NA
+  svc: NA
   daily_submission_goal: NA
   date_col: NA
-  exclude_wday: NA
+  exclude_wday_str: NA
   delimiter: NA
   text_col: NA
+  text_col_name: NA
   lang_wc: NA
   choice_col: NA
   label_col: NA
@@ -23,6 +25,8 @@ title: "`r params$title`"
 author: "`r params$author`"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 ---
+
+***
 
 ```{r, include = FALSE, message=FALSE, warning=FALSE}
 library(repvisforODK)
@@ -63,21 +67,36 @@ label_col <- params$label_col
 choice_col <- params$choice_col
 
 # only for submissions_time series_lineplot
-exclude_wday <- params$exclude_wday
+exclude_wday_str <- params$exclude_wday_str
+exclude_wday_int <- match(exclude_wday_str, c('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'))
 
 # only for multiple_choice_question_bar
 delimiter <- params$delimiter
 
 # only for word cloud
 text_col <- params$text_col
+text_col_name <- params$text_col_name
 lang_wc <- params$lang_wc
 ```
+
+# Parameter Overview
+SVC: **`r svc`**\
+Date Column for Time Reference: **`r date_col`**\
+Daily Submission Goal: **`r daily_submission_goal`**\
+Label Column for Question Labels: **`r label_col`**\
+Choice Column for Question Choices: **`r choice_col`**\
+Excluded Days of the Week: **`r paste(exclude_wday_str, collapse = ', ')`**\
+Delimiter Multiple Choice Questions: **`r paste0('"', delimiter, '"')`**\
+Free Text Questions: **`r paste(text_col_name, collapse = ', ')`**\
+Language of Free Text Question Answers: **`r lang_wc`**\
+
+***
 
 `r if (!plot_evals$donut) {"\\begin{comment}"}`
 # Number of Submissions: Received vs. Missing to Target
 ```{r}
 if (plot_evals$donut) {
-  fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday)
+  fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int)
 } else fig <- NULL
 
 fig
@@ -89,7 +108,7 @@ fig
 # Received Submissions Over Time: Cumulative
 ```{r}
 if (plot_evals$line_chart_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday, cumulative = TRUE)
+  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int, cumulative = TRUE)
 } else fig <- NULL
 
 fig
@@ -101,7 +120,7 @@ fig
 # Received Submissions Over Time: Non-Cumulative
 ```{r}
 if (plot_evals$line_chart_no_cumsum) {
-  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday, cumulative = FALSE)
+  fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int, cumulative = FALSE)
 } else fig <- NULL
 
 fig
