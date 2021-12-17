@@ -16,16 +16,25 @@
 #' @examples
 heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col) {
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
+  # load data
   df <- repvisforODK::check_data_args(df, csv, svc)
 
-  names(df)[names(df) == date_col] <- 'tstamp'
+  # give specified date column default name
+  names(df)[names(df) == date_col] <- 'ndate'
 
   df_wday_hour <- df %>%
-    dplyr::mutate(wday = lubridate::wday(tstamp, label = TRUE, week_start = 1, abbr = TRUE, locale = 'English'),
-                  hour = lubridate::hour(tstamp)) %>%
+    # add new columns containing day of the week and hour of the day for each submission
+    dplyr::mutate(wday = lubridate::wday(ndate, label = TRUE, week_start = 1, abbr = TRUE, locale = 'English'),
+                  hour = lubridate::hour(ndate)) %>%
+    # group by day of the week and hour of the day and summarize using count
     dplyr::count(wday, hour, name="Count") %>%
     dplyr::arrange(desc(wday))
 
+  # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
+
+  # define theme for heat map
   theme_heatmap <- ggplot2::theme_light() +
     ggplot2::theme(
           panel.grid = element_blank(),
@@ -39,6 +48,7 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
 
   ggp <- ggplot2::ggplot(df_wday_hour, aes(x = wday, y = hour, fill = Count)) +
     ggplot2::geom_tile(colour="white") +
+    # set fill colors
     ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                          name = "Number of submissions",
                          guide = 'colourbar') +
@@ -47,6 +57,7 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
     ggplot2::labs(y = "Hour of Day") +
     theme_heatmap
 
+  # convert ggplot object to plotly object
   ggp <- plotly::ggplotly(ggp, tooltip = c('fill'))
 
   ggp <- ggp %>%

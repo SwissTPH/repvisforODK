@@ -18,37 +18,53 @@
 
 heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv = NULL, svc = FALSE){
 
+  # stop if daily submission goal is negative
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
+  # load data
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # give specified date column default name
   names(df)[names(df) == date_col] <- 'ndate'
 
   df1 <- df %>%
     mutate(ndate = as.Date(ndate)) %>%
+    # group by date col and summarize using count
     dplyr::count(ndate)
 
   # finding min and max date of the collection period
   date_limits = repvisforODK::collection_period(df = df, date_col = 'ndate')
 
-  sdate <- as.Date(min(df1$ndate))
+  # get all possible dates of the months of the earliest and the latest date in the data collection period
   day_seq <- data.frame(ndate = seq(lubridate::floor_date(date_limits[[1]], 'month'), as.Date(lubridate::ceiling_date(date_limits[[2]], "month") - 1), "days"))
+
+  # merge data with all possible dates
   df2 <- merge(day_seq, df1, by = "ndate", all = TRUE)
-  df2$n[(df2$ndate >= sdate) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
+
+  # assign 0 to all dates within data collection period that are NA
+  df2$n[(df2$ndate >= date_limits[[1]]) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
+
+  # get max number of submissions on one day
   max_n <- max(df2$n, na.rm = TRUE)
 
   df2 <- df2 %>%
+    # isolate several time info out of the dates in the date col
     dplyr::mutate(weekday = lubridate::wday(ndate, label = TRUE, abbr = TRUE, week_start = 7, locale = 'English'),
                   month = lubridate::month(ndate, label = TRUE),
                   date = lubridate::yday(ndate),
                   week = lubridate::epiweek(ndate))
+
   df2$week[df2$month == "Dec" & df2$week == 1] = 53
   df2 <- df2 %>%
     dplyr::group_by(month) %>%
     dplyr::mutate(monthweek = 1 + week - min(week)) %>%
     dplyr::rename('Number of Submissions' = n)
+
+  # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
 
   ggp <- df2 %>%
     ggplot2::ggplot(aes(weekday,-week, fill = `Number of Submissions`)) +

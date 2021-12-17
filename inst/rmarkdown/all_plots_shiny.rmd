@@ -167,7 +167,7 @@ if (length(plots) == 0) {
 `r if (!plot_evals$single_pie) {"\\end{comment}"}`
 
 `r if (!plot_evals$multiple_bar) {"\\begin{comment}"}`
-# Distribution of Answers for Mutiple-Choice Questions
+# Distribution of Answers for Multiple-Choice Questions
 ```{r}
 if (plot_evals$multiple_bar) {
   plots <- repvisforODK::multiple_choice_question_bar(df = df, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)

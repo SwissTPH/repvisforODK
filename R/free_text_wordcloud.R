@@ -27,8 +27,10 @@ free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, la
     stop('Please specify one and only one of the arguments "svc" and "df_schema_ext".')
   }
 
+  # load data
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # calls function that creates word cloud for each free text column that was specified in the text_col argument
   wc_list = lapply(text_col,
                    preprocess_wc_generation, df_c = df, lang_wc_c = lang_wc, svc_c = svc, lang_c = lang, df_schema_ext_c = df_schema_ext, choice_col_c = choice_col, label_col_c = label_col)
 

@@ -13,7 +13,10 @@
 #' @examples
 server <- function(input, output) {
 
+  # suppress warnings; = 0 to enable warnings
   options(warn = -1)
+
+  # main data-------------------------------------------------------------------------------------------------------------------------
 
   # loading data when ODK credentials are specified and load_preview_button is pressed
   df <- shiny::eventReactive(input$load_preview_button, {
@@ -29,6 +32,7 @@ server <- function(input, output) {
 
   })
 
+  # loading form schema
   df_schema <- shiny::eventReactive(input$load_preview_button, {
 
     shiny::req(input$svc_text)
@@ -40,6 +44,9 @@ server <- function(input, output) {
 
   })
 
+  # date filter-------------------------------------------------------------------------------------------------------------------------
+
+  # subset-ting data using user-defined date range
   df_fin <- shiny::reactive({
 
     shiny::req(df())
@@ -49,6 +56,7 @@ server <- function(input, output) {
     } else df()
   })
 
+  # get data collection period of data for date range defaults
   collection_period <- shiny::reactive({
 
     shiny::req(df())
@@ -56,6 +64,7 @@ server <- function(input, output) {
 
     repvisforODK::collection_period(date_col = input$filter_col, df = df())
   })
+
 
   shiny::observe({
 
@@ -65,6 +74,8 @@ server <- function(input, output) {
                          start = collection_period()[[1]],
                          end = collection_period()[[2]])
   })
+
+  # daily sub goal mandatory for donuts-------------------------------------------------------------------------------------------------------------------------
 
   shiny::observe({
 
@@ -88,12 +99,15 @@ server <- function(input, output) {
     }
   })
 
+  # pre-filtering potential free text columns-------------------------------------------------------------------------------------------------------------------------
+
   text_col_choices <- shiny::reactive({
 
     shiny::req(df_schema())
     shiny::req(input$label_col_param)
     shiny::req(input$choice_col_param)
 
+    # excluding all questions that have choices, are not ODK type 'string', are not NA, contain 'generated_' in their question name
     df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
 
   })
@@ -106,14 +120,18 @@ server <- function(input, output) {
                       choices = text_col_choices())
   })
 
+  # datetime, label, and choice column pre-filtering-------------------------------------------------------------------------------------------------------------------------
+
   shiny::observeEvent(input$load_preview_button, {
 
+    # get all columns that have class POSIXct or POSIXlt
     datetime_col_choices <- colnames(df() %>% dplyr::select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
     shiny::updateRadioButtons(inputId = 'filter_col',
                        choices = datetime_col_choices)
     shiny::updateSelectInput(inputId = 'date_col_param',
                        choices = datetime_col_choices)
 
+    # get all columns that start with the word 'label'
     label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
     label_col_choices_fin <- c()
     for (col in label_col_choices) {
@@ -124,6 +142,7 @@ server <- function(input, output) {
     shiny::updateSelectInput(inputId = 'label_col_param',
                        choices = label_col_choices_fin)
 
+    # get all columns that start with the word 'choice'
     choice_col_choices <- colnames(df_schema())[grepl("choices\\w*", colnames(df_schema()))]
     choice_col_choices_fin <- c()
     for (col in choice_col_choices) {
@@ -135,6 +154,8 @@ server <- function(input, output) {
                        choices = choice_col_choices_fin)
   })
 
+  # DT datatable-------------------------------------------------------------------------------------------------------------------------
+
   output$contents <- DT::renderDT({
     shiny::req(df_fin())
 
@@ -144,6 +165,8 @@ server <- function(input, output) {
                   options = list(pageLength = 10))
 
   })
+
+  # panel changes through navigation buttons-------------------------------------------------------------------------------------------------------------------------
 
   shiny::observeEvent(input$next1, {
     shiny::updateTabsetPanel(inputId = "tab",
@@ -165,6 +188,8 @@ server <- function(input, output) {
                       selected = '2. Select Visualisations')
   })
 
+  # event flags for determining appearance of conditional panels-------------------------------------------------------------------------------------------------------------------------
+
   output$data_flag <- shiny::reactive(
     if (nrow(df()) > 0) TRUE else FALSE
     )
@@ -177,6 +202,7 @@ server <- function(input, output) {
   shiny::outputOptions(output, "lang_flag",
                        suspendWhenHidden = FALSE)
 
+  # download of rmd report-------------------------------------------------------------------------------------------------------------------------
 
   # Create reactiveValues object and set flag to 0 to prevent errors with adding NULL
   rv <- shiny::reactiveValues(download_flag = 0)
