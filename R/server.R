@@ -8,7 +8,7 @@
 #' @return
 #'
 #' @export
-#' @import ruODK shiny rmarkdown shinyalert
+#' @import ruODK shiny rmarkdown shinyalert DT
 #'
 #' @examples
 server <- function(input, output) {
@@ -138,7 +138,10 @@ server <- function(input, output) {
   output$contents <- DT::renderDT({
     shiny::req(df_fin())
 
-    df_fin()
+    DT::datatable(df_fin(),
+                  class = 'cell-border stripe',
+                  filter = 'top',
+                  options = list(pageLength = 10))
 
   })
 
@@ -213,7 +216,7 @@ server <- function(input, output) {
       # Set up parameters to pass to Rmd document
       params <- list(title = input$title_param,
                      author = input$author_param,
-                     df = df_fin(),
+                     df = df_fin()[input$contents_rows_all, ],
                      df_schema = df_schema(),
                      svc = input$svc_text,
                      date_col = input$date_col_param,

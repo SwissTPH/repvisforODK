@@ -3,7 +3,7 @@
 #' @return
 #'
 #' @export
-#' @import shiny dplyr shinycssloaders shinyalert
+#' @import shiny dplyr shinycssloaders shinyalert DT
 #'
 #' @examples
 ui <- function() {
@@ -90,6 +90,15 @@ ui <- function() {
                               ),
 
                               shiny::mainPanel(
+
+                                conditionalPanel(
+                                  condition = ("input.load_preview_button != 0"),
+
+                                  # Data will be used as shown info
+                                  shiny::icon('info-circle'),
+                                  tags$h5('The data displayed below will be used for report generation - any filtering will be kept.')
+                                  ),
+
                                 # Output: Preview data file
                                 DT::DTOutput("contents") %>% shinycssloaders::withSpinner(color = '#bf3227')
                               )

@@ -10,6 +10,10 @@ h3 {
   text-decoration-color: #bf3227;
 }
 
+h5 {
+  font-style: italic;
+}
+
 #load_preview_button, #next1, #report_button, #prev1, #next2, #prev2 {
   background-color: #bf3227;
   color: white;
