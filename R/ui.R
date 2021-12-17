@@ -91,7 +91,7 @@ ui <- function() {
 
                               shiny::mainPanel(
                                 # Output: Preview data file
-                                shiny::dataTableOutput("contents") %>% shinycssloaders::withSpinner(color = '#bf3227')
+                                DT::DTOutput("contents") %>% shinycssloaders::withSpinner(color = '#bf3227')
                               )
                             )
                    ),
@@ -231,7 +231,7 @@ ui <- function() {
 
                                                       shiny::numericInput(inputId = 'sub_goal_param',
                                                                           label = 'Daily submission goal',
-                                                                          value = 1)
+                                                                          value = 0)
                                                     ),
 
                                                     # line break

@@ -53,7 +53,7 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
   ggp <- df2 %>%
     ggplot2::ggplot(aes(weekday,-week, fill = `Number of Submissions`)) +
     ggplot2::geom_tile(colour = "white")  +
-    ggplot2::ylab(ifelse(daily_submission_goal > 0, '* = Daily Submission Goal reached', '')) +
+    ggplot2::ylab(ifelse(daily_submission_goal > 0, paste0('* = Daily Submission Goal of ', daily_submission_goal,' reached'), '')) +
     ggplot2::theme(
           legend.key.width = unit(3, "cm"),
           axis.title.x = element_blank(),
@@ -74,14 +74,14 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
   if (daily_submission_goal > 0) {
     ggp <- ggp +
       ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black") +
-      ggplot2::scale_fill_gradientn(colours = c(repvisforODK::set_color('tricolor'), "#006837"),
+      ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                                     name = "Number of submissions",
                                     guide = 'colourbar',
                                     values = c(0, daily_submission_goal/max_n-000.1, daily_submission_goal/max_n, 1))
   } else {
     ggp <- ggp +
       ggplot2::geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black") +
-      ggplot2::scale_fill_gradientn(colours = c(repvisforODK::set_color('tricolor'), "#006837"),
+      ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                                     name = "Number of submissions",
                                     guide = 'colourbar')
   }

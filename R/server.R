@@ -15,6 +15,7 @@ server <- function(input, output) {
 
   options(warn = -1)
 
+  # loading data when ODK credentials are specified and load_preview_button is pressed
   df <- shiny::eventReactive(input$load_preview_button, {
 
     shiny::req(input$svc_text)
@@ -39,7 +40,7 @@ server <- function(input, output) {
 
   })
 
-  df_fin <- reactive({
+  df_fin <- shiny::reactive({
 
     shiny::req(df())
 
@@ -48,7 +49,7 @@ server <- function(input, output) {
     } else df()
   })
 
-  collection_period <- reactive({
+  collection_period <- shiny::reactive({
 
     shiny::req(df())
     shiny::req(input$filter_col)
@@ -56,7 +57,7 @@ server <- function(input, output) {
     repvisforODK::collection_period(date_col = input$filter_col, df = df())
   })
 
-  observe({
+  shiny::observe({
 
     shiny::req(collection_period())
 
@@ -65,17 +66,25 @@ server <- function(input, output) {
                          end = collection_period()[[2]])
   })
 
-  observe({
+  shiny::observe({
 
     shiny::req(input$general_plots)
     shiny::req(input$sub_goal_param)
 
     if ('donut' %in% input$general_plots) {
-      updateNumericInput(inputId = 'sub_goal_param',
+      shiny::updateNumericInput(inputId = 'sub_goal_param',
                          label = 'Daily submission goal*')
+
+      shiny::updateCheckboxInput(inputId = 'sub_goal_check',
+                                 label = 'Include daily submission goal in general plots*',
+                                 value = TRUE)
     } else {
-      updateNumericInput(inputId = 'sub_goal_param',
+      shiny::updateNumericInput(inputId = 'sub_goal_param',
                          label = 'Daily submission goal')
+
+      shiny::updateCheckboxInput(inputId = 'sub_goal_check',
+                                 label = 'Include daily submission goal in general plots',
+                                 value = FALSE)
     }
   })
 
@@ -89,21 +98,20 @@ server <- function(input, output) {
 
   })
 
-  observe({
+  shiny::observe({
 
-  shiny::req(text_col_choices())
+    shiny::req(text_col_choices())
 
-  updateSelectInput(inputId = 'text_col_param',
-                    choices = text_col_choices())
-
+    shiny::updateSelectInput(inputId = 'text_col_param',
+                      choices = text_col_choices())
   })
 
   shiny::observeEvent(input$load_preview_button, {
 
-    datetime_col_choices <- colnames(df() %>% select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
-    updateRadioButtons(inputId = 'filter_col',
+    datetime_col_choices <- colnames(df() %>% dplyr::select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
+    shiny::updateRadioButtons(inputId = 'filter_col',
                        choices = datetime_col_choices)
-    updateSelectInput(inputId = 'date_col_param',
+    shiny::updateSelectInput(inputId = 'date_col_param',
                        choices = datetime_col_choices)
 
     label_col_choices <- colnames(df_schema())[grepl("label\\w*", colnames(df_schema()))]
@@ -113,7 +121,7 @@ server <- function(input, output) {
         next
       } else label_col_choices_fin <- c(label_col_choices_fin, col)
     }
-    updateSelectInput(inputId = 'label_col_param',
+    shiny::updateSelectInput(inputId = 'label_col_param',
                        choices = label_col_choices_fin)
 
     choice_col_choices <- colnames(df_schema())[grepl("choices\\w*", colnames(df_schema()))]
@@ -123,18 +131,11 @@ server <- function(input, output) {
         next
       } else choice_col_choices_fin <- c(choice_col_choices_fin, col)
     }
-    updateSelectInput(inputId = 'choice_col_param',
+    shiny::updateSelectInput(inputId = 'choice_col_param',
                        choices = choice_col_choices_fin)
   })
 
-  # excluded_wday <- reactive({
-  #
-  #   shiny::req(input$exclude_wday_param)
-  #
-  #   match(input$exclude_wday_param, c('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'))
-  # })
-
-  output$contents <- renderDataTable({
+  output$contents <- DT::renderDT({
     shiny::req(df_fin())
 
     df_fin()
@@ -161,22 +162,24 @@ server <- function(input, output) {
                       selected = '2. Select Visualisations')
   })
 
-  output$data_flag <- reactive(
+  output$data_flag <- shiny::reactive(
     if (nrow(df()) > 0) TRUE else FALSE
     )
-  outputOptions(output, "data_flag", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "data_flag",
+                       suspendWhenHidden = FALSE)
 
-  output$lang_flag <- reactive(
+  output$lang_flag <- shiny::reactive(
     if (TRUE %in% grepl("label_\\w*", colnames(df_schema()))) TRUE else FALSE
   )
-  outputOptions(output, "lang_flag", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "lang_flag",
+                       suspendWhenHidden = FALSE)
 
 
   # Create reactiveValues object and set flag to 0 to prevent errors with adding NULL
-  rv <- reactiveValues(download_flag = 0)
+  rv <- shiny::reactiveValues(download_flag = 0)
 
   output$report_button <- shiny::downloadHandler(
-    # For PDF output, change this to "report.pdf"
+
     filename = "repvis_report.html",
     content = function(file) {
 
@@ -215,7 +218,6 @@ server <- function(input, output) {
                      svc = input$svc_text,
                      date_col = input$date_col_param,
                      daily_submission_goal = input$sub_goal_param,
-                     #exclude_wday_int = excluded_wday(),
                      exclude_wday_str = input$exclude_wday_param,
                      delimiter = input$delimiter_param,
                      lang_wc = tolower(input$lang_wc_param),

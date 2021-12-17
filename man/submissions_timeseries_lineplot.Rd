@@ -10,7 +10,7 @@ submissions_timeseries_lineplot(
   svc = FALSE,
   date_col,
   daily_submission_goal = 0,
-  exclude_weekend = TRUE,
+  exclude_wday = NULL,
   cumulative = TRUE
 )
 }
@@ -25,7 +25,7 @@ submissions_timeseries_lineplot(
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal.}
 
-\item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
+\item{exclude_wday}{Integer (for one day) or integer vector (for multiple days) containing the day(s) of the week that shall not be included when generating the plot, defaults to NULL. Specify the days as following: 1 = Sun, 2 = Mon, ..., 7 = Sun.}
 
 \item{cumulative}{Logical that determines whether the cumulative sum of submissions is used as values for y. Optional, defaults to TRUE.}
 }

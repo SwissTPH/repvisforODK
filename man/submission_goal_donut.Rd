@@ -10,7 +10,7 @@ submission_goal_donut(
   svc = FALSE,
   daily_submission_goal,
   date_col,
-  exclude_weekend = TRUE
+  exclude_wday = NULL
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ submission_goal_donut(
 
 \item{date_col}{String that specifies the date or time stamp column in the data which is to be examined.}
 
-\item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
+\item{exclude_wday}{Integer (for one day) or integer vector (for multiple days) containing the day(s) of the week that shall not be included when generating the plot, defaults to NULL. Specify the days as following: 1 = Sun, 2 = Mon, ..., 7 = Sun.}
 }
 \value{
 Plotly html-widget

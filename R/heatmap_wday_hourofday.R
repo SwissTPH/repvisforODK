@@ -23,7 +23,7 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
   df_wday_hour <- df %>%
     dplyr::mutate(wday = lubridate::wday(tstamp, label = TRUE, week_start = 1, abbr = TRUE, locale = 'English'),
                   hour = lubridate::hour(tstamp)) %>%
-    dplyr::count(wday, hour, name="count_wday_hour") %>%
+    dplyr::count(wday, hour, name="Count") %>%
     dplyr::arrange(desc(wday))
 
   theme_heatmap <- ggplot2::theme_light() +
@@ -35,12 +35,11 @@ heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col)
           axis.title.x = element_blank(),
           axis.title.y = element_text(size=10),
           axis.text.y = element_text(size = 8),
-          axis.text.x = element_text(size = 10)
           )
 
-  ggp <- ggplot2::ggplot(df_wday_hour, aes(x = wday, y = hour, fill = count_wday_hour)) +
+  ggp <- ggplot2::ggplot(df_wday_hour, aes(x = wday, y = hour, fill = Count)) +
     ggplot2::geom_tile(colour="white") +
-    ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('tricolor'),
+    ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                          name = "Number of submissions",
                          guide = 'colourbar') +
     ggplot2::scale_y_reverse(breaks=c(23:0), labels=c(23:0), expand = c(0,0)) +

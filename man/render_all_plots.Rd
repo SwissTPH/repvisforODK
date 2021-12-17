@@ -12,7 +12,7 @@ render_all_plots(
   text_col,
   author = Sys.info()["effective_user"][[1]],
   daily_submission_goal = 0,
-  exclude_weekend = TRUE,
+  exclude_wday = NULL,
   delimiter = " ",
   lang = "english"
 )
@@ -32,7 +32,7 @@ render_all_plots(
 
 \item{daily_submission_goal}{Integer or float that defines the number of daily submissions goal. Optional, defaults to 0.}
 
-\item{exclude_weekend}{Logical that determines whether weekends are excluded in the plot. Optional, defaults to TRUE.}
+\item{exclude_wday}{Integer (for one day) or integer vector (for multiple days) containing the day(s) of the week that shall not be included when generating the plot, defaults to NULL. Specify the days as following: 1 = Sun, 2 = Mon, ..., 7 = Sun.}
 
 \item{delimiter}{Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.}
 
