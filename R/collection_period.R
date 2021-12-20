@@ -14,10 +14,12 @@
 #' @export
 #'
 #' @examples
-collection_period <- function(date_col, df = NULL, csv = NULL, svc = FALSE){
+collection_period <- function(df = NULL, csv = NULL, svc = FALSE, date_col){
 
+  # loading data
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # finding earliest and latest date / time stamp
   earliest_submission = as.Date(min(df[[date_col]]))
   latest_submission = as.Date(max(df[[date_col]]))
 

@@ -70,6 +70,7 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
     ggplot2::ggplot(aes(weekday,-week, fill = `Number of Submissions`)) +
     ggplot2::geom_tile(colour = "white")  +
     ggplot2::ylab(ifelse(daily_submission_goal > 0, paste0('* = Daily Submission Goal of ', daily_submission_goal,' reached'), '')) +
+    # heat map specific theme
     ggplot2::theme(
           legend.key.width = unit(3, "cm"),
           axis.title.x = element_blank(),
@@ -85,23 +86,31 @@ heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv
           panel.spacing = unit(3, 'lines'),
           plot.title = element_text(hjust = 0.5, size = 21, face = "bold",
                                     margin = margin(0,0,0.5,0, unit = "cm"))) +
+    # facet wrap to create one heat map per month
     ggplot2::facet_wrap(~month, nrow = 6, ncol = 2, scales = "free")
 
+  # with sub goal adjustments
   if (daily_submission_goal > 0) {
     ggp <- ggp +
+      # signalize reach of sub goal with star on the day number + explanation on y-axis
       ggplot2::geom_text(aes(label = ifelse(`Number of Submissions` >= daily_submission_goal, paste0(lubridate::day(ndate), '*'), lubridate::day(ndate))), size = 3, color = "black") +
+      # setting color bar settings in a way that all days below sub goal have red and all above have green grading
       ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                                     name = "Number of submissions",
                                     guide = 'colourbar',
                                     values = c(0, daily_submission_goal/max_n-000.1, daily_submission_goal/max_n, 1))
-  } else {
+    # with sub goal == 0 (default) adjustments
+    } else {
     ggp <- ggp +
+      # no star indicator
       ggplot2::geom_text(aes(label = lubridate::day(ndate)), size = 3, color = "black") +
+      # default color bar
       ggplot2::scale_fill_gradientn(colours = repvisforODK::set_color('quadcolor'),
                                     name = "Number of submissions",
                                     guide = 'colourbar')
   }
 
+  # convert ggplot object to plotly object
   ggp <- plotly::ggplotly(ggp, tooltip = c('fill'))
 
   ggp <- ggp %>%

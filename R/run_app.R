@@ -1,4 +1,4 @@
-#' Launches the shiny app that users can use to do generate reports.
+#' Launches the shiny app to generate reports.
 #'
 #' @return NULL
 #'

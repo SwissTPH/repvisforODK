@@ -21,8 +21,11 @@
 #' @examples
 submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col, exclude_wday = NULL){
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # stop if daily submission goal is negative
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
@@ -40,6 +43,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
   # first w/o excluded wdays
   if (!is.null(exclude_wday)) {
 
+    # get all dates of data collection period
     all_wdays_in_period <- all_wdays_in_period[!all_wdays_in_period %in% exclude_wday]
 
     df$wday <- lubridate::wday(df[[date_col]], abbr = T)
@@ -49,8 +53,9 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
   submissions_total = nrow(df[!df$wday %in% exclude_wday, ])
   submission_goal_deviation = submission_goal_total - submissions_total
 
+  # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+  # plot used when sub goal is > 0
   if (submission_goal_deviation > 0){
     fig <- plotly::plot_ly(type='pie',
                            labels=c('Received', 'Missing'),
@@ -61,6 +66,7 @@ submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_subm
 
     fig <- fig %>% plotly::layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE, title='Test'),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+    # plot used when sub goal is <= 0
   } else{
     fig <- plotly::plot_ly(type='pie',
                            labels=c('Received'),

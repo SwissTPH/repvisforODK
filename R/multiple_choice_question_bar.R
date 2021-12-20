@@ -29,8 +29,11 @@
 #' @examples
 multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL, delimiter = ' ', choice_col = NULL, label_col = NULL) {
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # stop if more than one source for chocie questions is defined
   if (sum(svc, !is.null(df_schema_ext), !is.null(qvec)) != 1) {
 
     stop('The function is not able to clearly identify multiple choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
@@ -46,6 +49,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
     qvec_pre <- qvec
   }
 
+  # empty list to store plots in
   figs <- list()
 
   # counter for color alternation between each plot
@@ -105,17 +109,23 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
+      # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
+
+      # base bar plot only showing the multiple choice proportion
       fig <- plot_ly(data = df_merge, x = ~choice, y = ~Freq.y/num_peop_q,
                      type = 'bar',
                      name = 'Among Multiple Choices',
                      text = ~Freq.total,
                      textposition = 'outside',
+                     # alternating the colors between every plot for better contrast
                      color = I(ifelse(counter %% 2 == 0,
                                     repvisforODK::set_color('red'),
                                     repvisforODK::set_color('green')
                                     )),
+                     # hover content definition
                      hovertemplate = "%{label} <br>%{y}<extra></extra>")
 
+      # stacking second layer of bars on top for single choice proportion
       fig <- fig %>% add_trace(x = ~choice, y = ~Freq.x/num_peop_q,
                                type = 'bar',
                                name = 'As Single Choice',
@@ -140,6 +150,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       # adding title to the html widget
       fig <- repvisforODK::add_html_title_tag(fig, title)
 
+      # evaluate plotly objects before saving in list to avoid rendering bugs in the report
       figs[[q]] <- plotly::plotly_build(fig)
 
     } else {

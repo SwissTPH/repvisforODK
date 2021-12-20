@@ -25,29 +25,45 @@
 #' @examples
 submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_wday = NULL, cumulative = TRUE) {
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # stop if daily submission goal is negative
   if (daily_submission_goal < 0) {
     stop("The argument daily_submission_goal has to be defined as a positive integer or float.")
   }
 
+  # get earliest and latest date in data
   date_limits = repvisforODK::collection_period(df = df, date_col = date_col)
+
+  # give specified date column default name
   names(df)[names(df) == date_col] <- 'date'
 
+  # get all dates of data collection period
   all_dates_in_period = seq.Date(date_limits[[1]], date_limits[[2]], 'days')
+
+  # group df by date and summarize using count (note that here dates where no data was collected are missing)
   df_count = df %>% dplyr::mutate(date = as.Date(date)) %>% dplyr::count(date)
 
+  # create df with all dates of the data collection period (containing ALL dates, also the ones where no data was collected)
   df_count_full <- data.frame(all_dates_in_period)
+  # new count column with 0 if date is misiing in df_count and with df_count$n if the date exists.
   df_count_full$n <- sapply(df_count_full$all_dates_in_period,
                               function(x) ifelse(x %in% df_count$date, df_count$n[df_count$date == x], 0),
                               USE.NAMES = F)
+
+  # exclude certain days of the week if any were specified by the user
   if (!is.null(exclude_wday)) {
     df_count_full$wday <- lubridate::wday(df_count_full$all_dates_in_period, abbr = T)
 
     df_count_full <- df_count_full[!df_count_full$wday %in% exclude_wday, ]
   }
 
+  # if user selects cumulative line chart, the cumulative sum of the count column is calculated
   if (cumulative) df_count_full <- df_count_full %>% dplyr::mutate(n = cumsum(n))
+
+  # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
 
   fig <- plotly::plot_ly(df_count_full, type = 'scatter', mode = 'lines', line = list(color = repvisforODK::set_color('red')), width = 900) %>%
     plotly::add_trace(
@@ -59,8 +75,10 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
     plotly::layout(
            showlegend = TRUE,
            xaxis = list(title = 'Date',
+                        # range slider to enable interactive time window selection
                         rangeslider = list(visible = T),
                         rangeselector = list(
+                          # logic to display appropriate buttons with respect to the length of the data collection period
                           buttons =
                             if (nrow(df_count) < 63) {
                               list(
@@ -102,13 +120,17 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
            margin = 0.1
       )
 
+  # if daily sub goal > 0, additional line that plots it
   if (daily_submission_goal > 0) {
+    # with slope
     if (cumulative) {
       y = c(daily_submission_goal, daily_submission_goal * nrow(df_count_full))
+      # constant
     } else {
       y = c(daily_submission_goal, daily_submission_goal)
     }
 
+    # the actual line that shows number of submissions
     fig <- fig %>%
       plotly::add_trace(
         x = c(date_limits[[1]], date_limits[[2]]),

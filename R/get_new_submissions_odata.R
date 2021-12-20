@@ -6,10 +6,11 @@
 #' submission date in the  old data and uses it to create ODATA query that filters for submissions that were either submitted or updated or both
 #' after this date. The new submissions can be returned by themselves or merged with the old data.
 #'
+#' @param csv Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
+#' @param df Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)
 #' @param id_col Character that specifies the exact name of the instance ID column in the df/csv.
 #' @param submission_date_col Character that specifies the exact name of the submission date column in the df/csv.
-#' @param csv Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)
-#' @param df Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)
 #' @param merge_data Boolean that specifies whether the new data shall be merged with the one that was given or not.
 #' @param force_timezone If TRUE all time stamp values will be remain the same but their timezone will be changed to the one used in the old data. If FALSE time stamps will be converted in accordance with the timezone of the old data.
 #'
@@ -20,33 +21,39 @@
 #' @import ruODK glue plyr lubridate readr
 #' @export
 #'
-#' @examples
-#'
-get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=NULL, merge_data=TRUE, force_timezone=TRUE){
+#' @example
+get_new_submissions_odata <- function(svc = FALSE,  csv=NULL, df=NULL, id_col, submission_date_col, merge_data=TRUE, force_timezone=TRUE){
 
+  # checks whether ruODK is set up
   if (ruODK::ru_settings()[[2]]=='') {
     stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine.')
   }
 
-  if (is.null(csv) & is.null(df)){
-    stop('Please pass either a csv path or a data frame as an argument.')
-  } else if(is.null(df) & !is.null(csv)){
-    df_gnio = readr::read_csv(csv)
-  } else df_gnio = df
+  # loading old and new data-------------------------------------------------------------------------------------------------------------------------------
 
-  critical_date = paste0(gsub(' ', 'T', as.character(max(df_gnio[[submission_date_col]]+1))),
+  # loading data
+  df <- repvisforODK::check_data_args(df, csv, svc)
+
+  # finding the latest time stamp in the data and converting it to ODATA format
+  critical_tstamp = paste0(gsub(' ', 'T', as.character(max(df[[submission_date_col]]+1))),
                          'Z')
 
+  # loading new data using ODATA filter to filter for all submissions after the critical time stamp
   new_data_df = ruODK::odata_submission_get(filter = paste0('__system/submissionDate gt ',
-                                                            critical_date,
+                                                            critical_tstamp,
                                                             ' or __system/updatedAt gt ',
-                                                            critical_date),
+                                                            critical_tstamp),
                                             download = FALSE)
 
+  # data manipulation to prepare for merge-------------------------------------------------------------------------------------------------------------------------------
+
+  # dropping ODATA download-specific columns that could let the code fail if non-ODATA-downloaded initial data (df) is used
   new_data_df = new_data_df[,!(names(new_data_df) %in% c('odata_context', 'system_edits'))]
 
+  # if no new data is found
   if (nrow(new_data_df)==0) stop('Your data is up-to-date.')
 
+  # conversion of important time stamp columns from string to their appropriate class in R
   for (col in c('start', 'end', 'system_submission_date')){
     new_data_df[col] = sapply(new_data_df[[col]],
                               function(x) strsplit(gsub('T', ' ', x),
@@ -58,11 +65,13 @@ get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=
                                   format='%Y-%m-%d %H:%M:%S')
   }
 
+  # getting time zones of old and new data
   new_data_tz = attr(new_data_df[['today']][1],
                      'tzone')
-  old_data_tz = attr(df_gnio[[submission_date_col]][1],
+  old_data_tz = attr(df[[submission_date_col]][1],
                      'tzone')
 
+  # warning if time zones are not the matching
   if (new_data_tz != old_data_tz){
     warning(glue::glue('The timezones of new data ({new_data_tz}) and old data ({old_data_tz}) do not match. If force_timezone is set to TRUE all time stamp values will be remain the same but their timezone will be changed to the one used in the old data. If FALSE time stamps will be converted in accordance with the timezone of the old data. The current value of force_timezones is {force_timezone}.'))
 
@@ -80,18 +89,23 @@ get_new_submissions_odata <- function(id_col, submission_date_col, csv=NULL, df=
 
   new_data_df['today'] = as.Date(new_data_df[['today']])
 
-  df_levi_dist = as.data.frame(sapply(colnames(new_data_df),
-                                      function(x) utils::adist(x, colnames(df_gnio))),
-                               row.names = colnames(df_gnio))
+  if (merge_data){
 
-  matching_list = lapply(colnames(df_levi_dist),
-                         function(x) c(x, rownames(df_levi_dist)[which(df_levi_dist[[x]] %in% min(df_levi_dist[[x]]))]))
+    # matching columns of old and new data based on levinstein distance
+    df_levi_dist = as.data.frame(sapply(colnames(new_data_df),
+                                        function(x) utils::adist(x, colnames(df))),
+                                 row.names = colnames(df))
 
-  for (vec in matching_list){
-    names(new_data_df)[names(new_data_df) == vec[1]] <- vec[2]
+    matching_list = lapply(colnames(df_levi_dist),
+                           function(x) c(x, rownames(df_levi_dist)[which(df_levi_dist[[x]] %in% min(df_levi_dist[[x]]))]))
+
+    for (vec in matching_list){
+      names(new_data_df)[names(new_data_df) == vec[1]] <- vec[2]
+    }
+
+    # merging data by column
+    return(plyr::rbind.fill(df, new_data_df))
   }
 
-  ifelse(merge_data,
-         return(plyr::rbind.fill(df_gnio, new_data_df)),
-         return(new_data_df))
+  return(new_data_df)
 }

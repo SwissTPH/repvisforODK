@@ -4,9 +4,10 @@
 #' It does so by downloading the most recent submission list from ODK Central for the respective form and compares the instance IDs with the ones
 #' that are contained in the given data.
 #'
+#' @param csv Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)
+#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
+#' @param df Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)
 #' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
-#' @param csv Character that specifies the path to the csv file that is to be read.
-#' @param df Data frame that, specifies the data frame that is to be read.
 #'
 #' @return List
 #'
@@ -14,20 +15,22 @@
 #' @export
 #'
 #' @examples
-find_missing_instanceIDs <- function(id_col, csv=NULL, df=NULL){
+find_missing_instanceIDs <- function(svc = FALSE, csv=NULL, df=NULL, id_col){
+
+  # checks whether ruODK is set up
   if (ruODK::ru_settings()[[2]]=='') stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the from you want to look at.')
 
-  if (is.null(csv) & is.null(df)){
-    stop('Please pass either a csv path or a data frame as an argument.')
-  } else if(is.null(df) & !is.null(csv)){
-    df_gni = readr::read_csv(csv)
-  } else df_gni = df
+  # loading data
+  df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # getting lsit with all submissions incl. meta data
   submissions_df = ruODK::submission_list()
 
-  '%ni%' <- Negate('%in%')
-  missing_instances = submissions_df$instance_id[submissions_df$instance_id %ni% df_gni[[id_col]]]
+  # getting IDs of all instances that are missing
+  missing_instances = submissions_df$instance_id[!submissions_df$instance_id %in% df[[id_col]]]
+
+  # if no instances are missing...
   if (length(missing_instances)==0) stop('There are no new instances.')
 
-  return(list(df_gni, missing_instances))
+  return(list(df, missing_instances))
 }

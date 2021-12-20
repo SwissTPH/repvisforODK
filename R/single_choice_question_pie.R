@@ -28,8 +28,11 @@
 #' @examples
 single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL, choice_col = NULL, label_col = NULL) {
 
+  # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------
+
   df <- repvisforODK::check_data_args(df, csv, svc)
 
+  # stop if more than one source for chocie questions is defined
   if (sum(svc, !is.null(df_schema_ext), !is.null(qvec)) != 1) {
 
     stop('The function is not able to clearly identify single choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
@@ -45,6 +48,7 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
     qvec_pre <- qvec
   }
 
+  # empty list to store plots in
   figs <- list()
 
   for (q in qvec_pre) {
@@ -74,8 +78,11 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
       # calculating number of people who answered the question
       num_peop_q <- nrow(df[!is.na(df[[q]]), ])
 
+      # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
+
       fig <- plotly::plot_ly(data = df_count, labels = ~label, values = ~freq, type = 'pie', direction = 'clockwise',
                              marker = list(colors = repvisforODK::set_color('contrast_scale')),
+                             # hover content definition
                              hovertemplate = "%{label} <br>%{value}<extra></extra>")
       fig <- fig %>%
         plotly::layout(title = list(text = paste0('<br>' ,num_peop_q, ' out of ', nrow(df), ' have \nanswered this question.'),
@@ -87,6 +94,7 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
       # adding title to the html widget
       fig <- repvisforODK::add_html_title_tag(fig, title)
 
+      # evaluate plotly objects before saving in list to avoid rendering bugs in the report
       figs[[q]] <- plotly::plotly_build(fig)
     }
   }
