@@ -7,7 +7,6 @@
 #' after this date. The new submissions can be returned by themselves or merged with the old data.
 #'
 #' @param csv Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)
-#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param df Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)
 #' @param id_col Character that specifies the exact name of the instance ID column in the df/csv.
 #' @param submission_date_col Character that specifies the exact name of the submission date column in the df/csv.
@@ -22,7 +21,9 @@
 #' @export
 #'
 #' @example
-get_new_submissions_odata <- function(svc = FALSE,  csv=NULL, df=NULL, id_col, submission_date_col, merge_data=TRUE, force_timezone=TRUE){
+#' \dontrun{
+#' }
+get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date_col, merge_data=TRUE, force_timezone=TRUE){
 
   # checks whether ruODK is set up
   if (ruODK::ru_settings()[[2]]=='') {
@@ -31,8 +32,12 @@ get_new_submissions_odata <- function(svc = FALSE,  csv=NULL, df=NULL, id_col, s
 
   # loading old and new data-------------------------------------------------------------------------------------------------------------------------------
 
-  # loading data
-  df <- repvisforODK::check_data_args(df, csv, svc)
+  # loading old data
+  if (is.null(csv) & is.null(df)){
+    stop('Please pass either a csv path or a data frame as an argument.')
+  } else if(is.null(df) & !is.null(csv)){
+    df = readr::read_csv(csv)
+  }
 
   # finding the latest time stamp in the data and converting it to ODATA format
   critical_tstamp = paste0(gsub(' ', 'T', as.character(max(df[[submission_date_col]]+1))),

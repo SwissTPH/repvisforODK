@@ -5,7 +5,6 @@
 #' sends GET requests to ODK Centrals REST-API to retrieve data.
 #'
 #' @param csv Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)
-#' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param df Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)
 #' @param id_col Character that specifies the exact name of the instance ID in the df/csv.
 #' @param merge_data Boolean that specifies whether the new data shall be merged with the one that was given or not.
@@ -16,7 +15,7 @@
 #' @export
 #'
 #' @examples
-get_new_submissions <- function(svc = FALSE, csv=NULL, df=NULL, id_col, merge_data=TRUE){
+get_new_submissions <- function(csv=NULL, df=NULL, id_col, merge_data=TRUE){
 
   # getting data and missing instances
   help_list = repvisforODK::find_missing_instanceIDs(csv, df, svc, id_col)
