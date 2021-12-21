@@ -22,18 +22,16 @@ When published installing will be possible through:
 install.packages("repvisforODK")
 ```
 
-However, the development version from [GitHub](https://github.com/) can be isntalled with:
+However, the development version from [GitHub](https://github.com/) can be installed using:
 
 ``` r
-# install.packages("devtools")
+require("devtools")
 devtools::install_github("lucidviews/repvisforODK")
 ```
 
 ## Example
 
 COMING SOON
-
-This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(repvisforODK)
