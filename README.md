@@ -10,7 +10,7 @@
 yet.**
 
 The goal of repvisforODK is to enable its users to quickly visualize data retrieved from ODK Central by offering a variety of plots for different question types.
-Through the included Shiny app, this is even possible for users with little to none coding skills.
+Through the included Shiny app, this is also possible for users with little to no coding skills.
 
 ## Installation
 
