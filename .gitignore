@@ -38,3 +38,6 @@ rsconnect/
 
 # Explorative testing files
 explore/*
+
+# Archived files
+archive/*
