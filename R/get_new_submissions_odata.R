@@ -40,8 +40,21 @@ get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date
   }
 
   # finding the latest time stamp in the data and converting it to ODATA format
+  if (class(df[[submission_date_col]]) == 'character' & grepl('T', df[[submission_date_col]][1])) {
+    df[[submission_date_col]] <- sapply(df[[submission_date_col]],
+                                        function(x) as.POSIXct(substring(gsub('T', ' ', x),
+                                                                         1,
+                                                                         nchar(x)-5)),
+                                        USE.NAMES = FALSE)
+    df[[submission_date_col]] <- as.POSIXct(df[[submission_date_col]], origin = "1970-01-01")
+  } else if (!class(df[[submission_date_col]]) == c('POSIXct', 'POSIXt') | class(df[[submission_date_col]]) == 'date') {
+    stop('The specified submission date column is not in the right format. Possible format are a) "2021-11-11T19:14:03.132Z" as class character or b) class POSIXt or POSIXct.')
+  }
+
+  print(class(df[[submission_date_col]][1]))
+  print(df[[submission_date_col]][1])
   critical_tstamp = paste0(gsub(' ', 'T', as.character(max(df[[submission_date_col]]+1))),
-                         'Z')
+                           'Z')
 
   # loading new data using ODATA filter to filter for all submissions after the critical time stamp
   new_data_df = ruODK::odata_submission_get(filter = paste0('__system/submissionDate gt ',
