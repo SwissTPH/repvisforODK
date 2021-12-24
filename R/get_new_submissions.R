@@ -18,7 +18,7 @@
 get_new_submissions <- function(csv=NULL, df=NULL, id_col, merge_data=TRUE){
 
   # getting data and missing instances
-  help_list = repvisforODK::find_missing_instanceIDs(csv, df, svc, id_col)
+  help_list = repvisforODK::find_missing_instanceIDs(csv, df, id_col)
   df_gni = help_list[[1]]
   missing_instances = help_list[[2]]
 

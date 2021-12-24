@@ -19,6 +19,19 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' submission_goal_donut(svc = TRUE, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+#'
+#' # 2. with data frame
+#' submission_goal_donut(df = df_odk_data, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+#'
+#' # 3. with csv
+#' submission_goal_donut(csv = 'example/file/odk_data.csv', daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+#' }
 submission_goal_donut <- function(df = NULL, csv = NULL, svc = FALSE, daily_submission_goal, date_col, exclude_wday = NULL){
 
   # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------

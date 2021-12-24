@@ -22,6 +22,14 @@
 #'
 #' @example
 #' \dontrun{
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' # load latest data
+#' df <- ruODK::odata_submission_get()
+#'
+#' # call function on fraction of the data and only return the missing part
+#' new_data_df <- get_new_submissions_odata(df = df[10:nrow(df), ], id_col = 'id', submission_date_col = 'system_submission_date')
 #' }
 get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date_col, merge_data=TRUE, force_timezone=TRUE){
 
@@ -51,8 +59,6 @@ get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date
     stop('The specified submission date column is not in the right format. Possible format are a) "2021-11-11T19:14:03.132Z" as class character or b) class POSIXt or POSIXct.')
   }
 
-  print(class(df[[submission_date_col]][1]))
-  print(df[[submission_date_col]][1])
   critical_tstamp = paste0(gsub(' ', 'T', as.character(max(df[[submission_date_col]]+1))),
                            'Z')
 

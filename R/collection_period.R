@@ -14,6 +14,19 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' collection_period(svc = TRUE, date_col = 'start')
+#'
+#' # 2. with data frame
+#' collection_period(df = df_odk_data, date_col = 'start')
+#'
+#' # 3. with csv
+#' collection_period(csv = 'example/file/odk_data.csv', date_col = 'start')
+#' }
 collection_period <- function(df = NULL, csv = NULL, svc = FALSE, date_col){
 
   # loading data

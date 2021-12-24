@@ -23,6 +23,19 @@
 #' @import dplyr plotly lubridate
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' submissions_timeseries_lineplot(svc = TRUE, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7), cumulative = TRUE)
+#'
+#' # 2. with data frame
+#' submissions_timeseries_lineplot(df = df_odk_data, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7), cumulative = TRUE)
+#'
+#' # 3. with csv
+#' submissions_timeseries_lineplot(csv = 'example/file/odk_data.csv', daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7), cumulative = TRUE)
+#' }
 submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0, exclude_wday = NULL, cumulative = TRUE) {
 
   # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------

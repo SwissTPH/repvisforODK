@@ -14,6 +14,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' find_missing_instanceIDs(df = df_odk_data, id_col = 'instance_id')
+#' }
 find_missing_instanceIDs <- function(csv=NULL, df=NULL, id_col){
 
   # checks whether ruODK is set up

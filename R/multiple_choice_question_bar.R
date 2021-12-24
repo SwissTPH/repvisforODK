@@ -14,7 +14,7 @@
 #' @param svc Logical that indicates whether the data shall be parsed using ruODK's \code{\link[ruODK]{odata_submission_get}}. Optional, defaults to FALSE.
 #' @param df Data frame containing the ODK data that is to be used. Optional, defaults to NULL.
 #' @param csv Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.
-#' @param qvec Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL..
+#' @param qvec Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL. Only to be used when loading data through df or csv and when df_schema_ext is not used.
 #' @param lang Character containing the name of the language that is to be examined, defaults to NULL.
 #' @param delimiter Character specifying the symbol that is used to separate multiple choices in the data. Optional, defaults to ' '.
 #' @param df_schema_ext Data frame that defines the schema of the from. Can be passed to the function to avoid downloading it multiple times. Optional, defaults to NULL.
@@ -27,6 +27,21 @@
 #' @import ruODK plotly
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' submissions_timeseries_lineplot(svc = TRUE, lang = 'english', delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#'
+#' # 2. with data frame and external form schema
+#' df_schema = ruODK::form_schema_ext()
+#'
+#' submissions_timeseries_lineplot(df = df_odk_data, lang = 'english', df_schema_ext = df_schema, delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#'
+#' # 3. with csv and qvec
+#' submissions_timeseries_lineplot(csv = 'example/file/odk_data.csv', lang = 'english', qvec = c('question1', 'question4'), delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#' }
 multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qvec = NULL, lang = NULL, df_schema_ext = NULL, delimiter = ' ', choice_col = NULL, label_col = NULL) {
 
   # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------

@@ -21,6 +21,21 @@
 #' @import tm wordcloud2
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' free_text_wordcloud(svc = TRUE, text_col = c('question2', 'question5'), lang_wc = 'french', lang = 'english', delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#'
+#' # 2. with data frame and external form schema
+#' df_schema = ruODK::form_schema_ext()
+#'
+#' free_text_wordcloud(df = df_odk_data, text_col = c('question2', 'question5'), lang_wc = 'french', lang = 'english', df_schema_ext = df_schema, delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#'
+#' # 3. with csv and qvec
+#' free_text_wordcloud(csv = 'example/file/odk_data.csv', text_col = c('question2', 'question5'), lang_wc = 'french', lang = 'english', qvec = c('question1', 'question4'), delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#' }
 free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, lang_wc, lang = NULL, df_schema_ext = NULL, choice_col = NULL, label_col = NULL) {
 
   if (svc & !is.null(df_schema_ext)) {
@@ -60,6 +75,9 @@ free_text_wordcloud <- function(svc = FALSE, df = NULL, csv = NULL, text_col, la
 #' @import tm wordcloud2 DT
 #'
 #' @examples
+#' \dontrun{
+#' Function is only used within free_text_wordcloud(). See the latter for example.
+#' }
 preprocess_wc_generation <- function(text_col, lang_wc_c, df_c = df, lang_c = lang, svc_c = svc, df_schema_ext_c = df_schema_ext, choice_col_c = choice_col, label_col_c = label_col) {
 
   # isolating text in vector
