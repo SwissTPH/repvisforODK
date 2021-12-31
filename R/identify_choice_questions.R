@@ -14,12 +14,29 @@
 #' @import ruODK dplyr
 #'
 #' @examples
-
+#' \dontrun{
+#' # 1. Without df_schema_ext
+#' choice_questions <- identify_choice_questions(lang = 'english', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#'
+#' # 2. With df_schema_ext
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' df_schema <- ruODK::form_schema_ext()
+#'
+#' choice_questions <- identify_choice_questions(lang = 'english', df_schema_ext = df_schema, choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+#' }
 identify_choice_questions <- function(lang = NULL, df_schema_ext = NULL, choice_col = NULL, label_col = NULL) {
   # deriving questions and choices from form schema
   repvisforODK::info_msg('Identifying single choice questions through extended form schema.')
 
   if (is.null(df_schema_ext)) {
+
+    # checks whether ruODK is set up
+    if (ruODK::ru_settings()[[2]]=='') {
+      stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine or pass a from schema using df_schema_ext.')
+    }
+
     df_schema <- ruODK::form_schema_ext()
   } else {
     df_schema <- df_schema_ext

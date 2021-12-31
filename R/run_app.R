@@ -5,6 +5,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' run_app()
+#' }
 run_app <- function() {
 
   shinyApp(repvisforODK::ui(), repvisforODK::server)

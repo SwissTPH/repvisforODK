@@ -30,7 +30,7 @@
 #' \dontrun{
 #' # 1. with SVC
 #' # ruODK needs to be set up for this function to work
-#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
 #'
 #' submissions_timeseries_lineplot(svc = TRUE, lang = 'english', delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
 #'

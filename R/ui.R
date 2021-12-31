@@ -4,8 +4,6 @@
 #'
 #' @export
 #' @import shiny dplyr shinycssloaders shinyalert DT
-#'
-#' @examples
 ui <- function() {
   # adding the smallest fluid page possible just to embed the logo in it
   ui <- shiny::fluidPage(

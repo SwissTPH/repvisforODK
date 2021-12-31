@@ -17,7 +17,7 @@
 #' \dontrun{
 #' # 1. with SVC
 #' # ruODK needs to be set up for this function to work
-#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
 #'
 #' collection_period(svc = TRUE, date_col = 'start')
 #'

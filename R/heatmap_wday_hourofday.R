@@ -14,6 +14,19 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' heatmap_calendar(svc = TRUE, date_col = 'start')
+#'
+#' # 2. with data frame
+#' heatmap_calendar(df = df_odk_data, date_col = 'start')
+#'
+#' # 3. with csv
+#' heatmap_calendar(csv = 'example/file/odk_data.csv', date_col = 'start')
+#' }
 heatmap_wday_hourofday <- function(df = NULL, csv = NULL, svc = FALSE, date_col) {
 
   # loading and manipulating data-------------------------------------------------------------------------------------------------------------------------------

@@ -9,8 +9,6 @@
 #'
 #' @export
 #' @import ruODK shiny rmarkdown shinyalert DT
-#'
-#' @examples
 server <- function(input, output) {
 
   # suppress warnings; = 0 to enable warnings

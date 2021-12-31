@@ -23,7 +23,7 @@
 #' @example
 #' \dontrun{
 #' # ruODK needs to be set up for this function to work
-#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
 #'
 #' # load latest data
 #' df <- ruODK::odata_submission_get()
@@ -69,7 +69,7 @@ get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date
                                                             critical_tstamp),
                                             download = FALSE)
 
-  # data manipulation to prepare for merge-------------------------------------------------------------------------------------------------------------------------------
+  # data manipulation-------------------------------------------------------------------------------------------------------------------------------
 
   # dropping ODATA download-specific columns that could let the code fail if non-ODATA-downloaded initial data (df) is used
   new_data_df = new_data_df[,!(names(new_data_df) %in% c('odata_context', 'system_edits'))]
@@ -112,6 +112,8 @@ get_new_submissions_odata <- function(csv=NULL, df=NULL, id_col, submission_date
 
 
   new_data_df['today'] = as.Date(new_data_df[['today']])
+
+  # data merge-------------------------------------------------------------------------------------------------------------------------------
 
   if (merge_data){
 

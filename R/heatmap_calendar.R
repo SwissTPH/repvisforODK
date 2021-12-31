@@ -15,8 +15,20 @@
 #' @export
 #'
 #' @examples
-
-heatmap_calendar <- function(date_col, daily_submission_goal = 0, df = NULL, csv = NULL, svc = FALSE){
+#' \dontrun{
+#' # 1. with SVC
+#' # ruODK needs to be set up for this function to work
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+#'
+#' heatmap_calendar(svc = TRUE, daily_submission_goal = 4, date_col = 'start')
+#'
+#' # 2. with data frame
+#' heatmap_calendar(df = df_odk_data, daily_submission_goal = 4, date_col = 'start')
+#'
+#' # 3. with csv
+#' heatmap_calendar(csv = 'example/file/odk_data.csv', daily_submission_goal = 4, date_col = 'start')
+#' }
+heatmap_calendar <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily_submission_goal = 0){
 
   # stop if daily submission goal is negative
   if (daily_submission_goal < 0) {

@@ -22,7 +22,7 @@
 #' \dontrun{
 #' # 1. with SVC
 #' # ruODK needs to be set up for this function to work
-#' repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+#' repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
 #'
 #' submission_goal_donut(svc = TRUE, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
 #'
