@@ -1,0 +1,77 @@
+---
+title: "How to repvisforODK"
+output: 
+  rmarkdown::html_vignette: 
+    toc: TRUE
+    number_section: TRUE
+vignette: >
+  %\VignetteIndexEntry{repvis_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE}
+library(repvisforODK)
+```
+
+# Intro
+The idea of **repvisforODK** was to develop a quick way to visualize data which is stored on ODK Central by creating **custom reports**. To do so, the package leverages on a variety of other external R packages. Of paramount importance are [ruODK](https://docs.ropensci.org/ruODK/reference/ruODK-package.html) for the interaction with the ODK Central API and both [ggplot2](https://ggplot2.tidyverse.org/index.html) & [plotly](https://plotly.com/r/) for plotting.\
+\
+repvisforODK was developed to be accessible not only for people with but also for people without coding skills. Thus, repvisforODK can be used in **two ways**:
+
+1. **Code solution**: repvisforODK contains several functions that create plots for different question types. These functions can be used individually which enables the user to use them in whatever way fits best for their use case -  visualize data on the fly, integrate in already existing code, create a new personalized report etc.
+2. **No Code solution**: All the plot-generating functions of repvisforODK can also be accessed through an integrated shiny app. The app provides an interface where the user can connect to ODK Central, select the visualizations they desire, set the required parameters and ultimately generate an html report. More details to come below...
+
+***
+
+# Functions
+This section provides an overview of all functions in repvisforODK. For more detailed information, visit the help page of a function using `?[FUNCTION NAME]`.
+
+## Plot Functions
+repvisforODK offers 4 functions that visualize metadata of the entire form (1 plot per form) and 3 question-specific functions for responses of the surveyees (1 plot per question of respective question type).
+
+General plots:
+
+- `submission_goal_donut()`\
+  *Pie Chart showing received vs. missing submissions referring to a submission goal set by the user.*
+- `submissions_timeseries_lineplot()`\
+  *Line chart showing the number of received submissions over the course of the data collection period.*
+- `heatmap_wday_hourofday()`\
+  *Heat map of the number of submissions per weekday and hour.*
+- `heatmap_calendar()`\
+  *Heat map of the number of submissions on each day of the data collection period.*
+  
+Question plots:
+
+- `single_choice_question_pie()`\
+  *Pie Chart showing the selection percentage of each choice of a single-choice question. Function automatically identifies all single-choice questions in the form and generates a plot for each of them.*
+- `multiple_choice_question_bar()`\
+  *Stacked bar chart showing the selection percentage of each choice of a multiple-choice question. Function automatically identifies all multiple-choice questions in the form and generates a plot for each of them.*
+- `free_text_wordcloud()`\
+  *Generates a wordcloud based on text from a free text question. Function doesn't automatically identifies free text questions in the form - has to be specified by the user.*
+  
+## App Functions
+- `ui()`\
+  *Contains the shiny code for the user interface of the app.*
+- `server()`\
+  *Contains the shiny code for the back-end of the app.*
+- `run_app()`\
+  *Calls both of the above functions and launches the shiny app.*
+
+
+## Get Submissions Functions
+Apart from visualizing data, repvisforODK also offers an efficient solution for only getting data from ODK Central which is not yet part of data a user is using already. This is useful in situations where a user is already working with ODK Central data in an R session. Instead of downloading all the data of a form which is available, the user can use the following functions to restrict the downloaded submissions to only the ones which are not yet in the data.
+
+- `get_new_submissions()`\
+  *Takes existing ODK data (data frame or csv) and downloads only new submissions. In contrast to `get_new_submissions_odata()`, this function uses the ODK Central REST-API endpoint and not the ODATA endpoint. For detailed information on the implications of the latter visit the function's help page.*
+- `get_new_submissions_odata()`\
+  *Takes existing ODK data (data frame or csv) and downloads only new submissions. In contrast to `get_new_submissions_odata()`, this function uses the ODK Central ODATA endpoint and not the REST-API endpoint. For detailed information on the implications of the latter visit the function's help page.*
+- `find_missing_instanceIDs()`\
+  *Takes existing ODK data and finds all instance IDs that are already on ODK Central but not in the data. This function is used within get_new_submissions().*

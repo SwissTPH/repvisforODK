@@ -1,7 +1,11 @@
-#' Download all missing submissions
+#' Takes ODK data (data frame or csv) and downloads all missing submissions.
 #'
 #' -Disclaimer: this function takes significantly longer than its ODATA equivalent \code{\link{get_new_submissions_odata}}.
 #' Only use it if the latter does not work with your use case.-
+#' Potential reasons for use are:
+#' a) Form on ODK is encrypted (ODATA is generally not supported for such forms)
+#' b) \code{\link{get_new_submissions_odata}} only gets new submissions that were submitted after the most recent submission in the data (missing instances "in between" are not considered)
+#'
 #' This function uses the \code{\link{find_missing_instanceIDs}} function to find all submissions of an ODK form which are already stored on ODK Central but not loaded in your current data submissions and then downloads them.
 #' The new submissions can either be appended to the old data or be returned separately. To do so, the function makes use of ruODK's \code{\link[ruODK]{submission_get}} function which
 #' sends GET requests to ODK Centrals REST-API to retrieve data.
