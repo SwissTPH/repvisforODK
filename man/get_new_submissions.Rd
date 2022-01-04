@@ -2,16 +2,16 @@
 % Please edit documentation in R/get_new_submissions.R
 \name{get_new_submissions}
 \alias{get_new_submissions}
-\title{Download all missing submissions}
+\title{Takes ODK data (data frame or csv) and downloads all missing submissions.}
 \usage{
-get_new_submissions(id_col, csv = NULL, df = NULL, merge_data = TRUE)
+get_new_submissions(csv = NULL, df = NULL, id_col, merge_data = TRUE)
 }
 \arguments{
+\item{csv}{Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)}
+
+\item{df}{Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)}
+
 \item{id_col}{Character that specifies the exact name of the instance ID in the df/csv.}
-
-\item{csv}{Character that specifies the path to the csv file that is to be read.}
-
-\item{df}{Data frame that specifies the data frame that is to be read.}
 
 \item{merge_data}{Boolean that specifies whether the new data shall be merged with the one that was given or not.}
 }
@@ -19,7 +19,26 @@ get_new_submissions(id_col, csv = NULL, df = NULL, merge_data = TRUE)
 Data frame
 }
 \description{
+-Disclaimer: this function takes significantly longer than its ODATA equivalent \code{\link{get_new_submissions_odata}}.
+Only use it if the latter does not work with your use case.-
+Potential reasons for use are:
+a) Form on ODK is encrypted (ODATA is generally not supported for such forms)
+b) \code{\link{get_new_submissions_odata}} only gets new submissions that were submitted after the most recent submission in the data (missing instances "in between" are not considered)
+}
+\details{
 This function uses the \code{\link{find_missing_instanceIDs}} function to find all submissions of an ODK form which are already stored on ODK Central but not loaded in your current data submissions and then downloads them.
 The new submissions can either be appended to the old data or be returned separately. To do so, the function makes use of ruODK's \code{\link[ruODK]{submission_get}} function which
 sends GET requests to ODK Centrals REST-API to retrieve data.
+}
+\examples{
+\dontrun{
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+
+# load latest data
+df <- ruODK::odata_submission_get()
+
+# call function on fraction of the data and only return the missing part
+new_data_df <- get_new_submissions(df = df[10:nrow(df), ], id_col = 'id')
+}
 }

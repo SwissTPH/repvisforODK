@@ -47,3 +47,20 @@ If svc is set to FALSE and the data is passed locally, the argument qvec has to 
 one wants to examine. Please note that for this case the column name will be displayed as the title while the row values will be displayed as
 the choice labels.
 }
+\examples{
+\dontrun{
+# 1. with SVC
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+
+submissions_timeseries_lineplot(svc = TRUE, lang = 'english', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+
+# 2. with data frame and external form schema
+df_schema = ruODK::form_schema_ext()
+
+submissions_timeseries_lineplot(df = df_odk_data, lang = 'english', df_schema_ext = df_schema, choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+
+# 3. with csv and qvec
+submissions_timeseries_lineplot(csv = 'example/file/odk_data.csv', lang = 'english', qvec = c('question1', 'question4'), choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+}
+}

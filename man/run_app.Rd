@@ -2,10 +2,15 @@
 % Please edit documentation in R/run_app.R
 \name{run_app}
 \alias{run_app}
-\title{Launches the shiny app that users can use to do generate reports.}
+\title{Launches the shiny app to generate reports.}
 \usage{
 run_app()
 }
 \description{
-Launches the shiny app that users can use to do generate reports.
+Launches the shiny app to generate reports.
+}
+\examples{
+\dontrun{
+run_app()
+}
 }

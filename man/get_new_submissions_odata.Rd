@@ -5,22 +5,22 @@
 \title{Download all missing instances through ODATA}
 \usage{
 get_new_submissions_odata(
-  id_col,
-  submission_date_col,
   csv = NULL,
   df = NULL,
+  id_col,
+  submission_date_col,
   merge_data = TRUE,
   force_timezone = TRUE
 )
 }
 \arguments{
-\item{id_col}{Character that specifies the exact name of the instance ID column in the df/csv.}
-
-\item{submission_date_col}{Character that specifies the exact name of the submission date column in the df/csv.}
-
 \item{csv}{Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)}
 
 \item{df}{Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)}
+
+\item{id_col}{Character that specifies the exact name of the instance ID column in the df/csv.}
+
+\item{submission_date_col}{Character that specifies the exact name of the submission date column in the df/csv.}
 
 \item{merge_data}{Boolean that specifies whether the new data shall be merged with the one that was given or not.}
 
@@ -35,7 +35,4 @@ which are already stored on ODK Central but not contained in the passed data. In
 does not create a delta of instance ID's between old and new data to find the missing instances but it identifies the latest
 submission date in the  old data and uses it to create ODATA query that filters for submissions that were either submitted or updated or both
 after this date. The new submissions can be returned by themselves or merged with the old data.
-}
-\examples{
-
 }

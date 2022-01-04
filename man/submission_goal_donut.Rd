@@ -36,3 +36,18 @@ The number of days are determined using the function \code{\link{collection_peri
 If the targeted number of submissions has been exceeded the plot is all green and additionally provides the info by how many submissions the target number was exceeded.
 Please note, that one and only one of the three data arguments (df, csv, svc) must be specified.
 }
+\examples{
+\dontrun{
+# 1. with SVC
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+
+submission_goal_donut(svc = TRUE, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+
+# 2. with data frame
+submission_goal_donut(df = df_odk_data, daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+
+# 3. with csv
+submission_goal_donut(csv = 'example/file/odk_data.csv', daily_submission_goal = 4, date_col = 'start', exclude_wday = c(1, 7))
+}
+}

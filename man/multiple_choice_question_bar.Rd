@@ -23,7 +23,7 @@ multiple_choice_question_bar(
 
 \item{csv}{Character that specifies the path to the csv file that is to be read. Optional, defaults to NULL.}
 
-\item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL..}
+\item{qvec}{Character vector containing the column names of the single-choice questions that is to be examined, defaults to NULL. Only to be used when loading data through df or csv and when df_schema_ext is not used.}
 
 \item{lang}{Character containing the name of the language that is to be examined, defaults to NULL.}
 
@@ -49,4 +49,21 @@ If so, the argument lang has to be specified accordingly (see parameter descript
 If svc is set to FALSE and the data is passed locally, the argument qvec has to be specified with the column names of single-choice questions
 one wants to examine. Please note that for this case the column name will be displayed as the title while the row values will be displayed as
 the choice labels.
+}
+\examples{
+\dontrun{
+# 1. with SVC
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+
+submissions_timeseries_lineplot(svc = TRUE, lang = 'english', delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+
+# 2. with data frame and external form schema
+df_schema = ruODK::form_schema_ext()
+
+submissions_timeseries_lineplot(df = df_odk_data, lang = 'english', df_schema_ext = df_schema, delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+
+# 3. with csv and qvec
+submissions_timeseries_lineplot(csv = 'example/file/odk_data.csv', lang = 'english', qvec = c('question1', 'question4'), delimiter = ' ', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+}
 }

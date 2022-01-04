@@ -34,7 +34,7 @@ repvisforODK was developed to be accessible not only for people with but also fo
 # Functions
 This section provides an overview of all functions in repvisforODK. For more detailed information, visit the help page of a function using `?[FUNCTION NAME]`.
 
-## Plot Functions
+## Plot
 repvisforODK offers 4 functions that visualize metadata of the entire form (1 plot per form) and 3 question-specific functions for responses of the surveyees (1 plot per question of respective question type).
 
 General plots:
@@ -57,7 +57,9 @@ Question plots:
 - `free_text_wordcloud()`\
   *Generates a wordcloud based on text from a free text question. Function doesn't automatically identifies free text questions in the form - has to be specified by the user.*
   
-## App Functions
+## App
+The shiny app consists of 2 separate components - the user interface and the server (back-end). Each component's code is accessed by calling the respective function. On top that, there is a third function that calls the UI and the server and launches the app.
+
 - `ui()`\
   *Contains the shiny code for the user interface of the app.*
 - `server()`\
@@ -66,8 +68,8 @@ Question plots:
   *Calls both of the above functions and launches the shiny app.*
 
 
-## Get Submissions Functions
-Apart from visualizing data, repvisforODK also offers an efficient solution for only getting data from ODK Central which is not yet part of data a user is using already. This is useful in situations where a user is already working with ODK Central data in an R session. Instead of downloading all the data of a form which is available, the user can use the following functions to restrict the downloaded submissions to only the ones which are not yet in the data.
+## Get Submissions
+Apart from visualizing data, repvisforODK also offers an efficient solution for only getting data from ODK Central which is not yet part of data a user is using already. This is useful in situations where a user is already working with ODK Central data in an R session. Instead of downloading all the data of a form which is available, the user can use the following functions  to restrict the downloaded submissions to only the ones which are not yet in the data.
 
 - `get_new_submissions()`\
   *Takes existing ODK data (data frame or csv) and downloads only new submissions. In contrast to `get_new_submissions_odata()`, this function uses the ODK Central REST-API endpoint and not the ODATA endpoint. For detailed information on the implications of the latter visit the function's help page.*
@@ -75,3 +77,14 @@ Apart from visualizing data, repvisforODK also offers an efficient solution for 
   *Takes existing ODK data (data frame or csv) and downloads only new submissions. In contrast to `get_new_submissions_odata()`, this function uses the ODK Central ODATA endpoint and not the REST-API endpoint. For detailed information on the implications of the latter visit the function's help page.*
 - `find_missing_instanceIDs()`\
   *Takes existing ODK data and finds all instance IDs that are already on ODK Central but not in the data. This function is used within get_new_submissions().*
+
+
+## Other
+This section contains all non-private functions that are primarily used in other functions but could still be useful for the user to use on their own. 
+
+- `collection_period()`\
+  *Returns the earliest and latest value of a date/time stamp column.*
+- `identify_choice_questions()`\
+  *Finds all questions in an ruODK extended form schema that are choice question (single or multiple).*
+- `setup_ruODK()`\
+  *Connects R session to a form on ODK Central which is required in order to use most ruODK functions. Thus, all repvisforODK functions only work if this connection has been established.*

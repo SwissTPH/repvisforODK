@@ -27,3 +27,17 @@ List
 The function also accounts for different languages when the lang argument is specified.
 In both cases the relevant question label and choice column is named the same to facilitate code progression.
 }
+\examples{
+\dontrun{
+# 1. Without df_schema_ext
+choice_questions <- identify_choice_questions(lang = 'english', choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+
+# 2. With df_schema_ext
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = 'example/svc.svc', un = 'exampleusername', pw = 'examplepassword', tz = 'Europe/Berlin', verbose = TRUE)
+
+df_schema <- ruODK::form_schema_ext()
+
+choice_questions <- identify_choice_questions(lang = 'english', df_schema_ext = df_schema, choice_col = 'choices_english_(en)', label_col = 'label_english_(en)')
+}
+}

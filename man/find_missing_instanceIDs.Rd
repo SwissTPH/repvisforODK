@@ -4,14 +4,14 @@
 \alias{find_missing_instanceIDs}
 \title{Find all missing submissions}
 \usage{
-find_missing_instanceIDs(id_col, csv = NULL, df = NULL)
+find_missing_instanceIDs(csv = NULL, df = NULL, id_col)
 }
 \arguments{
+\item{csv}{Character that specifies the path to the csv file that is to be read. (Either csv or df must not null)}
+
+\item{df}{Data frame that, specifies the data frame that is to be read. (Either csv or df must be null)}
+
 \item{id_col}{Character that specifies the exact name of the instance ID in the df/csv.}
-
-\item{csv}{Character that specifies the path to the csv file that is to be read.}
-
-\item{df}{Data frame that, specifies the data frame that is to be read.}
 }
 \value{
 List
@@ -20,4 +20,12 @@ List
 This function finds all instance ID's of submissions of an ODK form which are already stored on ODK Central but not loaded in your current data.
 It does so by downloading the most recent submission list from ODK Central for the respective form and compares the instance IDs with the ones
 that are contained in the given data.
+}
+\examples{
+\dontrun{
+# ruODK needs to be set up for this function to work
+repvisforODK::setup_ruODK(svc = example/svc.svc, un = exampleusername, pw = examplepassword, tz = 'Europe/Berlin', verbose = TRUE)
+
+find_missing_instanceIDs(df = df_odk_data, id_col = 'instance_id')
+}
 }

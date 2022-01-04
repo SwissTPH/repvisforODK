@@ -40,3 +40,8 @@ This function is used within \code{\link{free_text_wordcloud}}. It uses the tm p
 a corpus, apply preprocessing and create a Term Document Matrix. Then wordcloud2 is used to create
 the word cloud.
 }
+\examples{
+\dontrun{
+Function is only used within free_text_wordcloud(). See the latter for example.
+}
+}
