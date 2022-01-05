@@ -255,9 +255,7 @@ server <- function(input, output) {
                      plots_general = input$general_plots,
                      plots_question = input$question_plots)
 
-      # Knit the document, passing in the `params` list, and eval it in a
-      # child of the global environment (this isolates the code in the document
-      # from the code in this app).
+      # Knit document and eval it in a child of the global environment (this isolates the code in the document from the code in this app).
       rmarkdown::render(input = report_path,
                         output_file = file,
                         params = params,
