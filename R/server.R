@@ -90,10 +90,6 @@ server <- function(input, output) {
     } else {
       shiny::updateNumericInput(inputId = 'sub_goal_param',
                          label = 'Daily submission goal')
-
-      shiny::updateCheckboxInput(inputId = 'sub_goal_check',
-                                 label = 'Include daily submission goal in general plots',
-                                 value = FALSE)
     }
   })
 
