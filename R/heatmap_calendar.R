@@ -58,7 +58,7 @@ heatmap_calendar <- function(df = NULL, csv = NULL, svc = FALSE, date_col, daily
   df2 <- merge(day_seq, df1, by = "ndate", all = TRUE)
 
   # assign 0 to all dates within data collection period that are NA
-  df2$n[(df2$ndate >= date_limits[[1]]) & (df2$ndate <= Sys.Date()) & is.na(df2$n)] <- 0
+  df2$n[(df2$ndate >= date_limits[[1]]) & (df2$ndate <= date_limits[[2]]) & is.na(df2$n)] <- 0
 
   # get max number of submissions on one day
   max_n <- max(df2$n, na.rm = TRUE)
