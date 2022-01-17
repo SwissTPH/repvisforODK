@@ -101,9 +101,17 @@ server <- function(input, output) {
     shiny::req(input$label_col_param)
     shiny::req(input$choice_col_param)
 
-    # excluding all questions that have choices, are not ODK type 'string', are not NA, contain 'generated_' in their question name
-    df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
+    #choice_cols_names <- repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]]
 
+    paste0(df_schema()[[input$label_col_param]][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])],
+           ' (',
+           df_schema()[['ruodk_name']][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])],
+           ')')
+    #names <- df_schema()[['ruodk_name']][df_schema()$type == 'string' & !df_schema()$ruodk_name %in% repvisforODK::identify_choice_questions(df_schema_ext = df_schema(), label_col = input$label_col_param, choice_col = input$choice_col_param)[[2]] & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
+    # excluding all questions that have choices, are not ODK type 'string', are not NA, contain 'generated_' in their question name
+    #df_choice_cols <- df_schema()[df_schema()$type == 'string' & !df_schema()$ruodk_name %in% choice_cols_names & !grepl("generated_", df_schema()$ruodk_name) & !is.na(df_schema()[[input$label_col_param]])]
+
+    #return(paste0(labels, ' (', names, ')'))
   })
 
   shiny::observe({
