@@ -298,10 +298,20 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.question_plots.indexOf("multiple_bar") > -1',
 
-                                                    # Input: Enter report language link
-                                                    shiny::textInput(inputId = 'delimiter_param',
-                                                                     label = 'Delimiter with which the multiple choice question answers are separated*',
-                                                                     placeholder = 'e.g.: ,'),
+
+                                                    # Input: delimiter check
+                                                    shiny::checkboxInput(inputId = 'delimiter_check',
+                                                                         label = 'Delimiter with which multiple choice question answers are separated is NOT a space (" ")'),
+
+                                                    # if delimiter check box is checked
+                                                    shiny::conditionalPanel(
+                                                      condition = 'input.delimiter_check == true',
+
+                                                      # Input: Enter delimiter
+                                                      shiny::textInput(inputId = 'delimiter_param',
+                                                                       label = 'Enter delimiter*',
+                                                                       placeholder = 'e.g.: ,')
+                                                    ),
 
                                                     # line break
                                                     shiny::tags$br(),
