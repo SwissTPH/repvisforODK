@@ -6,8 +6,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**This package is currently under active development**
-
 The idea of **repvisforODK** was to develop a quick way to visualize data which is stored on ODK Central by creating **custom reports**. To do so, the package leverages on a variety of other external R packages. Of paramount importance are [ruODK](https://docs.ropensci.org/ruODK/reference/ruODK-package.html) for the interaction with the ODK Central API and both [ggplot2](https://ggplot2.tidyverse.org/index.html) & [plotly](https://plotly.com/r/) for plotting.\
 \
 repvisforODK was developed to be accessible not only for people with but also for people without coding skills. Thus, repvisforODK can be used in **two ways**:
