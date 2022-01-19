@@ -11,6 +11,11 @@ h3 {
 }
 
 h5 {
+  text-decoration: underline;
+  text-decoration-color: #bf3227;
+}
+
+h4 {
   font-style: italic;
 }
 

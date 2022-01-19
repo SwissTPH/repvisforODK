@@ -107,7 +107,7 @@ ui <- function() {
 
                                   # Data will be used as shown info
                                   shiny::icon('info-circle'),
-                                  shiny::tags$h5('The data displayed below will be used for report generation - any filtering will be kept.')
+                                  shiny::tags$h4('The data displayed below will be used for report generation - any filtering will be kept.')
                                   ),
 
                                 # Output: Preview data file
@@ -134,7 +134,7 @@ ui <- function() {
 
                                           # Input: Select general plots
                                           shiny::checkboxGroupInput(inputId = 'general_plots',
-                                                      label = 'Select general plots',
+                                                      label = 'Select General Plots',
                                                       choices = c('Daily Submission Goal Donut' = 'donut',
                                                                   'Submissions Over Time Line Chart (Cumulative)' = 'line_chart_cumsum',
                                                                   'Submissions Over Time Line Chart (Non-Cumulative)' = 'line_chart_no_cumsum',
@@ -147,7 +147,7 @@ ui <- function() {
 
                                           # Input: Select question-specific plots
                                           shiny::checkboxGroupInput(inputId = 'question_plots',
-                                                      label = 'Select question-specific plots',
+                                                      label = 'Select Question-Specific Plots',
                                                       choices = c('Single Choice Question Pie Chart' = 'single_pie',
                                                                   'Multiple Choice Question Bar Chart' = 'multiple_bar',
                                                                   'Free Text Question Word Cloud' = 'wordcloud')
@@ -248,15 +248,12 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.general_plots.length > 0 ',
 
-                                                    shiny::tags$h5('Spelling must be identical to the column name in the data.\n Common choices for this parameter: "start", "end", "system_submission_date" (SVC/ODATA) or "SubmissionDate" (CSV).'),
+                                                    shiny::tags$h5('For all selected General Plots'),
 
                                                     # Input: Enter date column link
                                                     shiny::selectInput(inputId = 'date_col_param',
                                                                      label = 'Timestamp column*',
                                                                      choices = c('NA')),
-
-                                                    # line break
-                                                    shiny::tags$br(),
 
                                                     # Input: daily sub goal check
                                                     shiny::checkboxInput(inputId = 'sub_goal_check',
@@ -280,6 +277,8 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.question_plots.length > 0 && output.lang_flag == true',
 
+                                                    shiny::tags$h5('For all selected Question-Specific Plots'),
+
                                                     # Input: Question label column
                                                     shiny::selectInput(inputId = 'label_col_param',
                                                                         label = 'Question label column to use for translation.',
@@ -298,6 +297,7 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.question_plots.indexOf("multiple_bar") > -1',
 
+                                                    shiny::tags$h5('For Multiple Choice Question Bar Plots'),
 
                                                     # Input: delimiter check
                                                     shiny::checkboxInput(inputId = 'delimiter_check',
@@ -321,6 +321,8 @@ ui <- function() {
                                                   shiny::conditionalPanel(
                                                     condition = 'input.question_plots.indexOf("wordcloud") > -1',
 
+                                                    shiny::tags$h5('For Wordclouds'),
+
                                                     # Input: Enter report language link
                                                       shiny::selectInput(inputId = 'text_col_param',
                                                                      label = 'Question(s) you want to generate a word cloud for*',
@@ -342,6 +344,8 @@ ui <- function() {
                                                   # if sub goal donut plots or line charts are selected
                                                   shiny::conditionalPanel(
                                                     condition = 'input.general_plots.indexOf("donut") > -1 || input.general_plots.indexOf("line_chart_cumsum") > -1 || input.general_plots.indexOf("line_chart_no_cumsum") > -1',
+
+                                                    shiny::tags$h5('For Submission Goal Donut and/or Submissions Over Time Line Charts'),
 
                                                     # Input: exclude wday?
                                                     shiny::checkboxInput(inputId = 'exclude_wday_check',
