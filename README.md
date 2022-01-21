@@ -75,7 +75,7 @@ This section contains all non-private functions that are primarily used in other
   
 ## Shiny App
 
-The integrated web app consists of **three different sections** The user has to go through all of them one after another in order to obtain the final output - a downloadable html report. To launch the app locally on your machine, the function `run_app()` can be used. Shiny apps when launched through RStudio are by default also run in RStudio. It is, however, recommendable to run them in browser by pressing the **"Open in Browser"** button because only then all images are displayed correctly.
+The integrated web app consists of **three different sections** The user has to go through all of them to obtain the final output - a downloadable html report. To launch the app locally on your machine, the function `run_app()` can be used. Shiny apps when launched through RStudio are by default also run in RStudio. It is, however, recommendable to run them in browser by pressing the **"Open in Browser"** button because only then all images are displayed correctly.
 
 1. _**Select Data**_\
 In this section, the data which is used for the report generation is defined. 
