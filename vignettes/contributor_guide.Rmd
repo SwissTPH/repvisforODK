@@ -1,0 +1,46 @@
+---
+title: "How to repvisforODK - Tips and Tricks for Contributors"
+output: 
+  rmarkdown::html_vignette 
+vignette: >
+  %\VignetteIndexEntry{overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE}
+library(repvisforODK)
+```
+
+## Why a contributor vignette?
+Unlike conventional R packages, repvisforODK is more than just a set of functions. The centerpiece of the package is its integrated shiny app that unites the functions in an UI. This, however, is also the reason why further developments often come with interdependencies of the new or changed function, the code of the app, and the rmarkdown file which is the basis for the generated reports. In order to prevent you form spending hours to find the locations in the code where theses interdependencies surface, this vignette aims to show you where they are to be found.
+
+## New visuaslisations
+When adding a new function that is supposed to generate a plot, the following steps could be helpful:
+
+1. Is the generated plot question-specific or general i.e. only visualizing metadata?
+For question-specific plots, the functions in repvisforODK find the questions that are suitable for the respective plot automatically. That means, for example, that the function that generates pie charts for single choice questions automatically identifies all single choice questions in an ODK form as such. To do so, the extended form schema which is provided by ODK Central and can be accessed through `ruODK::form_schema_ext()` is used. Thus, try to leverage on the form schema to auto-identify the questions your function is supposed to visualize.
+The form schema of course has its limitations and it's not always possible to clearly identify each question that fits the criteria of the plot (e.g. in `repvisforODK::free_text_wordcloud()`). Only in these cases you should let the users choose the questions to visualize themselves. Keep in mind that in the app this will require a new input where it helps to have a rule-based pre-selection of suitable questions if possible to make life easier for the users. See the 'For Wordclouds' section in the '2. Select Visualisations' tab in the Shiny app for reference.
+
+2. How do visualizing functions get their data? 
+The different ways on how to pass data to such a function is always the same and taking care of by the function `repvisforODK::check_data_args()`. We recommend to look at the function and read its documentation to understand the three different ways how data can be passed. 
+
+3. How to incorporate a new plot function in the app and the report template?
+After a new function has been written and successfully tested, it is time to implement it in the repvisforODK environment. The following code has to be updated:
+    + `ui.R -> Select Visualisations Tab -> Sidebar Panel`: Add new plot name to check box group (shiny input id = 'general_plots' or 'question_plots' depending on plot type)
+    + `ui.R -> Select Visualisations Tab -> Main Panel -> Tabset Panel`: Add exemplary image of rendered plot in separate additional panel
+    + `ui.R -> Set Parameters Tab -> 1-6 page columns`: If additional parameters (not yet in the app) have to be set by user, add them here and wrap them in suitable conditional panel to only make them appear when plot is selected
+    + `server.R -> Download of RMD Report -> Set Up Parameters to Pass to Rmd Document`: Add all new parameters to the 'params' list
+    + `server.R OPTIONAL TIP`: If a parameter is influenced by in-app user decisions, you can update the parameter input with `update[Type]Input()` and wrap an `observeEvent()` with the respective condition around it
+    + `server.R -> Download of RMD Report -> Set Up Parameters to Pass to Rmd Document`: Add all new parameters to the 'params' list
+    + `all_plots_shiny.rmd (stored in 'inst/rmarkdown') -> YAML header`: Add all new parameters to the params section with NA as the default
+    + `all_plots_shiny.rmd (stored in 'inst/rmarkdown') -> code chunk: 'set_params'`: Define a variable that contains the (manipulated) parameter value
+    + `all_plots_shiny.rmd (stored in 'inst/rmarkdown') -> Section: 'Parameter Overview'`: Add new parameters to the parameter overview section
+    + `all_plots_shiny.rmd (stored in 'inst/rmarkdown') -> WHERE IT SUITS`: Add a code chunk that generates the new plot(s) and make sure to wrap the entire code chunk in LaTeX code that comments it out if the plot is not selected (see other code chunks for reference)
