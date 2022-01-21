@@ -19,10 +19,10 @@ knitr::opts_chunk$set(
 library(repvisforODK)
 ```
 
-## Why a contributor vignette?
+## Why a Contributor Vignette?
 Unlike conventional R packages, repvisforODK is more than just a set of functions. The centerpiece of the package is its integrated shiny app that unites the functions in an UI. This, however, is also the reason why further developments often come with interdependencies of the new or changed function, the code of the app, and the rmarkdown file which is the basis for the generated reports. In order to prevent you form spending hours to find the locations in the code where theses interdependencies surface, this vignette aims to show you where they are to be found.
 
-## New visuaslisations
+## Guide to New Visuaslisations
 When adding a new function that is supposed to generate a plot, the following steps could be helpful:
 
 1. Is the generated plot question-specific or general i.e. only visualizing metadata?
