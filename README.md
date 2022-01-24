@@ -21,7 +21,7 @@ The development version from [GitHub](https://github.com/) can be installed usin
 
 ``` r
 require("devtools")
-devtools::install_github("lucidviews/repvisforODK")
+devtools::install_github("swisstph/repvisforODK")
 ```
 
 At the moment you **cannot install** repvisforODK from
