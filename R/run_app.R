@@ -10,5 +10,10 @@
 #' }
 run_app <- function() {
 
-  shinyApp(repvisforODK::ui(), repvisforODK::server)
+  appDir <- system.file("app", package = "repvisforODK")
+  if (appDir == "") {
+    stop("Could not find myapp. Try re-installing `mypackage`.", call. = FALSE)
+  }
+
+  shiny::runApp(appDir, display.mode = "normal")
 }
