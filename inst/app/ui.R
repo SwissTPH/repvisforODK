@@ -8,7 +8,7 @@ shiny::fluidPage(
   ),
 
 # start navbar----------------------------------------------------------------------------------------------------------------------------------------
-    shiny::navbarPage(includeCSS('www/styles.css'),
+    shiny::navbarPage(includeCSS(system.file('www', 'styles.css', package = 'repvisforODK')),
                           title = 'repvisforODK',
                           id = 'tab',
                           selected = '1. Select Data',
@@ -406,9 +406,6 @@ shiny::fluidPage(
 # footer----------------------------------------------------------------------------------------------------------------------------------------------
 # general footer with logo and links to Swiss TPH website and GitHub repo (see footer.html file in html folder for source code)
 shiny::div(class = "footer",
-  shiny::includeHTML("html/footer.html")
+  shiny::includeHTML(system.file('www', 'footer.html', package = 'repvisforODK'))
        )
     )
-
-
-return(ui)
