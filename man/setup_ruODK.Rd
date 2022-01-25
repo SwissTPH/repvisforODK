@@ -13,15 +13,15 @@ setup_ruODK(
 )
 }
 \arguments{
-\item{svc}{Character}
+\item{svc}{Character that specifies the svc link which is used to identify an ODK form.}
 
-\item{un}{Optional, character}
+\item{un}{Character that specifies the ODK Central username. Optional, defaults to Sys.getenv('ODKC_UN').}
 
-\item{pw}{Optional, character}
+\item{pw}{Character that specifies the ODK Central password. Optional, defaults to Sys.getenv('ODKC_PW').}
 
-\item{tz}{Optional, character}
+\item{tz}{Character that specifies the ODK Central tiem zone Optional, defaults to Sys.getenv('ODKC_TZ').}
 
-\item{verbose}{Optional, logical}
+\item{verbose}{Logical that sets the 'verbose' argument of the \code{\link[ruODK]{ru_setup}} function.}
 }
 \value{
 None

@@ -3,6 +3,7 @@
 #' @return NULL
 #'
 #' @export
+#' @import ruODK shiny rmarkdown shinyalert DT dplyr shinycssloaders
 #'
 #' @examples
 #' \dontrun{
