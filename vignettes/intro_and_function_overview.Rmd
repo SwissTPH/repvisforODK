@@ -5,7 +5,7 @@ output:
     toc: TRUE
     number_section: TRUE
 vignette: >
-  %\VignetteIndexEntry{overview}
+  %\VignetteIndexEntry{How to repvisforODK - Intro and Function Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

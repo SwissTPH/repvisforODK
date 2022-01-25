@@ -3,7 +3,7 @@ title: "How to repvisforODK - the App"
 output: 
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{app}
+  %\VignetteIndexEntry{How to repvisforODK - the App}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
