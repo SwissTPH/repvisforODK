@@ -39,7 +39,7 @@ library(htmltools)
  knitr::opts_chunk$set(eval=TRUE, echo = FALSE, warning = FALSE, message = FALSE) 
 ``` 
 
-```{r}
+```{r chunk_evaluator}
 # defining which code chunks to evaluate
 all_plots <- c('donut', 'line_chart_cumsum', 'line_chart_no_cumsum', 'day_heatmap', 'cal_heatmap', 'single_pie', 'multiple_bar', 'wordcloud')
 selected_plots <- c(params$plots_general, params$plots_question)
@@ -48,7 +48,7 @@ plot_evals <- lapply(all_plots, function(x) ifelse(x %in% selected_plots, TRUE, 
 names(plot_evals) <- all_plots
 ```
 
-```{r}
+```{r load_data}
 # loading data
 df <- repvisforODK::check_data_args(df = params$df)
 
@@ -56,7 +56,7 @@ df <- repvisforODK::check_data_args(df = params$df)
 df_schema_ext <- params$df_schema
 ```
 
-```{r}
+```{r set_params}
 # general
 date_col <- params$date_col
 daily_submission_goal <- as.numeric(params$daily_submission_goal)
@@ -94,7 +94,7 @@ Language of Free Text Question Answers: **`r lang_wc`**\
 
 `r if (!plot_evals$donut) {"\\begin{comment}"}`
 # Number of Submissions: Received vs. Missing to Target
-```{r}
+```{r donut}
 if (plot_evals$donut) {
   fig <- repvisforODK::submission_goal_donut(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int)
 } else fig <- NULL
@@ -106,7 +106,7 @@ fig
 
 `r if (!plot_evals$line_chart_cumsum) {"\\begin{comment}"}`
 # Received Submissions Over Time: Cumulative
-```{r}
+```{r line_chart_cumsum}
 if (plot_evals$line_chart_cumsum) {
   fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int, cumulative = TRUE)
 } else fig <- NULL
@@ -118,7 +118,7 @@ fig
 
 `r if (!plot_evals$line_chart_no_cumsum) {"\\begin{comment}"}`
 # Received Submissions Over Time: Non-Cumulative
-```{r}
+```{r line_chart_no_cumsum}
 if (plot_evals$line_chart_no_cumsum) {
   fig <- repvisforODK::submissions_timeseries_lineplot(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col, exclude_wday = exclude_wday_int, cumulative = FALSE)
 } else fig <- NULL
@@ -130,7 +130,7 @@ fig
 
 `r if (!plot_evals$day_heatmap) {"\\begin{comment}"}`
 # Submission Activitiy by Weekday and Day of the Week 
-```{r}
+```{r day_heatmap}
 if (plot_evals$day_heatmap) {
   fig <- repvisforODK::heatmap_wday_hourofday(df = df, date_col = date_col)
 } else fig <- NULL
@@ -142,7 +142,7 @@ fig
 
 `r if (!plot_evals$cal_heatmap) {"\\begin{comment}"}`
 # Submission Activity by Day 
-```{r}
+```{r calendar_heatmap}
 if (plot_evals$cal_heatmap) {
   fig <- repvisforODK::heatmap_calendar(df = df, daily_submission_goal = daily_submission_goal, date_col = date_col)
 } else fig <- NULL
@@ -154,7 +154,7 @@ fig
 
 `r if (!plot_evals$single_pie) {"\\begin{comment}"}`
 # Distribution of Answers for Single-Choice Questions
-```{r}
+```{r pie}
 if (plot_evals$single_pie) {
   plots <- repvisforODK::single_choice_question_pie(df = df, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL
@@ -168,7 +168,7 @@ if (length(plots) == 0) {
 
 `r if (!plot_evals$multiple_bar) {"\\begin{comment}"}`
 # Distribution of Answers for Multiple-Choice Questions
-```{r}
+```{r bar}
 if (plot_evals$multiple_bar) {
   plots <- repvisforODK::multiple_choice_question_bar(df = df, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL
@@ -182,7 +182,7 @@ if (length(plots) == 0) {
 
 `r if (!plot_evals$wordcloud) {"\\begin{comment}"}`
 # Wordcloud for Free Text Question
-```{r}
+```{r wordcloud}
 if (plot_evals$wordcloud) {
   plots <- repvisforODK::free_text_wordcloud(df = df, text_col = text_col, lang_wc = lang_wc, df_schema_ext = df_schema_ext, label_col = label_col, choice_col = choice_col)
 } else plots <- NULL

@@ -48,7 +48,7 @@ get_new_submissions <- function(csv=NULL, df=NULL, id_col, merge_data=TRUE){
   # downloading all missing instances in JSON (nested list) format
   new_data_json = ruODK::submission_get(missing_instances)
 
-  # data manipulation-------------------------------------------------------------------------------------------------------------------------------
+  # data manipulation--------------------------------------------------------------------------------------------------------------------------------------
 
   # converting nested list to data frame with cleaned names
   enframed_df = tibble::enframe(unlist(new_data_json))

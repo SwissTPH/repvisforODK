@@ -236,9 +236,7 @@ server <- function(input, output) {
         )
       }
 
-      # Copy the report file to a temporary directory before processing it, in
-      # case we don't have write permissions to the current working dir (which
-      # can happen when deployed).
+      # Copy the report file to a temporary directory before processing it, in case we don't have write permissions to the current working dir (which can happen when deployed).
       report_path <- system.file('rmarkdown', 'all_plots_shiny.rmd', package = 'repvisforODK')
 
       # Set up parameters to pass to Rmd document
