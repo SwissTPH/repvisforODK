@@ -1,15 +1,4 @@
-#' Server code for the shiny app that users can use to do generate reports.
-#'
-#' Standard Shiny app component.
-#'
-#' @param input Shiny server input param
-#' @param output Shiny server output param
-#'
-#' @return
-#'
-#' @export
-#' @import ruODK shiny rmarkdown shinyalert DT
-server <- function(input, output) {
+function(input, output) {
 
   # suppress warnings; = 0 to enable warnings
   options(warn = -1)

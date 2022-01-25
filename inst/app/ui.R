@@ -1,19 +1,11 @@
-#' UI code for the shiny app that users can use to do generate reports.
-#'
-#' @return
-#'
-#' @export
-#' @import shiny dplyr shinycssloaders shinyalert DT
-ui <- function() {
-  # adding the smallest fluid page possible just to embed the logo in it
-  ui <- shiny::fluidPage(
-    list(shiny::tags$head(shiny::HTML('<link rel="icon", href="https://lucidviews.github.io/gh-pages/logo_only.PNG",
-                                   type="image/png" />'))),
-    shiny::div(style="padding: 1px 0px; width: '100%'",
-        shiny::titlePanel(
-          title="", windowTitle="repvisforODK"
-        )
-    ),
+shiny::fluidPage(
+  list(shiny::tags$head(shiny::HTML('<link rel="icon", href="https://lucidviews.github.io/gh-pages/logo_only.PNG",
+                                 type="image/png" />'))),
+  shiny::div(style="padding: 1px 0px; width: '100%'",
+      shiny::titlePanel(
+        title="", windowTitle="repvisforODK"
+      )
+  ),
 
 # start navbar----------------------------------------------------------------------------------------------------------------------------------------
     shiny::navbarPage(includeCSS('www/styles.css'),
@@ -419,5 +411,4 @@ shiny::div(class = "footer",
     )
 
 
-  return(ui)
-}
+return(ui)
