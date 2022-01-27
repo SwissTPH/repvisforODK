@@ -239,7 +239,7 @@ function(input, output) {
                      exclude_wday_str = input$exclude_wday_param,
                      delimiter = input$delimiter_param,
                      lang_wc = tolower(input$lang_wc_param),
-                     text_col = df_schema()$ruodk_name[df_schema()[[input$label_col_param]] %in% input$text_col_param],
+                     text_col = df_schema()$ruodk_name[df_schema()[[input$label_col_param]] %in% paste0(strsplit(input$text_col_param, '?', fixed = TRUE)[[1]][1], '?')],
                      text_col_name = input$text_col_param,
                      choice_col = input$choice_col_param,
                      label_col = input$label_col_param,
