@@ -341,7 +341,7 @@ shiny::fluidPage(
 
                                                     # Input: exclude wday?
                                                     shiny::checkboxInput(inputId = 'exclude_wday_check',
-                                                                         label = 'Select days of the week which will not be cosnidered for line chart(s) and/or donut chart',
+                                                                         label = 'Select days of the week which will not be cosnidered in the data',
                                                                          value = FALSE),
 
                                                     # if exclude days of the week check box is checked
