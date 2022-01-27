@@ -23,12 +23,13 @@ check_data_args <- function(df = NULL, csv = NULL, svc = FALSE) {
   if (!is.null(df)) {
     return(df)
   } else if (!is.null(csv)) {
-    return(readr::read_csv(csv))
+    return(read.csv(csv, sep = ';'))
   } else if (svc) {
     if (ruODK::ru_settings()[[2]]=='') {
       stop('Please run the function repvisforODK::setup_ruODK() with your credentials and svc of the form you want to examine.')
     }
-    return(ruODK::odata_submission_get(download = FALSE))
+    # downloading data and excluding rejected submissions
+    return(ruODK::odata_submission_get(filter= "__system/reviewState ne 'rejected'", download = FALSE))
   }
 }
 
@@ -134,8 +135,8 @@ remove_html_tags <- function(html_string) {
 #' @examples
 load_data_sub_date <- function(tz) {
 
-
-  df <- ruODK::odata_submission_get(download = FALSE)
+  # downloading data and excluding rejected submissions
+  df <- ruODK::odata_submission_get(filter= "__system/reviewState ne 'rejected'", download = FALSE)
 
   df$submission_date <- unlist(lapply(df$system_submission_date,
                                       function(x) substring(gsub('T', ' ', x), 1, nchar(x)-5)))
