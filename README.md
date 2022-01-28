@@ -24,6 +24,16 @@ require("devtools")
 devtools::install_github("swisstph/repvisforODK")
 ```
 
+To install the dependency [ruODK](https://docs.ropensci.org/ruODK/reference/ruODK-package.html), you can use:
+``` r
+# Enable the rOpenSci universe
+options(repos = c(ropensci = 'https://ropensci.r-universe.dev',
+                  CRAN = 'https://cloud.r-project.org'))
+install.packages('ruODK')
+```
+
+If you run into further problems when attempting to install the package, you can check out the [how-to-install video tutorial](https://github.com/SwissTPH/repvisforODK/tree/main/media/demo_videos). If this doesn't help, feel free to leave a post in the discussion section.
+
 At the moment you **cannot install** repvisforODK from
 [CRAN](https://CRAN.R-project.org) because it has not been published yet.
 When published, installing will be possible through:
