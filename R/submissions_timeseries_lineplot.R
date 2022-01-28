@@ -61,7 +61,7 @@ submissions_timeseries_lineplot <- function(df = NULL, csv = NULL, svc = FALSE, 
 
   # create df with all dates of the data collection period (containing ALL dates, also the ones where no data was collected)
   df_count_full <- data.frame(all_dates_in_period)
-  # new count column with 0 if date is misiing in df_count and with df_count$n if the date exists.
+  # new count column with 0 if date is missing in df_count and with df_count$n if the date exists.
   df_count_full$n <- sapply(df_count_full$all_dates_in_period,
                               function(x) ifelse(x %in% df_count$date, df_count$n[df_count$date == x], 0),
                               USE.NAMES = F)

@@ -72,7 +72,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
   for (q in qvec_pre) {
 
-    # ensuring that only single choice questions are plotted
+    # ensuring that only multiple choice questions are plotted
     if (TRUE %in% grepl(delimiter, df[[q]])) {
       counter <- counter + 1
 

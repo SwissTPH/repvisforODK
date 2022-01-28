@@ -47,7 +47,7 @@ single_choice_question_pie <- function(svc = FALSE, df = NULL, csv = NULL, qvec 
 
   df <- repvisforODK::check_data_args(df, csv, svc)
 
-  # stop if more than one source for chocie questions is defined
+  # stop if more than one source for choice questions is defined
   if (sum(svc, !is.null(df_schema_ext), !is.null(qvec)) != 1) {
 
     stop('The function is not able to clearly identify single choice questions. Please only specify one out of svc, qvec and df_schema_ext. Note that if you have set svc to TRUE, you need to run the function setup_ruODK() with your credentials to log in to your ODK server.')
