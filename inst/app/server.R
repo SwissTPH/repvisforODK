@@ -111,7 +111,7 @@ function(input, output) {
   shiny::observeEvent(input$load_preview_button, {
 
     # get all columns that have class POSIXct or POSIXlt
-    datetime_col_choices <- colnames(df() %>% dplyr::select_if(function(col) is.POSIXct(col) | is.POSIXlt(col)))
+    datetime_col_choices <- colnames(df() %>% dplyr::select_if(function(col) lubridate::is.POSIXct(col) | lubridate::is.POSIXlt(col)))
     shiny::updateRadioButtons(inputId = 'filter_col',
                        choices = datetime_col_choices)
     shiny::updateSelectInput(inputId = 'date_col_param',
