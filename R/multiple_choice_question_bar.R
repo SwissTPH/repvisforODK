@@ -103,15 +103,24 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
       # getting counts for both dfs
       df_s <- as.data.frame(table(fin_vec_single))
-      colnames(df_s)[1] <- 'choice'
+      if (nrow(df_s)!=0) colnames(df_s)[1] <- 'choice'
 
       df_m <- as.data.frame(table(fin_vec_multi))
       colnames(df_m)[1] <- 'choice'
 
       # outer join to merge both dfs without losing info
-      df_merge <- merge(df_s, df_m, by = 'choice', all = TRUE)
+      if (nrow(df_s)!=0) (
+        df_merge <- merge(df_s, df_m, by = 'choice', all = TRUE)
+      ) else df_merge <-df_m
+
       df_merge[is.na(df_merge)] <- 0
-      df_merge$Freq.total <- df_merge$Freq.x + df_merge$Freq.y
+
+
+      if (nrow(df_s)!=0) (
+        df_merge$Freq.total <- df_merge$Freq.x + df_merge$Freq.y
+      ) else  (
+        df_merge$Freq.total <- df_merge$Freq
+      )
 
 
       if(svc | !is.null(df_schema_ext)) {
@@ -127,7 +136,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
       # plotting----------------------------------------------------------------------------------------------------------------------------------------------------
 
       # base bar plot only showing the multiple choice proportion
-      fig <- plot_ly(data = df_merge, x = ~choice, y = ~Freq.y/num_peop_q,
+      fig <- plot_ly(data = df_merge, x = ~choice, y = if (nrow(df_s)!=0) (~Freq.y) else  ~Freq.total/num_peop_q,
                      type = 'bar',
                      name = 'Among Multiple Choices',
                      text = ~Freq.total,
@@ -141,11 +150,13 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
                      hovertemplate = "%{label} <br>%{y}<extra></extra>")
 
       # stacking second layer of bars on top for single choice proportion
-      fig <- fig %>% add_trace(x = ~choice, y = ~Freq.x/num_peop_q,
+
+      fig <- fig %>% add_trace(x = ~choice, y = if (nrow(df_s)!=0) (~Freq.x) else  ~Freq.total/num_peop_q,
                                type = 'bar',
                                name = 'As Single Choice',
                                marker = list(color = if (counter %% 2 == 0) "#FEE08B" else "#A6D96A")
                                )
+
 
       fig <- fig %>%
         layout(yaxis = list(tickformat = '.0%',
@@ -164,6 +175,7 @@ multiple_choice_question_bar <- function(svc = FALSE, df = NULL, csv = NULL, qve
 
       # adding title to the html widget
       fig <- repvisforODK::add_html_title_tag(fig, title)
+
 
       # evaluate plotly objects before saving in list to avoid rendering bugs in the report
       figs[[q]] <- plotly::plotly_build(fig)
