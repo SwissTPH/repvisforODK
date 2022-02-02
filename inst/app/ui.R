@@ -23,25 +23,22 @@ shiny::fluidPage(
                                 # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
                                             label = 'SVC*',
-                                            placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions',
-                                            value = 'https://research.odk.path.org/v1/projects/4/forms/02-TIMCI-SPA-cgei.svc'),
+                                            placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions'),
 
                                   # Input: Enter username
                                   shiny::textInput(inputId = 'un',
                                             label = 'Username*',
-                                            placeholder = 'lucas.silbernagel@swisstph.ch',
-                                            value = 'lucas.silbernagel@swisstph.ch'),
+                                            placeholder = 'your.email@company.com'),
 
                                   # Input: Enter password
                                   shiny::passwordInput(inputId = 'pw',
                                                 label = 'Password*',
-                                                placeholder = 'S3cur3_Password123'),
+                                                placeholder = 'Secure_Password'),
 
                                   # Input: Enter timezone
                                   shiny::textInput(inputId = 'tz',
                                             label = 'Timezone*',
-                                            placeholder = "Europe/Berlin",
-                                            value = 'GMT'),
+                                            placeholder = 'GMT'),
 
                                 # line break
                                 shiny::tags$br(),
