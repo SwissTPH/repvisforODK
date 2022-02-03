@@ -23,7 +23,7 @@ shiny::fluidPage(
                                 # Input: Enter svc link
                                   shiny::textInput(inputId = 'svc_text',
                                             label = 'SVC*',
-                                            placeholder = 'https://research.odk.path.org/#/projects/projectNumber/forms/projectName/submissions'),
+                                            placeholder = 'https://private-anon-76bb7e5192-odkcentral.apiary-mock.com/v1/projects/projectId/forms/xmlFormId.svc'),
 
                                   # Input: Enter username
                                   shiny::textInput(inputId = 'un',
